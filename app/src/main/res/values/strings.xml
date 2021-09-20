@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">AturAja</string>
     <string name="to_do_list">To Do List</string>
+    <string name="new_task">New Task</string>
+    <string name="hint_task">Add a title</string>
+    <string name="hint_desc">Add a description</string>
+    <string name="hint_todo">Add task</string>
 </resources>

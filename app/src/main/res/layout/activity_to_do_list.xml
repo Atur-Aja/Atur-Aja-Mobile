@@ -18,7 +18,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/rounded_back"
+            android:src="@drawable/circle_back"
             android:background="@null" />
         <TextView
             android:layout_width="match_parent"
@@ -54,7 +54,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/rounded_add"
+            android:src="@drawable/circle_add"
             android:background="@null" />
     </LinearLayout>
 
