@@ -1,9 +1,17 @@
 <resources>
     <string name="app_name">AturAja</string>
     <string name="to_do_list">To Do List</string>
+    <string name="notification">Notification</string>
+    <string name="focus">Focus Mode</string>
     <string name="setting">Settings</string>
+    <string name="change_email">Change Email</string>
+    <string name="change_phone">Change Phone Number</string>
+    <string name="change_password">Change Password</string>
     <string name="new_task">New Task</string>
     <string name="hint_task">Add a title</string>
     <string name="hint_desc">Add a description</string>
     <string name="hint_todo">Add task</string>
+    <string name="hint_email">Enter new email</string>
+    <string name="hint_phone">Enter new phone number</string>
+    <string name="hint_password">minimum 8 characters</string>
 </resources>

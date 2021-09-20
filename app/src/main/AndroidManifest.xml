@@ -10,6 +10,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AturAja">
         <activity
+            android:name=".FocusMode"
+            android:exported="true" />
+        <activity
+            android:name=".Notification"
+            android:exported="true" />
+        <activity
+            android:name=".ChangePassword"
+            android:exported="true" />
+        <activity
+            android:name=".ChangePhoneNumber"
+            android:exported="true" />
+        <activity
+            android:name=".ChangeEmail"
+            android:exported="true" />
+        <activity
             android:name=".Setting"
             android:exported="true" />
         <activity
