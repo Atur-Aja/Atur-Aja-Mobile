@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AturAja">
         <activity
+            android:name=".Setting"
+            android:exported="true" />
+        <activity
             android:name=".NewTask"
             android:exported="true" />
         <activity
