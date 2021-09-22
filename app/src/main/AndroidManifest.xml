@@ -10,7 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AturAja">
         <activity
+            android:name=".ForgotPasswordActivity2"
+            android:exported="true" />
+        <activity
             android:name=".ForgotPasswordActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SignInActivity"
             android:exported="true" />
         <activity android:name=".MainActivity">
             <intent-filter>
