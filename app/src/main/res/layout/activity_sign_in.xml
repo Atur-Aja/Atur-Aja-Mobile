@@ -20,7 +20,6 @@
             android:layout_width="182dp"
             android:layout_height="140dp"
             android:layout_marginTop="88dp"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +48,7 @@
             android:layout_marginTop="72dp"
             android:ems="10"
             android:hint="Username"
+            android:drawableEnd="@drawable/ic_baseline_email_24"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -63,6 +63,7 @@
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword"
+            android:drawableEnd="@drawable/ic_view_password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.508"
             app:layout_constraintStart_toStartOf="parent"
