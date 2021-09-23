@@ -4,9 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/drawable/back_button.xml" value="0.26875" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.26875" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/drawable/ic_email_button.xml" value="0.26631944444444444" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/drawable/ic_view_password.xml" value="0.26631944444444444" />
         <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/drawable/rounded_button.xml" value="0.26875" />
-        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_forgot_password.xml" value="0.25555555555555554" />
-        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_forgot_password2.xml" value="0.25798611111111114" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_forgot_password.xml" value="0.25" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_forgot_password2.xml" value="0.25" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_forgot_password_confirm.xml" value="0.1829861111111111" />
         <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_login.xml" value="0.38333333333333336" />
         <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_main.xml" value="0.35648148148148145" />
         <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_sign_in.xml" value="0.25" />

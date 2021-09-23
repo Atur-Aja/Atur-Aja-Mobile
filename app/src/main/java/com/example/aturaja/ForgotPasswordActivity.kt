@@ -1,5 +1,6 @@
 package com.example.aturaja
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
@@ -10,9 +11,12 @@ class ForgotPasswordActivity : AppCompatActivity() {
     }
 
     fun resetOnClick(view: android.view.View) {
-
+        val intent = Intent(this, ForgotPasswordConfirmActivity::class.java)
+        startActivity(intent)
     }
-    fun backOnClick(view: android.view.View) {
 
+    fun backOnClick(view: android.view.View) {
+        val intent = Intent(this, SignInActivity::class.java)
+        startActivity(intent)
     }
 }
