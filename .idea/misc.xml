@@ -4,16 +4,26 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/drawable/back_button.xml" value="0.26875" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/drawable/custom_input.xml" value="0.19375" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/drawable/custom_underline.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.26875" />
         <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/drawable/ic_email_button.xml" value="0.26631944444444444" />
         <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/drawable/ic_view_password.xml" value="0.26631944444444444" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/drawable/image_81.xml" value="0.2048611111111111" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/drawable/logo.xml" value="0.2048611111111111" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/drawable/radius_checkbox.xml" value="0.20347222222222222" />
         <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/drawable/rounded_button.xml" value="0.26875" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/font/mulish.xml" value="0.278125" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_add_task.xml" value="0.25" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_calendar.xml" value="0.264" />
         <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_forgot_password.xml" value="0.25" />
         <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_forgot_password2.xml" value="0.25" />
-        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_forgot_password_confirm.xml" value="0.1829861111111111" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_forgot_password_confirm.xml" value="0.25" />
         <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_login.xml" value="0.38333333333333336" />
         <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_main.xml" value="0.35648148148148145" />
-        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/activity_sign_in.xml" value="0.18" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/schedule_layout.xml" value="0.22" />
+        <entry key="..\:/Users/Bima Aria/AndroidStudioProjects/Atur-Aja-Mobile/app/src/main/res/layout/todo_layout.xml" value="0.25" />
       </map>
     </option>
   </component>
