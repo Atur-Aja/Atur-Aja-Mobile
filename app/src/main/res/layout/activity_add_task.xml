@@ -160,18 +160,18 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintRecycler1"
+            android:layout_marginTop="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:background="#F8F9FB"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTodo">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/toDoRecyclerView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintEnd_toEndOf="@+id/constraintRecycler1"
                 app:layout_constraintStart_toStartOf="@+id/constraintRecycler1"
@@ -183,6 +183,7 @@
             android:id="@+id/abTodo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginLeft="24dp"
             android:background="@android:color/transparent"
             app:layout_constraintStart_toStartOf="parent"
@@ -194,7 +195,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="12dp"
             android:layout_marginLeft="8dp"
             android:hint="Add task..."
             android:textColorHint="#DCDCDC"
