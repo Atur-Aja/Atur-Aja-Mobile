@@ -15,32 +15,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 
-
-//class HomeActivity : AppCompatActivity() {
-//    private lateinit var mToggle : ActionBarDrawerToggle
-//    private lateinit var drawer_layout: DrawerLayout
-//    private lateinit var topAppBar: Toolbar
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.app_bar)
-//
-//        drawer_layout = findViewById(R.id.drawer_layout)
-//        topAppBar = findViewById(R.id.topAppBar)
-//        setSupportActionBar(topAppBar)
-//
-//        topAppBar.setNavigationOnClickListener {
-//            drawer_layout.openDrawer(GravityCompat.START)
-//        }
-//    }
-//
-//    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
-//        return mToggle.onOptionsItemSelected(item)
-//    }
-//
-//
-//}
-
 class HomeActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar

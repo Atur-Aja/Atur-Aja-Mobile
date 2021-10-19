@@ -35,34 +35,6 @@ class LoginActivity : AppCompatActivity() {
 
             startActivity(myIntent)
         }
-//
-//        btnLogin.setOnClickListener {
-//            var email = textUsername.editText?.text.toString()
-//            var password = textPassword.editText?.text.toString()
-//
-//            RetrofitClient.instance.loginUser(email, password)
-//                .enqueue(object : Callback<LoginResponse> {
-//                    override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-//                        Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
-//                    }
-//
-//                    override fun onResponse(
-//                        call: Call<LoginResponse>,
-//                        response: Response<LoginResponse>
-//                    ) {
-//                        if(response.code().equals(200)) {
-//                            SessionManager.getInstance(applicationContext).saveToken(response.body()?.accessToken)
-//                            val intent = Intent(applicationContext, HomeActivity::class.java)
-//
-//                            startActivity(intent)
-//                        } else {
-//                            Toast.makeText(applicationContext, "email atau password salah", Toast.LENGTH_LONG).show()
-//                        }
-//                    }
-//
-//                })
-//        }
-//
     }
 
     fun forgotPasswordOnClick(view: android.view.View) {

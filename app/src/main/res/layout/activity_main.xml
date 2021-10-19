@@ -1,186 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="#F8F9FB"
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/icon_aturaja"
-        android:layout_width="185dp"
-        android:layout_height="82dp"
-        app:srcCompat="@drawable/icon_aturaja"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="110dp"
-        android:layout_marginTop="76dp"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginVertical="40dp"
+        android:background="#F8F9FB">
+        tools:context=".MainActivity">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/outlinedUsername"
-        android:layout_width="296dp"
-        android:layout_height="52dp"
-        android:hint="@string/username"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="69.5dp"
-        android:fontFamily="@font/mulish_regular"
-        app:layout_constraintTop_toBottomOf="@id/icon_aturaja"
-        app:layout_constraintStart_toStartOf="parent"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/ic_baseline_email_24"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <ImageView
+            android:id="@+id/icon_aturaja"
+            android:layout_width="182dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="88dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logo" />
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="12dp"/>
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/icon_aturaja">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_input"
+                android:drawableEnd="@drawable/ic_baseline_email_24"
+                android:ems="10"
+                android:fontFamily="@font/mulish_bold"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="14dp"
+                android:textSize="16sp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/outlinedemail"
-        android:layout_width="296dp"
-        android:layout_height="52dp"
-        android:hint="@string/email"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/mulish_regular"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:layout_constraintTop_toBottomOf="@id/outlinedUsername"
-        app:layout_constraintStart_toStartOf="parent"
-        app:endIconMode="custom"
-        app:endIconDrawable="@drawable/ic_baseline_email_24"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedemail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="12dp"
-            />
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/outlinedUsername">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:hint="@string/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_input"
+                android:drawableEnd="@drawable/ic_baseline_email_24"
+                android:ems="10"
+                android:fontFamily="@font/mulish_bold"
+                android:inputType="textPersonName"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="14dp"
+                android:textSize="16sp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/outlinedpassword"
-        android:layout_width="296dp"
-        android:layout_height="52dp"
-        android:hint="@string/password"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/mulish_regular"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:layout_constraintTop_toBottomOf="@id/outlinedemail"
-        app:layout_constraintStart_toStartOf="parent"
-        app:endIconMode="password_toggle"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedpassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:paddingVertical="12dp"
-            />
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/outlinedemail"
+            app:endIconMode="password_toggle">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:hint="@string/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_input"
+                android:ems="10"
+                android:fontFamily="@font/mulish_bold"
+                android:inputType="textPassword"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="14dp"
+                android:textSize="16sp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/outlinedconfirmpassword"
-        android:layout_height="52dp"
-        android:hint="@string/confirm_password"
-        android:layout_width="296dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/mulish_regular"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxBackgroundColor="@color/white"
-        app:endIconMode="password_toggle"
-        app:layout_constraintTop_toBottomOf="@id/outlinedpassword"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:layout_constraintStart_toStartOf="parent">
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/outlinedconfirmpassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:paddingVertical="12dp"
-            />
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="12dp"
+            app:endIconMode="password_toggle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/outlinedpassword">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:hint="@string/confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_input"
+                android:ems="10"
+                android:fontFamily="@font/mulish_bold"
+                android:inputType="textPassword"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="14dp"
+                android:textSize="16sp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/phonenumber"
-        android:layout_width="296dp"
-        android:layout_height="52dp"
-        android:hint="@string/phone_number"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="@font/mulish_regular"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:layout_constraintTop_toBottomOf="@id/outlinedconfirmpassword"
-        app:layout_constraintStart_toStartOf="parent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phonenumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="12dp"
-            />
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/outlinedconfirmpassword">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:hint="@string/phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/custom_input"
+                android:drawableEnd="@drawable/rotate"
+                android:ems="10"
+                android:fontFamily="@font/mulish_bold"
+                android:inputType="textPersonName"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="14dp"
+                android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/signup"
-        android:layout_width="295dp"
-        android:layout_height="51dp"
-        android:text="@string/singup"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="60dp"
-        android:textColor="@color/white"
-        android:textAllCaps="false"
-        android:backgroundTint="@color/aturaja"
-        android:fontFamily="@font/mulish_black"
-        app:layout_constraintTop_toBottomOf="@id/phonenumber"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/already_have_account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/mulish_regular"
-        android:text="@string/already_have_account"
-        android:layout_marginStart="95dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signup"
-        />
+        <Button
+            android:id="@+id/signup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="576dp"
+            android:layout_marginHorizontal="50dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/aturaja"
+            android:fontFamily="@font/mulish_black"
+            android:text="@string/singup"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/signin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/mulish_regular"
-        android:text="@string/signin"
-        android:onClick="signInCLick"
-        android:layout_marginStart="5dp"
-        android:textColor="@color/aturaja"
-        app:layout_constraintStart_toEndOf="@id/already_have_account"
-        app:layout_constraintTop_toBottomOf="@id/signup"
-        />
+        <TextView
+            android:id="@+id/already_have_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/mulish_regular"
+            android:layout_marginStart="54dp"
+            android:text="@string/already_have_account"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signup" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/signin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/mulish_regular"
+            android:onClick="signInCLick"
+            android:text="@string/signin"
+            android:layout_marginEnd="54dp"
+            android:textColor="@color/aturaja"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/already_have_account"
+            app:layout_constraintTop_toBottomOf="@id/signup" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</android.widget.LinearLayout>
