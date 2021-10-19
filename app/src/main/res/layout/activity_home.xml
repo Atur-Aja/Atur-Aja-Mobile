@@ -71,7 +71,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start"
-    android:background="#F8F9FB"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -100,11 +99,10 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.constraintlayout.motion.widget.MotionLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutDescription="@xml/motion_layout_scene">
+            android:layout_height="match_parent">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
@@ -216,10 +214,10 @@
                 android:backgroundTint="@color/white"
                 android:elevation="10dp"
                 app:fabCustomSize="23dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/ic_baseline_add_24"
-                app:tint="@color/aturaja" />
+                app:tint="@color/aturaja"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floating_add_task_button"
@@ -230,28 +228,29 @@
                 android:backgroundTint="@color/white"
                 android:elevation="10dp"
                 app:fabCustomSize="23dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:srcCompat="@drawable/ic_baseline_add_24"
-                app:tint="@color/aturaja" />
+                app:tint="@color/aturaja"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_navigation"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                app:labelVisibilityMode="labeled"
                 android:padding="5dp"
+                app:itemIconTint="@color/abuabu"
                 app:backgroundTint="@color/bottom_navigation"
                 app:itemIconSize="28dp"
-                app:itemIconTint="@color/abuabu"
-                app:itemRippleColor="@color/aturaja"
-                app:labelVisibilityMode="labeled"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:menu="@menu/bottom_navigation_menu"/>
+                app:itemRippleColor="@color/aturaja"
+                app:menu="@menu/bottom_navigation_menu" >
+            </com.google.android.material.bottomnavigation.BottomNavigationView>
 
-        </androidx.constraintlayout.motion.widget.MotionLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -260,25 +259,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/header_nav"
-        app:menu="@menu/menu_nav">
-
-        <Button
-            android:id="@+id/button_logout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="576dp"
-            android:background="@drawable/rounded_button"
-            android:fontFamily="@font/mulish_black"
-            android:onClick="signOutOnClick"
-            android:text="Sign Out"
-            android:textAllCaps="false"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.48"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </com.google.android.material.navigation.NavigationView>
+        app:menu="@menu/menu_nav"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
