@@ -65,7 +65,9 @@ class AddScheduleActivity : AppCompatActivity() {
         }
 
         buttonExit.setOnClickListener {
-            startActivity(Intent(applicationContext, CalendarActivity::class.java))
+            val myIntent = Intent(applicationContext, HomeActivity::class.java)
+
+            startActivity(myIntent)
         }
 
         buttonTo.setOnClickListener {

@@ -18,4 +18,10 @@
         android:fontFamily="@font/mulish_regular"
         android:icon="@drawable/icon_tim"
         android:title="@string/tim" />
+    <item android:id="@+id/logout"
+        android:fontFamily="@font/mulish_regular"
+        android:icon="@drawable/ic_baseline_logout"
+        android:title="logout"
+        />
+
 </menu>
