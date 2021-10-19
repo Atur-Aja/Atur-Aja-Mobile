@@ -1,6 +1,6 @@
 # Atur-Aja-Mobile
 
-##Install database
+## Install database
 * Clone project https://github.com/Atur-Aja/AturAja-Backend.git, branch percobaan
 * install project dependancies
 ```
@@ -20,6 +20,6 @@ php artisan migrate
 ```
 php artisan serve --host 0.0.0.0
 ```
-##run android
+## run android
 * clone this project
 * run with emulator pixel 4 XL API 30
