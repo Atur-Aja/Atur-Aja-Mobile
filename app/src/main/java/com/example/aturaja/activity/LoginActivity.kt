@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.example.aturaja.MainActivity
 import com.example.aturaja.R
@@ -17,23 +18,60 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var btnLogin: Button
-    private lateinit var btnRegister: Button
     private lateinit var textUsername: TextInputLayout
     private lateinit var textPassword: TextInputLayout
+    private lateinit var textSignUp: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        btnLogin = findViewById(R.id.ButtonLogin)
-        btnRegister = findViewById(R.id.ButtonRegister)
-        textUsername = findViewById(R.id.outlinedTextLogin)
-        textPassword = findViewById(R.id.outlinedTextPassword)
+        textUsername = findViewById(R.id.editTextTextPersonName)
+        textPassword = findViewById(R.id.editTextPassword)
+        textSignUp = findViewById(R.id.signUpTV)
 
-        btnLogin.setOnClickListener {
-            var email = textUsername.editText?.text.toString()
-            var password = textPassword.editText?.text.toString()
+        textSignUp.setOnClickListener {
+            val myIntent = Intent(applicationContext, MainActivity::class.java)
+
+            startActivity(myIntent)
+        }
+//
+//        btnLogin.setOnClickListener {
+//            var email = textUsername.editText?.text.toString()
+//            var password = textPassword.editText?.text.toString()
+//
+//            RetrofitClient.instance.loginUser(email, password)
+//                .enqueue(object : Callback<LoginResponse> {
+//                    override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+//                        Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
+//                    }
+//
+//                    override fun onResponse(
+//                        call: Call<LoginResponse>,
+//                        response: Response<LoginResponse>
+//                    ) {
+//                        if(response.code().equals(200)) {
+//                            SessionManager.getInstance(applicationContext).saveToken(response.body()?.accessToken)
+//                            val intent = Intent(applicationContext, HomeActivity::class.java)
+//
+//                            startActivity(intent)
+//                        } else {
+//                            Toast.makeText(applicationContext, "email atau password salah", Toast.LENGTH_LONG).show()
+//                        }
+//                    }
+//
+//                })
+//        }
+//
+    }
+
+    fun forgotPasswordOnClick(view: android.view.View) {
+        startActivity(Intent(applicationContext, ForgotPassword::class.java))
+    }
+
+    fun signInOnClick(view: android.view.View) {
+        var email = textUsername.editText?.text.toString()
+        var password = textPassword.editText?.text.toString()
 
             RetrofitClient.instance.loginUser(email, password)
                 .enqueue(object : Callback<LoginResponse> {
@@ -56,13 +94,6 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                 })
-        }
-
-        btnRegister.setOnClickListener{
-            val myIntent = Intent(this@LoginActivity, MainActivity::class.java)
-
-            startActivity(myIntent)
-        }
     }
 
     override fun onStart() {

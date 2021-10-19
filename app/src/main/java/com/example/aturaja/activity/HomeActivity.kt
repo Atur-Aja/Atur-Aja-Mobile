@@ -1,26 +1,20 @@
 package com.example.aturaja.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aturaja.R
 import com.example.aturaja.adapter.Adapter
 import com.example.aturaja.data.DataSource
 import com.example.aturaja.session.SessionManager
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+
 
 //class HomeActivity : AppCompatActivity() {
 //    private lateinit var mToggle : ActionBarDrawerToggle
@@ -80,14 +74,6 @@ class HomeActivity : AppCompatActivity() {
 
         navigationView.setNavigationItemSelectedListener{item ->
             when(item.itemId) {
-                R.id.logout -> {
-                    val myIntent = Intent(applicationContext, LoginActivity::class.java)
-
-                    SessionManager.getInstance(applicationContext).clearToken()
-                    startActivity(myIntent)
-
-                    true
-                }
                 R.id.profil -> {
                     Toast.makeText(this, "buka profil", Toast.LENGTH_LONG).show()
 
@@ -112,6 +98,24 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
+        bottomNavigation.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.page_2 -> {
+                    startActivity(Intent (applicationContext, CalendarActivity::class.java))
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.page_3 -> {
+                    Toast.makeText(this, "buka schedule", Toast.LENGTH_LONG).show()
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.page_5 -> {
+                    Toast.makeText(this, "buka task", Toast.LENGTH_LONG).show()
+                    return@OnNavigationItemSelectedListener true
+                }
+            }
+            false
+        })
+
         fabAddSchedule.setOnClickListener {
             val myIntent = Intent(applicationContext, AddScheduleActivity::class.java)
             startActivity(myIntent)
@@ -122,40 +126,10 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-//    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-//        when(item.itemId) {
-//            R.id.logout -> {
-//                val myIntent = Intent(applicationContext, LoginActivity::class.java)
-//
-//                SessionManager.getInstance(applicationContext).clearToken()
-//                startActivity(myIntent)
-//            }
-//            R.id.profil -> {
-//                Toast.makeText(this, "buka profil", Toast.LENGTH_LONG).show()
-//            }
-//            R.id.setelan -> {
-//                Toast.makeText(this, "buka setting", Toast.LENGTH_LONG).show()
-//            }
-//            R.id.teman -> {
-//                Toast.makeText(this, "buka teman", Toast.LENGTH_LONG).show()
-//            }
-//            R.id.tim -> {
-//                Toast.makeText(this, "buka tim", Toast.LENGTH_LONG).show()
-//            }
-//        }
-//
-//        return true
-//    }
+    fun signOutOnClick(view: android.view.View) {
+        val myIntent = Intent(applicationContext, LoginActivity::class.java)
 
-
-//    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-//        when(item.itemId) {
-//            R.id.profil -> {
-//                var myIntent = Intent(applicationContext, LoginActivity::class.java)
-//                startActivity(myIntent)
-//            }
-//        }
-//
-//        return true
-//    }
+        SessionManager.getInstance(applicationContext).clearToken()
+        startActivity(myIntent)
+    }
 }
