@@ -2,13 +2,7 @@ package com.example.aturaja.model
 
 import com.google.gson.annotations.SerializedName
 
-data class RegisterResponse(
-
-	@field:SerializedName("code")
-	val code: Int,
-
-	@field:SerializedName("description")
-	val description: String,
+data class CreateScheduleResponse(
 
 	@field:SerializedName("message")
 	val message: String

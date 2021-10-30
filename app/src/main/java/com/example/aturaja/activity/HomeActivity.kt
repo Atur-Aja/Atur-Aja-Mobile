@@ -2,6 +2,7 @@ package com.example.aturaja.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -9,11 +10,17 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aturaja.R
 import com.example.aturaja.adapter.Adapter
+import com.example.aturaja.adapter.ScheduleAdapter
 import com.example.aturaja.data.DataSource
+import com.example.aturaja.model.GetScheduleResponse
+import com.example.aturaja.network.APIClient
 import com.example.aturaja.session.SessionManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
@@ -96,14 +103,13 @@ class HomeActivity : AppCompatActivity() {
         }
 
         fabAddTask.setOnClickListener {
-            Toast.makeText(this, "ke hal addNewTask", Toast.LENGTH_LONG).show()
         }
     }
 
     fun signOutOnClick(view: android.view.View) {
         val myIntent = Intent(applicationContext, LoginActivity::class.java)
 
-        SessionManager.getInstance(applicationContext).clearToken()
+        SessionManager(this).clearTokenAndUsername()
         startActivity(myIntent)
     }
 }

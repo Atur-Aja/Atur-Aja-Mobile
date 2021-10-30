@@ -6,9 +6,28 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aturaja.R
+import com.example.aturaja.model.CreateScheduleResponse
+import com.example.aturaja.model.GetScheduleResponse
 import com.example.aturaja.model.Schedule
+import java.text.SimpleDateFormat
 
-class ScheduleAdapter (private val scheduleList : ArrayList<Schedule>) : RecyclerView.Adapter<ScheduleAdapter.ViewHolder>() {
+class ScheduleAdapter (private val scheduleList : ArrayList<GetScheduleResponse>) : RecyclerView.Adapter<ScheduleAdapter.ViewHolder>() {
+    private val timeFormatDB = SimpleDateFormat("HH:mm:ss")
+    private val timeFormatView = SimpleDateFormat("hh:mm a")
+
+    inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
+        var startHour : TextView = itemView.findViewById(R.id.tvStartHour)
+        var endHour : TextView = itemView.findViewById(R.id.tvEndHour)
+        var schedule : TextView = itemView.findViewById(R.id.tvSchedule)
+
+        fun bind(getResponse: GetScheduleResponse) {
+            with(itemView) {
+                schedule.setText(getResponse.title)
+                startHour.setText(timeFormatView.format(timeFormatDB.parse(getResponse.startTime)))
+                endHour.setText(timeFormatView.format(timeFormatDB.parse(getResponse.endTime)))
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
@@ -21,27 +40,10 @@ class ScheduleAdapter (private val scheduleList : ArrayList<Schedule>) : Recycle
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        val currentItem = scheduleList[position]
-
-        holder.schedule.text = currentItem.schedule
-        holder.endHour.text = currentItem.endHour.toString()
-        holder.startHour.text = currentItem.startHour.toString()
-
+        holder.bind(scheduleList[position])
     }
 
     override fun getItemCount(): Int {
-
         return scheduleList.size
-
     }
-
-    class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-
-        var startHour : TextView = itemView.findViewById(R.id.tvStartHour)
-        var endHour : TextView = itemView.findViewById(R.id.tvEndHour)
-        var schedule : TextView = itemView.findViewById(R.id.tvSchedule)
-
-    }
-
 }
