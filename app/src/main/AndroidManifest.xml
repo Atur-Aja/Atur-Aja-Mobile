@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AturAja"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.CalendarActivity"></activity>
+        <activity android:name=".activity.EditDeleteSchedule"></activity>
+        <activity android:name=".activity.CalendarActivity" />
         <activity android:name=".activity.ForgotPassword" />
         <activity android:name=".activity.LoginActivity">
             <intent-filter>

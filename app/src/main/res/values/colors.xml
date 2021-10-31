@@ -9,5 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="aturaja">#10C2D3</color>
     <color name="abuabu">#C4C4C4</color>
+    <color name="red">#ED1F1F</color>
     <color name="bottom_navigation">#056676</color>
 </resources>

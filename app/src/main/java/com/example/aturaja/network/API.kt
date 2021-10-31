@@ -1,9 +1,6 @@
 package com.example.aturaja.network
 
-import com.example.aturaja.model.CreateScheduleResponse
-import com.example.aturaja.model.GetScheduleResponse
-import com.example.aturaja.model.LoginResponse
-import com.example.aturaja.model.RegisterResponse
+import com.example.aturaja.model.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -39,4 +36,16 @@ interface API {
         @Field("end_date") endDate:String,
         @Field("end_time") endTime:String
     ):Call<CreateScheduleResponse>
+
+    @FormUrlEncoded
+    @POST("schedules/{id}")
+    fun updateSchedule(
+        @Path("id") id:String,
+        @Field("title") title:String,
+        @Field("start_date") startDate:String,
+        @Field("start_time") startTime:String,
+        @Field("end_date") endDate:String,
+        @Field("end_time") endTime:String,
+        @Field("_method") methode:String = "PUT"
+    ):Call<UpdateScheduleResponse>
 }

@@ -1,11 +1,13 @@
 package com.example.aturaja.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aturaja.R
+import com.example.aturaja.activity.EditDeleteSchedule
 import com.example.aturaja.model.CreateScheduleResponse
 import com.example.aturaja.model.GetScheduleResponse
 import com.example.aturaja.model.Schedule
@@ -25,6 +27,17 @@ class ScheduleAdapter (private val scheduleList : ArrayList<GetScheduleResponse>
                 schedule.setText(getResponse.title)
                 startHour.setText(timeFormatView.format(timeFormatDB.parse(getResponse.startTime)))
                 endHour.setText(timeFormatView.format(timeFormatDB.parse(getResponse.endTime)))
+                itemView.setOnClickListener{
+                    var intent = Intent(itemView.context, EditDeleteSchedule::class.java)
+                    intent.putExtra("id", getResponse.userId)
+                    intent.putExtra("title", getResponse.title)
+                    intent.putExtra("startDate", getResponse.startDate)
+                    intent.putExtra("startTime", timeFormatView.format(timeFormatDB.parse(getResponse.startTime)))
+                    intent.putExtra("endDate", getResponse.endDate)
+                    intent.putExtra("endTime", timeFormatView.format(timeFormatDB.parse(getResponse.endTime)))
+
+                    itemView.context.startActivity(intent)
+                }
             }
         }
     }
