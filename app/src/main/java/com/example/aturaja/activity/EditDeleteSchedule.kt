@@ -4,8 +4,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
+import android.view.View
 import android.widget.*
 import com.example.aturaja.R
+import com.example.aturaja.model.DeleteScheduleResponse
 import com.example.aturaja.model.UpdateScheduleResponse
 import com.example.aturaja.network.APIClient
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -31,12 +34,14 @@ class EditDeleteSchedule : AppCompatActivity() {
     lateinit var textTo: TextView
     lateinit var timeFrom: String
     lateinit var timeTo: String
+    lateinit var btnSave: Button
+    lateinit var btnDelete: Button
     val itemsRepeat = listOf("Daily", "Weekly", "Monthly", "Never")
     val itemsNotification = listOf("5 minute", "10 minute", "15 minute")
     lateinit var dateFrom: String
     lateinit var dateTo: String
     var dateView: String? = null
-    lateinit var id: String
+    var id: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,23 +66,31 @@ class EditDeleteSchedule : AppCompatActivity() {
             startActivity(Intent(applicationContext, CalendarActivity::class.java))
         }
 
+        btnSave.setOnClickListener {
+            updateSchedule()
+        }
+
         buttonTo.setOnClickListener {
             openDateTimePickerTo()
+        }
+
+        btnDelete.setOnClickListener {
+            deleteSchedule()
         }
     }
 
     private fun fetchData() {
         var data = intent.extras
-        var dateFrom: String
-        var dateTo: String
 
         if(data != null) {
-            id = data.getString("id").toString()
+            id = data.getInt("id")
             dateFrom = data.getString("startDate").toString()
             dateTo = data.getString("endDate").toString()
+            timeFrom = data.getString("startTime").toString()
+            timeTo = data.getString("endTime").toString()
             editTextTitle.setText(data.getString("title"))
-            textFrom.text = "${convertCalendar(dateFrom)} ${data.getString("startTime")}"
-            textTo.text = "${convertCalendar(dateTo)} ${data.getString("endTime")}"
+            textFrom.text = "${convertCalendar(dateFrom)} ${convertTime(timeFrom)}"
+            textTo.text = "${convertCalendar(dateTo)} ${convertTime(timeTo)}"
         }
     }
 
@@ -86,6 +99,13 @@ class EditDeleteSchedule : AppCompatActivity() {
         val dateFormatView = SimpleDateFormat("EEE, d MMM yyyy")
 
         return dateFormatView.format(dateFormatDB.parse(date))
+    }
+
+    private fun convertTime(time: String): String {
+        val timeFormatDB = SimpleDateFormat("HH:mm:ss")
+        val timeFormatView = SimpleDateFormat("hh:mm a")
+
+        return timeFormatView.format(timeFormatDB.parse(time))
     }
 
     private fun initComponent() {
@@ -100,6 +120,8 @@ class EditDeleteSchedule : AppCompatActivity() {
         textFrom = findViewById(R.id.edit_text_from)
         textTo = findViewById(R.id.edit_text_to)
         buttonExit = findViewById(R.id.button_exit)
+        btnSave = findViewById(R.id.save)
+        btnDelete = findViewById(R.id.delete)
     }
 
     fun openDateTimePickerFrom() {
@@ -172,7 +194,7 @@ class EditDeleteSchedule : AppCompatActivity() {
         }
     }
 
-    fun btnSaveClick() {
+    fun updateSchedule() {
         val apiClient = APIClient()
         var title = editTextTitle.text.toString()
 
@@ -190,11 +212,26 @@ class EditDeleteSchedule : AppCompatActivity() {
                 override fun onFailure(call: Call<UpdateScheduleResponse>, t: Throwable) {
                     TODO("Not yet implemented")
                 }
-
             })
     }
 
-    fun btnDeleteClick() {
+    fun deleteSchedule() {
+        val apiClient = APIClient()
 
+        apiClient.getApiService(this).deleteSchedule(id)
+            .enqueue(object: Callback<DeleteScheduleResponse>{
+                override fun onResponse(
+                    call: Call<DeleteScheduleResponse>,
+                    response: Response<DeleteScheduleResponse>
+                ) {
+                    if(response.code().equals(201)) {
+
+                    }
+                }
+
+                override fun onFailure(call: Call<DeleteScheduleResponse>, t: Throwable) {
+                    Log.d("error delete", "${t}")
+                }
+            })
     }
 }

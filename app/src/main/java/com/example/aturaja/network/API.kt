@@ -40,7 +40,7 @@ interface API {
     @FormUrlEncoded
     @POST("schedules/{id}")
     fun updateSchedule(
-        @Path("id") id:String,
+        @Path("id") id:Int,
         @Field("title") title:String,
         @Field("start_date") startDate:String,
         @Field("start_time") startTime:String,
@@ -48,4 +48,11 @@ interface API {
         @Field("end_time") endTime:String,
         @Field("_method") methode:String = "PUT"
     ):Call<UpdateScheduleResponse>
+
+    @FormUrlEncoded
+    @POST("schedules/{id}")
+    fun deleteSchedule(
+        @Path("id") id:Int,
+        @Field("_method") methode:String = "DELETE"
+    ):Call <DeleteScheduleResponse>
 }

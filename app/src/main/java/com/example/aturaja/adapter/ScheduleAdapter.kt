@@ -29,12 +29,12 @@ class ScheduleAdapter (private val scheduleList : ArrayList<GetScheduleResponse>
                 endHour.setText(timeFormatView.format(timeFormatDB.parse(getResponse.endTime)))
                 itemView.setOnClickListener{
                     var intent = Intent(itemView.context, EditDeleteSchedule::class.java)
-                    intent.putExtra("id", getResponse.userId)
+                    intent.putExtra("id", getResponse.id)
                     intent.putExtra("title", getResponse.title)
                     intent.putExtra("startDate", getResponse.startDate)
-                    intent.putExtra("startTime", timeFormatView.format(timeFormatDB.parse(getResponse.startTime)))
+                    intent.putExtra("startTime", getResponse.startTime)
                     intent.putExtra("endDate", getResponse.endDate)
-                    intent.putExtra("endTime", timeFormatView.format(timeFormatDB.parse(getResponse.endTime)))
+                    intent.putExtra("endTime", getResponse.endTime)
 
                     itemView.context.startActivity(intent)
                 }
