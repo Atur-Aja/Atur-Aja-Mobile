@@ -10,9 +10,9 @@ class CalendarActivity : AppCompatActivity() {
 
     private lateinit var newRecyclerView: RecyclerView
     private lateinit var newArrayList: ArrayList<Schedule>
-    lateinit var schedule : Array<String>
-    lateinit var startHour : Array<String>
-    lateinit var endHour : Array<String>
+    private lateinit var schedule : Array<String>
+    private lateinit var startHour : Array<String>
+    private lateinit var endHour : Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +49,7 @@ class CalendarActivity : AppCompatActivity() {
         newRecyclerView.layoutManager = LinearLayoutManager(this)
         newRecyclerView.setHasFixedSize(true)
 
-        newArrayList = arrayListOf<Schedule>()
+        newArrayList = arrayListOf()
         getUserData()
 
     }
@@ -67,7 +67,7 @@ class CalendarActivity : AppCompatActivity() {
 
     }
 
-    fun backOnClick(view: android.view.View) {
+    fun backOnClick() {
         finish()
     }
 
