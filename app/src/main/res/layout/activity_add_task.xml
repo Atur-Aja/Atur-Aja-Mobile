@@ -80,7 +80,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/tvDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="12dp"
@@ -89,6 +89,7 @@
                     android:text="Today"
                     android:textColor="@color/white"
                     android:textSize="12sp"
+                    android:onClick="editDateOnClick"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -110,12 +111,13 @@
             app:layout_constraintTop_toBottomOf="@+id/editTextTask" />
 
         <ImageButton
-            android:id="@+id/imageButton7"
+            android:id="@+id/editTime"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:backgroundTint="@android:color/transparent"
+            android:onClick="editTimeOnClick"
             app:layout_constraintStart_toEndOf="@+id/tvTime"
             app:layout_constraintTop_toBottomOf="@+id/editTextTask"
             app:srcCompat="@drawable/edit_button" />
@@ -220,7 +222,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintRecycler2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_marginHorizontal="24dp"
             android:background="#F8F9FB"
             app:layout_constraintEnd_toEndOf="parent"
@@ -232,7 +234,6 @@
                 android:id="@+id/membersRecyclerView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="@+id/constraintRecycler2"
                 app:layout_constraintStart_toStartOf="@+id/constraintRecycler2"
                 app:layout_constraintTop_toTopOf="@+id/constraintRecycler2" />
 
@@ -242,8 +243,8 @@
             android:id="@+id/abMembers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:background="@android:color/transparent"
-            android:layout_marginLeft="24dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintRecycler2"
             app:srcCompat="@drawable/ab_big" />
@@ -252,16 +253,29 @@
             android:id="@+id/tvAddMembers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/mulish_semi_bold"
             android:text="Add member"
             android:textColor="#DCDCDC"
-            android:fontFamily="@font/mulish_semi_bold"
             android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/abMembers"
             app:layout_constraintTop_toBottomOf="@+id/constraintRecycler2" />
 
-
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_button"
+            android:fontFamily="@font/mulish_black"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/abMembers" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
