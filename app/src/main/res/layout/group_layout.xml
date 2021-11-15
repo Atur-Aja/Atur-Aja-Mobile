@@ -1,0 +1,107 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/CardViewList"
+    android:layout_width="287dp"
+    android:layout_height="62dp"
+    android:layout_marginVertical="4dp"
+    android:layout_marginHorizontal="1dp"
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardCornerRadius="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/textViewTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp"
+            android:text="Nama Task"
+            android:fontFamily="@font/mulish_semi_bold"
+            android:textColor="#141414"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/taskCheckBox"
+            android:layout_width="30dp"
+            android:layout_height="27dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.0" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="35dp"
+            app:cardBackgroundColor="#4CD5C3"
+            app:cardCornerRadius="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/textViewDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tanggal Task"
+                    android:fontFamily="@font/mulish_bold"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/textViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="35dp"
+            android:text="00:00"
+            android:fontFamily="@font/mulish_regular"
+            android:textColor="#141414"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/cardView2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="38dp"
+            app:layout_constraintStart_toEndOf="@+id/textViewTime"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/group" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
