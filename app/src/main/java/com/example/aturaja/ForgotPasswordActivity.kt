@@ -16,7 +16,6 @@ class ForgotPasswordActivity : AppCompatActivity() {
     }
 
     fun backOnClick(view: android.view.View) {
-        val intent = Intent(this, SignInActivity::class.java)
-        startActivity(intent)
+        finish()
     }
 }
