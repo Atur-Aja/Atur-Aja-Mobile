@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="24dp">
+    android:paddingVertical="4dp">
 
     <CheckBox
         android:id="@+id/cbStatus"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:scaleX="1.5"
-        android:scaleY="1.5"
+        android:scaleX="1.4"
+        android:scaleY="1.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/deleteTodoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
