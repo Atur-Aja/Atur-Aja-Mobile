@@ -7,7 +7,6 @@ import android.os.Bundle
 
 class SignInActivity : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
@@ -25,7 +24,7 @@ class SignInActivity : AppCompatActivity() {
     }
 
     fun signInOnClick(view: android.view.View) {
-        val intent = Intent(this, CalendarActivity::class.java)
+        val intent = Intent(this, TaskActivity::class.java)
         startActivity(intent)
     }
 
