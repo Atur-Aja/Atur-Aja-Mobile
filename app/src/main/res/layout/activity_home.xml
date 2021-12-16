@@ -96,28 +96,27 @@
             app:titleTextColor="@color/black"
         style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
         android:background="@android:color/transparent"
-        android:elevation="0dp" />
+        android:elevation="0dp"
+            />
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.constraintlayout.motion.widget.MotionLayout
-            android:id="@+id/constraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutDescription="@xml/motion_layout_scene">
+        <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
                 android:layout_width="105dp"
                 android:layout_height="105dp"
-                android:layout_marginTop="212.5dp"
-                android:layout_marginEnd="57dp"
                 app:cardBackgroundColor="@color/aturaja"
                 app:cardCornerRadius="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintEnd_toEndOf="@id/guideline_right_cardview"
+                app:layout_constraintTop_toTopOf="@id/guideline_top">
 
                 <TextView
+                    android:id="@+id/taskSize"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
@@ -128,9 +127,10 @@
                     android:textSize="38dp" />
 
                 <TextView
+                    android:id="@+id/taskText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="80dp"
+                    android:layout_marginTop="70dp"
                     android:fontFamily="@font/mulish_regular"
                     android:text="Task"
                     android:textAlignment="center"
@@ -143,27 +143,26 @@
                 android:id="@+id/cardView2"
                 android:layout_width="105dp"
                 android:layout_height="105dp"
-                android:layout_marginStart="57dp"
-                android:layout_marginTop="212.5dp"
                 app:cardBackgroundColor="@color/aturaja"
                 app:cardCornerRadius="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintStart_toStartOf="@id/guideline_left_cardview"
+                app:layout_constraintTop_toTopOf="@id/guideline_top">
 
                 <TextView
+                    android:id="@+id/scheduelSize"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/mulish_bold"
-                    android:text="6"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="38dp" />
 
                 <TextView
+                    android:id="@+id/scheduleText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="80dp"
+                    android:layout_marginTop="70dp"
                     android:fontFamily="@font/mulish_regular"
                     android:text="Schedule"
                     android:textAlignment="center"
@@ -175,49 +174,46 @@
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginStart="31dp"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/mulish_bold"
                 android:text="schedule"
                 android:textSize="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="@id/guideline_left_textview"
+                app:layout_constraintTop_toBottomOf="@id/floating_add_schedule_button" />
 
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginEnd="31dp"
+                android:layout_height="wrap_content"
                 android:clickable="true"
                 android:fontFamily="@font/mulish_bold"
                 android:text="View All"
                 android:textColor="@color/aturaja"
                 android:textSize="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="@id/guideline_right_textview"
+                app:layout_constraintTop_toBottomOf="@id/floating_add_task_button" />
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
                 android:scrollbars="vertical"
-                app:layoutManager="GridLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView3"
                 app:spanCount="1" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floating_add_schedule_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="86dp"
-                android:layout_marginBottom="425dp"
+                android:layout_marginTop="78dp"
                 android:backgroundTint="@color/white"
                 android:elevation="10dp"
                 app:fabCustomSize="23dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView2"
+                app:layout_constraintEnd_toEndOf="@+id/cardView2"
+                app:layout_constraintStart_toStartOf="@+id/cardView2"
+                app:layout_constraintTop_toBottomOf="@+id/cardView2"
                 app:srcCompat="@drawable/ic_baseline_add_24"
                 app:tint="@color/aturaja" />
 
@@ -225,13 +221,13 @@
                 android:id="@+id/floating_add_task_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="83dp"
-                android:layout_marginBottom="425dp"
                 android:backgroundTint="@color/white"
                 android:elevation="10dp"
                 app:fabCustomSize="23dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView"
+                app:layout_constraintEnd_toEndOf="@+id/cardView"
+                app:layout_constraintStart_toStartOf="@+id/cardView"
+                app:layout_constraintTop_toBottomOf="@+id/cardView"
                 app:srcCompat="@drawable/ic_baseline_add_24"
                 app:tint="@color/aturaja" />
 
@@ -249,9 +245,46 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:menu="@menu/bottom_navigation_menu"/>
+                app:menu="@menu/bottom_navigation_menu" />
 
-        </androidx.constraintlayout.motion.widget.MotionLayout>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.24" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_right_cardview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.86" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_left_cardview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.14" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_right_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintGuide_percent="0.92" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_left_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.08" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView

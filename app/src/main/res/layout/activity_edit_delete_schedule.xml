@@ -15,67 +15,62 @@
         android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_exit_schedule"/>
+        app:srcCompat="@drawable/icon_exit_schedule" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit Schedule"
-        android:fontFamily="@font/mulish_bold"
-        android:textColor="@color/black"
-        android:textSize="21dp"
-        android:layout_marginStart="62dp"
         android:layout_marginTop="26dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/button_exit"/>
+        android:fontFamily="@font/mulish_bold"
+        android:text="Edit Schedule"
+        android:textColor="@color/black"
+        android:textSize="21sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:layout_marginStart="53dp"
-        android:textSize="14dp"
         android:fontFamily="@font/mulish_regular"
-        android:textColor="@color/abuabu"
         android:text="Title"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:textColor="@color/abuabu"
+        android:textSize="14dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left_edit_delete_schedule"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/edit_text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="53dp"
         android:background="@color/white"
-        android:textColor="@color/black"
         android:hint="Title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_text_view"
-        />
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left_edit_delete_schedule"
+        app:layout_constraintTop_toBottomOf="@id/title_text_view" />
 
     <ImageView
         android:id="@+id/icon_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="8dp"
-        android:layout_marginStart="55dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginTop="15dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/icon_description_addschedule"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_title"/>
+        android:elevation="8dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left_edit_delete_schedule"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_title"
+        app:srcCompat="@drawable/icon_description_addschedule" />
 
     <TextView
         android:id="@+id/descriptiton_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Description"
         android:fontFamily="@font/mulish_regular"
+        android:text="Description"
         android:textColor="@color/abuabu"
-        android:layout_marginTop="22dp"
         android:textSize="14dp"
         app:layout_constraintStart_toEndOf="@id/icon_description"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_title"/>
+        app:layout_constraintTop_toTopOf="@+id/icon_description" />
 
     <EditText
         android:id="@+id/edit_text_description"
@@ -84,28 +79,26 @@
         android:background="@color/white"
         android:hint="Description"
         app:layout_constraintStart_toEndOf="@id/icon_description"
-        app:layout_constraintTop_toBottomOf="@id/descriptiton_title"/>
+        app:layout_constraintTop_toBottomOf="@id/descriptiton_title" />
 
     <ImageView
         android:id="@+id/icon_people"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginTop="15dp"
-        android:layout_marginStart="55dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left_edit_delete_schedule"
         app:layout_constraintTop_toBottomOf="@id/icon_description"
-        app:srcCompat="@drawable/icon_people_addschedule"/>
+        app:srcCompat="@drawable/icon_people_addschedule" />
 
     <TextView
         android:id="@+id/title_people"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/mulish_regular"
-        android:textColor="@color/abuabu"
         android:text="People"
-        android:layout_marginTop="25dp"
+        android:textColor="@color/abuabu"
         app:layout_constraintStart_toEndOf="@id/icon_people"
-        app:layout_constraintTop_toBottomOf="@id/icon_description"/>
+        app:layout_constraintTop_toTopOf="@+id/icon_people" />
 
     <EditText
         android:id="@+id/edit_text_people"
@@ -113,251 +106,311 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:hint="Search"
-        app:layout_constraintTop_toBottomOf="@id/title_people"
-        app:layout_constraintStart_toEndOf="@id/icon_people"/>
+        app:layout_constraintStart_toEndOf="@id/icon_people"
+        app:layout_constraintTop_toBottomOf="@id/title_people" />
 
     <ImageView
         android:id="@+id/icon_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="255dp"
-        android:layout_marginEnd="48.5dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_baseline_search_24"/>
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right_edit_delete_schedule"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_people"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text_people"
+        app:srcCompat="@drawable/ic_baseline_search_24" />
 
     <ImageView
         android:id="@+id/icon_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginTop="15dp"
-        android:layout_marginStart="55dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left_edit_delete_schedule"
         app:layout_constraintTop_toBottomOf="@id/icon_people"
-        app:srcCompat="@drawable/icon_location_xml"/>
+        app:srcCompat="@drawable/icon_location_xml" />
 
     <TextView
         android:id="@+id/title_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:fontFamily="@font/mulish_regular"
-        android:textColor="@color/abuabu"
         android:text="Location"
+        android:textColor="@color/abuabu"
         app:layout_constraintStart_toEndOf="@id/icon_location"
-        app:layout_constraintTop_toBottomOf="@id/icon_people"/>
+        app:layout_constraintTop_toBottomOf="@id/icon_people" />
 
     <EditText
         android:id="@+id/edit_text_location"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
+        android:background="@color/white"
         android:hint="Google Meet"
-        app:layout_constraintTop_toBottomOf="@id/title_location"
-        app:layout_constraintStart_toEndOf="@id/icon_location"/>
+        app:layout_constraintStart_toEndOf="@id/icon_location"
+        app:layout_constraintTop_toBottomOf="@id/title_location" />
 
     <ImageView
         android:id="@+id/icon_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="48.5dp"
-        android:layout_marginTop="340dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_edit"
-        />
+        app:layout_constraintBottom_toBottomOf="@+id/edit_text_location"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right_edit_delete_schedule"
+        app:layout_constraintTop_toTopOf="@+id/edit_text_location"
+        app:srcCompat="@drawable/ic_baseline_edit" />
 
     <ImageView
         android:id="@+id/icon_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginStart="55dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left_edit_delete_schedule"
         app:layout_constraintTop_toBottomOf="@id/icon_location"
-        app:srcCompat="@drawable/icon_time_xml"/>
+        app:srcCompat="@drawable/icon_time_xml" />
 
     <TextView
         android:id="@+id/title_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Time"
         android:layout_marginTop="15dp"
         android:fontFamily="@font/mulish_regular"
+        android:text="Time"
         android:textColor="@color/abuabu"
         app:layout_constraintStart_toEndOf="@id/icon_time"
-        app:layout_constraintTop_toBottomOf="@id/icon_location"/>
+        app:layout_constraintTop_toBottomOf="@id/icon_location" />
 
     <TextView
-        android:id="@+id/title_from"
+        android:id="@+id/title_date_edit_delete_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="From :"
         android:fontFamily="@font/mulish_regular"
+        android:text="Date :"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@id/icon_time"
-        app:layout_constraintTop_toBottomOf="@id/title_time"/>
+        app:layout_constraintTop_toBottomOf="@id/title_time" />
 
     <TextView
-        android:id="@+id/edit_text_from"
+        android:id="@+id/edit_text_date_edit_delete_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:layout_marginEnd="140dp"
-        app:layout_constraintTop_toBottomOf="@id/title_time"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="@+id/title_date_edit_delete_schedule"
+        app:layout_constraintEnd_toStartOf="@+id/button_date_edit_delete_schedule"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintStart_toEndOf="@+id/title_date_edit_delete_schedule"
+        app:layout_constraintTop_toTopOf="@+id/title_date_edit_delete_schedule"
+        />
 
     <TextView
-        android:id="@+id/title_to"
+        android:id="@+id/title_from_edi_delete_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="To      :"
         android:layout_marginTop="15dp"
         android:fontFamily="@font/mulish_regular"
+        android:text="From : "
         android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/icon_time"
         app:layout_constraintStart_toEndOf="@id/icon_time"
-        app:layout_constraintTop_toBottomOf="@id/title_from"/>
+        app:layout_constraintTop_toBottomOf="@id/title_date_edit_delete_schedule" />
 
     <TextView
-        android:id="@+id/edit_text_to"
+        android:id="@+id/edit_text_time_from_edit_delete_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="140dp"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_from"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="@+id/title_from_edi_delete_schedule"
+        app:layout_constraintTop_toTopOf="@+id/title_from_edi_delete_schedule"
+        app:layout_constraintEnd_toStartOf="@+id/button_from_time_edit_delete_schedule"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toEndOf="@+id/title_from_edi_delete_schedule" />
 
     <ImageButton
-        android:id="@+id/button_from"
+        android:id="@+id/button_from_time_edit_delete_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginStart="60dp"
         android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/title_time"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/icon_time_from_xml"/>
+        app:layout_constraintBottom_toBottomOf="@+id/title_from_edi_delete_schedule"
+        app:layout_constraintStart_toEndOf="@+id/title_from_edi_delete_schedule"
+        app:layout_constraintTop_toTopOf="@+id/title_from_edi_delete_schedule"
+        app:srcCompat="@drawable/icon_time_from_xml" />
 
     <ImageButton
-        android:id="@+id/button_to"
+        android:id="@+id/button_date_edit_delete_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        android:layout_marginTop="6dp"
         android:background="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/button_from"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/icon_time_from_xml"/>
+        app:layout_constraintBottom_toBottomOf="@+id/title_date_edit_delete_schedule"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right_edit_delete_schedule"
+        app:layout_constraintTop_toTopOf="@id/title_date_edit_delete_schedule"
+        app:srcCompat="@drawable/icon_time_from_xml" />
+
+    <TextView
+        android:id="@+id/title_to_edit_delete_schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:fontFamily="@font/mulish_regular"
+        android:text="To : "
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/title_from_edi_delete_schedule"
+        app:layout_constraintEnd_toStartOf="@+id/button_to_edit_delete_schedule"
+        app:layout_constraintTop_toTopOf="@+id/title_from_edi_delete_schedule" />
+
+    <ImageButton
+        android:id="@+id/button_to_edit_delete_schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/title_from_edi_delete_schedule"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right_edit_delete_schedule"
+        app:layout_constraintTop_toTopOf="@+id/title_from_edi_delete_schedule"
+        app:srcCompat="@drawable/icon_time_from_xml" />
 
     <ImageView
         android:id="@+id/icon_repeat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="55dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left_edit_delete_schedule"
         app:layout_constraintTop_toBottomOf="@id/icon_time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/icon_repeat_xml"/>
+        app:srcCompat="@drawable/icon_repeat_xml" />
 
     <TextView
         android:id="@+id/title_repeat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="Repeat"
         android:fontFamily="@font/mulish_regular"
+        android:text="Repeat"
         android:textColor="@color/abuabu"
-        app:layout_constraintTop_toBottomOf="@id/icon_time"
-        app:layout_constraintStart_toEndOf="@id/icon_repeat"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_repeat"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="248dp"
-        android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/icon_repeat"
-        app:layout_constraintTop_toBottomOf="@id/title_repeat">
+        app:layout_constraintTop_toTopOf="@+id/icon_repeat" />
 
-        <AutoCompleteTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            android:background="@null"
-            />
+    <!--        <com.google.android.material.textfield.TextInputLayout-->
+    <!--            android:id="@+id/text_repeat"-->
+    <!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            app:layout_constraintEnd_toStartOf="@+id/guideline_right_add_schedule"-->
+    <!--            app:layout_constraintStart_toEndOf="@id/icon_repeat"-->
+    <!--            app:layout_constraintTop_toBottomOf="@id/title_repeat">-->
 
-    </com.google.android.material.textfield.TextInputLayout>
+    <!--            <AutoCompleteTextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:background="@null"-->
+    <!--                android:inputType="none" />-->
+
+    <!--        </com.google.android.material.textfield.TextInputLayout>-->
 
     <ImageView
         android:id="@+id/icon_notification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginStart="55dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left_edit_delete_schedule"
         app:layout_constraintTop_toBottomOf="@id/icon_repeat"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/icon_repeat_xml"/>
+        app:srcCompat="@drawable/icon_repeat_xml" />
 
     <TextView
         android:id="@+id/title_Notification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="Notification"
         android:fontFamily="@font/mulish_regular"
+        android:text="Notification"
         android:textColor="@color/abuabu"
-        app:layout_constraintTop_toBottomOf="@id/icon_repeat"
-        app:layout_constraintStart_toEndOf="@id/icon_notification"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/notification_repeat"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="248dp"
-        android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/white"
         app:layout_constraintStart_toEndOf="@id/icon_notification"
-        app:layout_constraintTop_toBottomOf="@id/title_Notification">
+        app:layout_constraintTop_toTopOf="@+id/icon_notification" />
 
-        <AutoCompleteTextView
-            android:textSize="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="16dp"
-            android:inputType="none"
-            android:background="@null"
-            />
+    <!--        <com.google.android.material.textfield.TextInputLayout-->
+    <!--            android:id="@+id/notification_repeat"-->
+    <!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"-->
+    <!--            android:layout_width="0dp"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            app:boxBackgroundColor="@color/white"-->
+    <!--            app:layout_constraintEnd_toStartOf="@+id/guideline_right_add_schedule"-->
+    <!--            app:layout_constraintStart_toEndOf="@id/icon_notification"-->
+    <!--            app:layout_constraintTop_toBottomOf="@id/title_Notification">-->
 
-    </com.google.android.material.textfield.TextInputLayout>
+    <!--            <AutoCompleteTextView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:background="@null"-->
+    <!--                android:inputType="none"-->
+    <!--                android:paddingVertical="16dp"-->
+    <!--                android:textSize="16dp" />-->
+
+    <!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+    <Spinner
+        android:id="@+id/repeat_repeat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/icon_repeat"
+        app:layout_constraintTop_toBottomOf="@+id/title_repeat" />
+
+    <Spinner
+        android:id="@+id/notification_repeat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/icon_notification"
+        app:layout_constraintTop_toBottomOf="@+id/title_Notification" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right_edit_delete_schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left_edit_delete_schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.07" />
 
     <Button
         android:id="@+id/save"
         android:layout_width="124dp"
         android:layout_height="53dp"
-        android:text="Save"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="70dp"
-        android:textColor="@color/white"
-        android:textSize="22dp"
         android:background="@drawable/rounded_button"
         android:backgroundTint="@color/aturaja"
         android:fontFamily="@font/mulish_bold"
-        app:layout_constraintTop_toBottomOf="@id/notification_repeat"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        android:text="Save"
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/delete"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icon_notification" />
 
     <Button
         android:id="@+id/delete"
-        android:layout_height="53dp"
         android:layout_width="124dp"
-        android:layout_marginTop="15dp"
-        android:text="Delete"
-        android:fontFamily="@font/mulish_bold"
-        android:textSize="20dp"
-        android:backgroundTint="@color/red"
+        android:layout_height="53dp"
         android:background="@drawable/rounded_button_red"
-        android:layout_marginStart="70dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notification_repeat"
-        />
+        android:fontFamily="@font/mulish_bold"
+        android:text="Delete"
+        android:textSize="20dp"
+        android:layout_marginTop="15dp"
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/save"
+        app:layout_constraintTop_toBottomOf="@+id/icon_notification" />
+
+    <TextView
+        android:id="@+id/edit_text_to_edit_delete_schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/title_to_edit_delete_schedule"
+        app:layout_constraintEnd_toStartOf="@+id/button_to_edit_delete_schedule"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintStart_toEndOf="@+id/title_to_edit_delete_schedule" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,12 @@
 package com.example.aturaja.data
 
+import android.content.Context
 import com.example.aturaja.R
+import com.example.aturaja.model.GetScheduleResponse
 import com.example.aturaja.model.ListSchedule
+import com.example.aturaja.network.APIClient
 
-class DataSource {
+class DataSource() {
     fun loadSchedule(): List<ListSchedule> {
         return listOf<ListSchedule>(
             ListSchedule(R.string.affirmation1),

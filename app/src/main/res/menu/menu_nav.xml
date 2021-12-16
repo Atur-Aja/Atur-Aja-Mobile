@@ -18,4 +18,9 @@
         android:fontFamily="@font/mulish_regular"
         android:icon="@drawable/icon_tim"
         android:title="@string/tim" />
+    <item android:id="@+id/mode_fokus"
+        android:fontFamily="@font/mulish_regular"
+        android:icon="@drawable/ic_baseline_center_focus_strong_24"
+        android:title="focus"
+        />
 </menu>

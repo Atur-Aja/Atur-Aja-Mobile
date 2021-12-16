@@ -2,6 +2,7 @@ package com.example.aturaja.session
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.example.aturaja.R
 
 //class SessionManager private constructor(private val mCtx: Context) {
@@ -53,6 +54,7 @@ class SessionManager (context: Context) {
     companion object {
         const val USER_TOKEN = "user_token"
         const val USER_NAME = "username"
+        const val SERVICE_STATUS = "servis_status"
     }
 
     fun isLoggedIn(): Boolean {
@@ -90,5 +92,29 @@ class SessionManager (context: Context) {
 
     fun fetchUsername(): String? {
         return prefs.getString(USER_NAME, null)
+    }
+
+    fun clearStatusService() {
+        val editor = prefs.edit()
+
+        editor.clear()
+        editor.apply()
+    }
+
+    /**
+     * Function to save auth token
+     */
+    fun saveStatusService(status: Boolean) {
+        val editor = prefs.edit()
+        editor.putBoolean(SERVICE_STATUS, status)
+        editor.apply()
+    }
+
+    /**
+     * Function to fetch auth token
+     */
+
+    fun fetchStatusService(): Boolean {
+        return prefs.getBoolean(SERVICE_STATUS, false)
     }
 }

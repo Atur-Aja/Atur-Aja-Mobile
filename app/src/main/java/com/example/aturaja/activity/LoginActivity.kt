@@ -23,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_login_2)
 
         textUsername = findViewById(R.id.editTextTextPersonName)
         textPassword = findViewById(R.id.editTextPassword)
@@ -41,9 +41,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun signInOnClick(view: android.view.View) {
-        var email = textUsername.editText?.text.toString()
-        var password = textPassword.editText?.text.toString()
-        var apiCLient = APIClient()
+        val email = textUsername.editText?.text.toString()
+        val password = textPassword.editText?.text.toString()
+        val apiCLient = APIClient()
 
         apiCLient.getApiService(this).loginUser(email, password)
             .enqueue(object: Callback<LoginResponse> {

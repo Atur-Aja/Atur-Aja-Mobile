@@ -23,4 +23,16 @@
     <string name="affirmation1">I am strong.</string>
     <string name="affirmation2">I believe in myself.</string>
     <string name="affirmation3">Each day is a new opportunity to grow.</string>
+
+    <string-array name="notification">
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+    </string-array>
+
+    <string-array name="repeat">
+        <item>weekly</item>
+        <item>monthly</item>
+        <item>never</item>
+    </string-array>
 </resources>

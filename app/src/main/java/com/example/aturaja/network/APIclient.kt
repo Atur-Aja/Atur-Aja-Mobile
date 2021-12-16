@@ -34,5 +34,4 @@ class APIClient {
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
     }
-
 }

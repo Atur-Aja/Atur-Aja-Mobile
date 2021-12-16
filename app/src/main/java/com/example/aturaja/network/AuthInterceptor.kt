@@ -12,6 +12,7 @@ class AuthInterceptor(context: Context) : Interceptor {
         val requestBuilder = chain.request().newBuilder()
 
         // If token has been saved, add it to the request
+        requestBuilder.addHeader("Accept", "application/json")
         sessionManager.fetchAuthToken()?.let {
             requestBuilder.addHeader("Authorization", "Bearer $it")
         }

@@ -18,35 +18,43 @@ interface API {
     @FormUrlEncoded
     @POST("auth/login")
     fun loginUser(
-        @Field("email") email:String,
+        @Field("login") email:String,
         @Field("password") password:String
     ):Call<LoginResponse>
 
-    @GET("user/{username}/schedules")
-    fun getSchedules(
-        @Path("username") username: String
-    ):Call<ArrayList<GetScheduleResponse>>
+    @GET("user/schedules")
+    fun getSchedules():Call<GetAllScheduleResponse>
+
+    @GET("user/tasks")
+    fun getTask():Call<GetTaskResponse>
 
     @FormUrlEncoded
     @POST("schedules")
     fun createSchedules(
         @Field("title") title:String,
-        @Field("start_date") startDate:String,
+        @Field("description") description:String ?= null,
+        @Field("location") location:String ?= null,
+        @Field("date") date:String,
         @Field("start_time") startTime:String,
-        @Field("end_date") endDate:String,
-        @Field("end_time") endTime:String
+        @Field("end_time") endTime:String,
+        @Field("notification") notification:String ?= null,
+        @Field("repeat") repeat:String ?= null,
+        @Field("friends[]") friends:ArrayList<Int> ?= null
     ):Call<CreateScheduleResponse>
 
     @FormUrlEncoded
-    @POST("schedules/{id}")
+    @PUT("schedules/{id}")
     fun updateSchedule(
         @Path("id") id:Int,
         @Field("title") title:String,
-        @Field("start_date") startDate:String,
+        @Field("description") description:String ?= null,
+        @Field("location") location:String ?= null,
+        @Field("date") date:String,
         @Field("start_time") startTime:String,
-        @Field("end_date") endDate:String,
         @Field("end_time") endTime:String,
-        @Field("_method") methode:String = "PUT"
+        @Field("notification") notification:String ?= null,
+        @Field("repeat") repeat:String ?= null,
+        @Field("friends[]") friends:ArrayList<Int> ?= null
     ):Call<UpdateScheduleResponse>
 
     @FormUrlEncoded
@@ -55,4 +63,37 @@ interface API {
         @Path("id") id:Int,
         @Field("_method") methode:String = "DELETE"
     ):Call <DeleteScheduleResponse>
+
+    @FormUrlEncoded
+    @POST("tasks/")
+    fun createTask(
+        @Field("title") title:String,
+        @Field("date") date:String,
+        @Field("time") time:String,
+        @Field("todos[]") todos:ArrayList<String>
+    ):Call<AddTaskResponse>
+
+    @FormUrlEncoded
+    @PUT("tasks/{id}")
+    fun updateTask(
+        @Path("id") id:Int,
+        @Field("title") title:String,
+        @Field("date") date:String,
+        @Field("time") time:String
+    ):Call<UpdateTaskResponse>
+
+    @DELETE("tasks/{id}")
+    fun deleteTask(
+        @Path("id") id:Int,
+    ):Call <DeleteTaskResponse>
+
+    @FormUrlEncoded
+    @POST("todos")
+    fun createTodo(
+        @Field("task_id") id:Int,
+        @Field("todos") todos: List<String>
+    ):Call<AddTodoResponse>
+
+    @GET("user/friends")
+    fun getFriends():Call<List<GetFriendResponse>>
 }
