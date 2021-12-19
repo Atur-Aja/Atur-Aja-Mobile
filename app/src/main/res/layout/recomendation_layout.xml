@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tvTimeFrom_add_schedule"
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
+
+
+    <TextView
+        android:id="@+id/textViewFriendName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/mulish_semi_bold"
+        android:text="from : "
+        android:textColor="#141414"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_time_from_recom_add_schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewFriendName"
+        app:layout_constraintStart_toEndOf="@+id/textViewFriendName"
+        app:layout_constraintTop_toTopOf="@+id/textViewFriendName" />
+
+    <TextView
+        android:id="@+id/title_to_recom_add_schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="To : "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_time_from_recom_add_schedule"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_time_to_recom_add_schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/title_to_recom_add_schedule"
+        app:layout_constraintStart_toEndOf="@+id/title_to_recom_add_schedule"
+        app:layout_constraintTop_toTopOf="@+id/title_to_recom_add_schedule" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

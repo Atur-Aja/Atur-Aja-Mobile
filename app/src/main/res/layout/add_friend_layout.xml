@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="4dp">
+
+
+    <ImageView
+        android:id="@+id/imageViewFriends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/a" />
+
+    <TextView
+        android:id="@+id/textViewFriendName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:text="Nama Orang"
+        android:fontFamily="@font/mulish_semi_bold"
+        android:textColor="#141414"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/imageViewFriends"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewFriendEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="email@perusahaan.com"
+        android:fontFamily="@font/mulish_regular"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/imageViewFriends"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFriendName" />
+
+
+    <Button
+        android:id="@+id/buttonAccept"
+        android:layout_width="55dp"
+        android:layout_height="35dp"
+        android:backgroundTint="#50D890"
+        android:fontFamily="@font/mulish_semi_bold"
+        android:text="Add"
+        android:textAllCaps="false"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

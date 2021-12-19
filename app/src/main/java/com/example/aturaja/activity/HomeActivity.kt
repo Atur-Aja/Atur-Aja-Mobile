@@ -13,7 +13,8 @@ import com.example.aturaja.R
 import com.example.aturaja.adapter.Adapter
 import com.example.aturaja.data.DataSchedule
 import com.example.aturaja.data.DataSource
-import com.example.aturaja.model.GetAllScheduleResponse
+import com.example.aturaja.model.GetAllScheduleResponse2
+import com.example.aturaja.model.GetAllTaskResponse2
 import com.example.aturaja.model.GetScheduleResponse
 import com.example.aturaja.model.GetTaskResponse
 import com.example.aturaja.network.APIClient
@@ -70,7 +71,7 @@ class HomeActivity : AppCompatActivity() {
                 }
                 R.id.teman -> {
                     Toast.makeText(this, "buka teman", Toast.LENGTH_LONG).show()
-
+                    startActivity(Intent(this, FriendListActivity::class.java))
                     true
                 }
                 R.id.tim -> {
@@ -132,15 +133,15 @@ class HomeActivity : AppCompatActivity() {
         var apiClient = APIClient()
 
         apiClient.getApiService(this).getTask()
-            .enqueue(object: Callback<GetTaskResponse>{
+            .enqueue(object: Callback<GetAllTaskResponse2>{
                 override fun onResponse(
-                    call: Call<GetTaskResponse>,
-                    response: Response<GetTaskResponse>
+                    call: Call<GetAllTaskResponse2>,
+                    response: Response<GetAllTaskResponse2>
                 ) {
                     val response = response.body()
 
                     if (response != null) {
-                        if(response.tasks !== null) {
+                        if(response.tasks != null) {
                             textSizeTotal.text = response.tasks.size.toString()
                         } else {
                             textSizeTotal.text = "0"
@@ -148,7 +149,7 @@ class HomeActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<GetTaskResponse>, t: Throwable) {
+                override fun onFailure(call: Call<GetAllTaskResponse2>, t: Throwable) {
                     Log.d("error size schedule", "$t")
                 }
             })
@@ -158,10 +159,10 @@ class HomeActivity : AppCompatActivity() {
         var apiClient = APIClient()
 
         apiClient.getApiService(this).getSchedules()
-            .enqueue(object: Callback<GetAllScheduleResponse> {
+            .enqueue(object: Callback<GetAllScheduleResponse2> {
                 override fun onResponse(
-                    call: Call<GetAllScheduleResponse>,
-                    response: Response<GetAllScheduleResponse>
+                    call: Call<GetAllScheduleResponse2>,
+                    response: Response<GetAllScheduleResponse2>
                 ) {
                     val response = response.body()
 
@@ -174,7 +175,7 @@ class HomeActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<GetAllScheduleResponse>, t: Throwable) {
+                override fun onFailure(call: Call<GetAllScheduleResponse2>, t: Throwable) {
                     Log.d("error size task", "$t")
                 }
             })

@@ -23,10 +23,10 @@ interface API {
     ):Call<LoginResponse>
 
     @GET("user/schedules")
-    fun getSchedules():Call<GetAllScheduleResponse>
+    fun getSchedules():Call<GetAllScheduleResponse2>
 
     @GET("user/tasks")
-    fun getTask():Call<GetTaskResponse>
+    fun getTask():Call<GetAllTaskResponse2>
 
     @FormUrlEncoded
     @POST("schedules")
@@ -68,9 +68,12 @@ interface API {
     @POST("tasks/")
     fun createTask(
         @Field("title") title:String,
+        @Field("description") description:String ?= null,
         @Field("date") date:String,
         @Field("time") time:String,
-        @Field("todos[]") todos:ArrayList<String>
+        @Field("priority") priority: Int,
+        @Field("todos[]") todos:ArrayList<String> ?= null,
+        @Field("friends[]") friends:ArrayList<Int> ?= null
     ):Call<AddTaskResponse>
 
     @FormUrlEncoded
@@ -78,8 +81,12 @@ interface API {
     fun updateTask(
         @Path("id") id:Int,
         @Field("title") title:String,
+        @Field("description") description:String ?= null,
         @Field("date") date:String,
-        @Field("time") time:String
+        @Field("time") time:String,
+        @Field("priority") priority: Int,
+        @Field("todos[]") todos:ArrayList<String> ?= null,
+        @Field("friends[]") friends:ArrayList<Int> ?= null
     ):Call<UpdateTaskResponse>
 
     @DELETE("tasks/{id}")
@@ -96,4 +103,40 @@ interface API {
 
     @GET("user/friends")
     fun getFriends():Call<List<GetFriendResponse>>
+
+    @FormUrlEncoded
+    @POST("schedules/match")
+    fun getRecomendation(
+        @Field("date") date:String,
+        @Field("start_time") startTime: String,
+        @Field("end_time") endTime: String,
+        @Field("friends[]") friends: ArrayList<Int>
+    ):Call<RecomendationResponse>
+
+
+    @GET("user/friendsreq")
+    fun getFriendsRequest():Call<List<GetAllFriendRequestResponse>>
+
+    @FormUrlEncoded
+    @POST("friend/accept")
+    fun acceptRequest(
+        @Field("user_id") userId:String
+    ):Call<AcceptFriendResponse>
+
+    @FormUrlEncoded
+    @POST("friend/decline")
+    fun declineRequest(
+        @Field("user_id") userId:String
+    ):Call<IgnoreFriendResponse>
+
+    @GET("user/search")
+    fun getSearch(
+        @Query("username") username : String
+    ):Call<List<GetSearchResponseItem>>
+
+    @FormUrlEncoded
+    @POST("friend/invite")
+    fun addFriend(
+        @Field("user_id") user_id : String
+    ):Call<AddFriendResponse>
 }

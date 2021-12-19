@@ -35,4 +35,20 @@
         <item>monthly</item>
         <item>never</item>
     </string-array>
+
+    <string-array name="priority">
+        <item>none</item>
+        <item>low</item>
+        <item>medium</item>
+        <item>high</item>
+    </string-array>
+
+    <string-array name="priority_number">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
