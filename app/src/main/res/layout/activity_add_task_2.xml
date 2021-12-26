@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F9FB"
+    android:fillViewport="true"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/imageButton6"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="@+id/left_guide_add_task"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/cb_small" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/mulish_bold"
+            android:text="New Task"
+            android:textColor="#141414"
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/mulish_semi_bold"
+            android:text="Task :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/left_guide_add_task"
+            app:layout_constraintTop_toBottomOf="@+id/imageButton6" />
+
+        <EditText
+            android:id="@+id/editTextTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/mulish_bold"
+            android:hint="Add a title..."
+            android:inputType="textPersonName"
+            android:textColorHint="#DCDCDC"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/left_guide_add_task"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#4CD5C3"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTask">
+
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/mulish_bold"
+                android:onClick="editDateOnClick"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="2dp"
+                android:text="Today"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/mulish_regular"
+            android:text="6:00 PM"
+            android:textColor="#141414"
+            app:layout_constraintStart_toEndOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTask" />
+
+        <ImageButton
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@android:color/transparent"
+            android:onClick="editTimeOnClick"
+            app:layout_constraintStart_toEndOf="@+id/tvTime"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTask"
+            app:srcCompat="@drawable/edit_button" />
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/mulish_semi_bold"
+            android:text="Description :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/left_guide_add_task"
+            app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+        <EditText
+            android:id="@+id/editTextDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/mulish_semi_bold"
+            android:hint="Add a description..."
+            android:inputType="textPersonName"
+            android:textColorHint="#DCDCDC"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/tvDescription"
+            app:layout_constraintTop_toBottomOf="@+id/tvDescription" />
+
+        <TextView
+            android:id="@+id/tvTodo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/mulish_semi_bold"
+            android:text="Todo :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/left_guide_add_task"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_priority_add_task" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/toDoRecyclerView"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toStartOf="@+id/left_guide_add_task"
+            app:layout_constraintTop_toBottomOf="@+id/tvTodo" />
+
+        <ImageButton
+            android:id="@+id/abTodo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="@+id/left_guide_add_task"
+            app:layout_constraintTop_toBottomOf="@+id/toDoRecyclerView"
+            app:srcCompat="@drawable/ab_small" />
+
+
+        <EditText
+            android:id="@+id/editTextAddTodo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="3dp"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/mulish_semi_bold"
+            android:hint="Add task..."
+            android:inputType="textPersonName"
+            android:textColorHint="#DCDCDC"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/abTodo"
+            app:layout_constraintTop_toTopOf="@+id/abTodo" />
+
+        <TextView
+            android:id="@+id/tvMembers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/mulish_semi_bold"
+            android:text="Members :"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/left_guide_add_task"
+            app:layout_constraintTop_toBottomOf="@+id/abTodo" />
+
+        <ImageButton
+            android:id="@+id/abMembers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="@+id/left_guide_add_task"
+            app:layout_constraintTop_toBottomOf="@+id/membersRecyclerView_add_task"
+            app:srcCompat="@drawable/ab_big" />
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/rounded_button"
+            android:fontFamily="@font/mulish_black"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/abMembers" />
+
+        <Spinner
+            android:id="@+id/spinner_priority_add_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/left_guide_add_task"
+            app:layout_constraintTop_toBottomOf="@+id/title_priority_add_task" />
+
+        <TextView
+            android:id="@+id/title_priority_add_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Priority"
+            app:layout_constraintStart_toStartOf="@+id/left_guide_add_task"
+            app:layout_constraintTop_toBottomOf="@+id/editTextDescription" />
+
+        <AutoCompleteTextView
+            android:id="@+id/auto_complete_friends_add_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:hint="Friends"
+            app:layout_constraintBottom_toBottomOf="@+id/abMembers"
+            app:layout_constraintStart_toEndOf="@+id/abMembers"
+            app:layout_constraintTop_toTopOf="@+id/abMembers" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/left_guide_add_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.08" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/membersRecyclerView_add_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/left_guide_add_task"
+            app:layout_constraintTop_toBottomOf="@+id/tvMembers" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</ScrollView>

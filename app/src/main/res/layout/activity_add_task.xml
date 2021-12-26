@@ -111,7 +111,6 @@
             app:layout_constraintTop_toBottomOf="@+id/editTextTask" />
 
         <ImageButton
-            android:id="@+id/editTime"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="8dp"
@@ -222,7 +221,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintRecycler2"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="24dp"
             android:background="#F8F9FB"
             app:layout_constraintEnd_toEndOf="parent"
@@ -249,18 +248,6 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintRecycler2"
             app:srcCompat="@drawable/ab_big" />
 
-        <TextView
-            android:id="@+id/tvAddMembers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/mulish_semi_bold"
-            android:text="Add member"
-            android:textColor="#DCDCDC"
-            android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/abMembers"
-            app:layout_constraintTop_toBottomOf="@+id/constraintRecycler2" />
 
         <Button
             android:id="@+id/buttonSave"
@@ -294,6 +281,16 @@
             android:text="Priority"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextDescription" />
+
+        <AutoCompleteTextView
+            android:id="@+id/auto_complete_friends_add_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:hint="Friends"
+            app:layout_constraintBottom_toBottomOf="@+id/abMembers"
+            app:layout_constraintStart_toEndOf="@+id/abMembers"
+            app:layout_constraintTop_toTopOf="@+id/abMembers" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -86,7 +86,6 @@
                     android:orientation="vertical">
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/cardview1"
                             android:layout_width="29dp"
                             android:layout_height="4dp"
                             app:cardBackgroundColor="@color/abuabu"
@@ -94,7 +93,6 @@
                             />
 
                         <androidx.cardview.widget.CardView
-                            android:id="@+id/cardview2"
                             android:layout_width="29dp"
                             android:layout_height="4dp"
                             android:layout_marginTop="4.5dp"

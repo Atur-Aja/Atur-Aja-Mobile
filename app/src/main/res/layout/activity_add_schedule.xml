@@ -55,7 +55,7 @@
             android:layout_marginStart="53dp"
             android:background="@color/white"
             android:textColor="@color/black"
-            android:hint="Title"
+            android:hint="Add Title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title_text_view"
             />
@@ -86,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:hint="Description"
+            android:hint="Add Description"
             app:layout_constraintStart_toEndOf="@id/icon_description"
             app:layout_constraintTop_toBottomOf="@id/descriptiton_title"/>
 
@@ -113,19 +113,10 @@
             android:id="@+id/auto_complete_add_schedule"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:hint="friends"
+            android:hint="Add friends"
             android:backgroundTint="@android:color/transparent"
             app:layout_constraintStart_toEndOf="@+id/icon_people"
             app:layout_constraintTop_toBottomOf="@+id/title_people" />
-
-        <ImageView
-            android:id="@+id/icon_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/icon_people"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_right_add_schedule"
-            app:layout_constraintTop_toTopOf="@+id/icon_people"
-            app:srcCompat="@drawable/ic_baseline_search_24" />
 
         <ImageView
             android:id="@+id/icon_location"
@@ -154,14 +145,6 @@
             android:hint="Google Meet"
             app:layout_constraintTop_toBottomOf="@id/title_location"
             app:layout_constraintStart_toEndOf="@id/icon_location"/>
-
-        <ImageView
-            android:id="@+id/icon_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_right_add_schedule"
-            app:layout_constraintTop_toBottomOf="@+id/title_location"
-            app:srcCompat="@drawable/ic_baseline_edit" />
 
         <ImageView
             android:id="@+id/icon_time"
@@ -297,7 +280,7 @@
             android:layout_marginTop="15dp"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@id/icon_repeat"
-            app:srcCompat="@drawable/icon_repeat_xml" />
+            app:srcCompat="@drawable/icon_notification" />
 
         <TextView
             android:id="@+id/title_Notification"
@@ -381,7 +364,7 @@
             android:layout_marginTop="17dp"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/icon_time"
-            app:srcCompat="@drawable/icon_repeat" />
+            app:srcCompat="@drawable/icon_recomendation" />
 
         <TextView
             android:id="@+id/title_recomendation_add_schedule"

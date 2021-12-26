@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="40dp">
+    android:layout_height="wrap_content">
 
 
     <ImageView
@@ -32,13 +32,12 @@
         android:id="@+id/textViewFriendEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
         android:fontFamily="@font/mulish_regular"
         android:text="email@perusahaan.com"
         android:textSize="12sp"
-        android:layout_marginLeft="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewFriendName"
-        app:layout_constraintStart_toEndOf="@+id/textViewFriendName"
-        app:layout_constraintTop_toTopOf="@+id/textViewFriendName" />
+        app:layout_constraintStart_toEndOf="@+id/imageViewFriends"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFriendName" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

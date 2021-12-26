@@ -12,7 +12,6 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView3"
             android:layout_width="182dp"
             android:layout_height="140dp"
             app:layout_constraintBottom_toTopOf="@+id/guidline_bottom_icon_login"
@@ -44,6 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
             app:layout_constraintEnd_toEndOf="@id/guideline_right_login"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:layout_constraintStart_toStartOf="@id/guideline_right_login"
             app:layout_constraintTop_toBottomOf="@+id/guideline_top_input_login">
 
@@ -68,6 +69,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="16dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="@id/guideline_right_login"
             app:layout_constraintStart_toStartOf="@id/guideline_right_login"
             app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
@@ -88,7 +91,6 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/forgotPasswordTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -163,7 +165,6 @@
             app:layout_constraintGuide_percent="0.38" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_bottom_input_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

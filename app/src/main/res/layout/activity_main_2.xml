@@ -27,13 +27,15 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="25dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="@id/guideline_left_add_schedule"
             app:layout_constraintStart_toStartOf="@id/guideline_left_add_schedule"
             app:layout_constraintTop_toBottomOf="@id/icon_aturaja">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="@drawable/custom_input"
                 android:drawableEnd="@drawable/ic_baseline_email_24"
                 android:ems="10"
@@ -53,13 +55,15 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="12dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="@id/guideline_left_add_schedule"
             app:layout_constraintStart_toStartOf="@id/guideline_left_add_schedule"
             app:layout_constraintTop_toBottomOf="@id/outlinedUsername">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="@drawable/custom_input"
                 android:drawableEnd="@drawable/ic_baseline_email_24"
                 android:ems="10"
@@ -79,13 +83,15 @@
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="12dp"
             app:endIconMode="password_toggle"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="@id/guideline_left_add_schedule"
             app:layout_constraintStart_toStartOf="@id/guideline_left_add_schedule"
             app:layout_constraintTop_toBottomOf="@id/outlinedemail">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="@drawable/custom_input"
                 android:ems="10"
                 android:fontFamily="@font/mulish_bold"
@@ -104,13 +110,15 @@
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="12dp"
             app:endIconMode="password_toggle"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
             app:layout_constraintEnd_toEndOf="@id/guideline_left_add_schedule"
             app:layout_constraintStart_toStartOf="@id/guideline_left_add_schedule"
             app:layout_constraintTop_toBottomOf="@id/outlinedpassword">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="@drawable/custom_input"
                 android:ems="10"
                 android:fontFamily="@font/mulish_bold"
@@ -122,37 +130,12 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/phonenumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="12dp"
-            app:layout_constraintEnd_toEndOf="@id/guideline_left_add_schedule"
-            app:layout_constraintStart_toStartOf="@id/guideline_left_add_schedule"
-            app:layout_constraintTop_toBottomOf="@id/outlinedconfirmpassword">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_input"
-                android:drawableEnd="@drawable/rotate"
-                android:ems="10"
-                android:fontFamily="@font/mulish_bold"
-                android:hint="@string/phone_number"
-                android:inputType="textPersonName"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="14dp"
-                android:textSize="16sp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
         <Button
             android:id="@+id/signup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/rounded_button"
             android:backgroundTint="@color/aturaja"
             android:fontFamily="@font/mulish_black"
@@ -163,7 +146,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline_left_add_schedule"
             app:layout_constraintStart_toStartOf="@+id/guideline_left_add_schedule"
-            app:layout_constraintTop_toBottomOf="@+id/phonenumber" />
+            app:layout_constraintTop_toBottomOf="@+id/outlinedconfirmpassword" />
 
         <TextView
             android:id="@+id/already_have_account"

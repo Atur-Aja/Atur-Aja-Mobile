@@ -20,7 +20,4 @@
     </style>
 
 
-    <style name="Theme.AturAja.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.AturAja.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

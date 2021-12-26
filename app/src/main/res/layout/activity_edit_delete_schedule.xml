@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:hint="Title"
+            android:hint="Add title"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="@+id/guideline_left_edit_delete_schedule"
             app:layout_constraintTop_toBottomOf="@id/title_text_view" />
@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:hint="Description"
+            android:hint="Add description"
             app:layout_constraintStart_toEndOf="@id/icon_description"
             app:layout_constraintTop_toBottomOf="@id/descriptiton_title" />
 
@@ -103,15 +103,6 @@
             android:textColor="@color/abuabu"
             app:layout_constraintStart_toEndOf="@id/icon_people"
             app:layout_constraintTop_toTopOf="@+id/icon_people" />
-
-        <ImageView
-            android:id="@+id/icon_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/auto_complete_friends_edit_schedule"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_right_edit_delete_schedule"
-            app:layout_constraintTop_toTopOf="@+id/auto_complete_friends_edit_schedule"
-            app:srcCompat="@drawable/ic_baseline_search_24" />
 
         <ImageView
             android:id="@+id/icon_location"
@@ -140,15 +131,6 @@
             android:hint="Google Meet"
             app:layout_constraintStart_toEndOf="@id/icon_location"
             app:layout_constraintTop_toBottomOf="@id/title_location" />
-
-        <ImageView
-            android:id="@+id/icon_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/edit_text_location"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_right_edit_delete_schedule"
-            app:layout_constraintTop_toTopOf="@+id/edit_text_location"
-            app:srcCompat="@drawable/ic_baseline_edit" />
 
         <ImageView
             android:id="@+id/icon_time"
@@ -300,7 +282,7 @@
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="@+id/guideline_left_edit_delete_schedule"
             app:layout_constraintTop_toBottomOf="@id/icon_repeat"
-            app:srcCompat="@drawable/icon_repeat_xml" />
+            app:srcCompat="@drawable/icon_notification" />
 
         <TextView
             android:id="@+id/title_Notification"
@@ -408,7 +390,7 @@
             android:id="@+id/auto_complete_friends_edit_schedule"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:hint="friends"
+            android:hint="Add friends"
             android:backgroundTint="@android:color/transparent"
             app:layout_constraintStart_toEndOf="@+id/icon_people"
             app:layout_constraintTop_toBottomOf="@+id/title_people" />
@@ -429,7 +411,7 @@
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="@+id/guideline_left_edit_delete_schedule"
             app:layout_constraintTop_toBottomOf="@+id/icon_time"
-            app:srcCompat="@drawable/icon_repeat" />
+            app:srcCompat="@drawable/icon_recomendation" />
 
         <TextView
             android:id="@+id/title_recomendaion_edit_schedule"
