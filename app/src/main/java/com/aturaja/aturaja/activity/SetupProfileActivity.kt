@@ -28,6 +28,7 @@ import com.aturaja.aturaja.session.SessionManager
 import android.graphics.BitmapFactory
 import android.view.View
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import okio.IOException
 import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
@@ -66,8 +67,8 @@ class SetupProfileActivity : AppCompatActivity() {
     private fun checkAndGetCamerapermissions() {
         val arrayPermssion = arrayOf(
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.CAMERA,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.MANAGE_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
         )
         if(ContextCompat.checkSelfPermission(this,
                 arrayPermssion[0]) == PackageManager.PERMISSION_GRANTED
@@ -127,7 +128,6 @@ class SetupProfileActivity : AppCompatActivity() {
 
     private fun openExternalStorage() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-
         startActivityForResult(intent, 250)
     }
 

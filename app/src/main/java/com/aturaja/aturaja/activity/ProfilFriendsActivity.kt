@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.ArrayMap
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -16,7 +17,10 @@ import com.aturaja.aturaja.model.FriendsRecyclerWaitingList
 import com.aturaja.aturaja.model.GetAllFriendRequestResponse
 import com.aturaja.aturaja.model.GetProfileResponse
 import com.aturaja.aturaja.network.APIClient
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -110,8 +114,14 @@ class ProfilFriendsActivity : AppCompatActivity() {
 
     fun deleteOnClick(view: View) {
         val apiClient = APIClient()
+        val jsonParams: MutableMap<String, Any> = ArrayMap()
 
-        apiClient.getApiService(this).deleteFriend(userId)
+        jsonParams["user_id"] = userId
+        val id = RequestBody.create(
+            "application/json; charset=utf-8".toMediaTypeOrNull(),
+            (JSONObject(jsonParams as Map<*, *>)).toString())
+
+        apiClient.getApiService(this).deleteFriend(id)
             .enqueue(object: Callback<DeleteFriendRespose> {
                 override fun onResponse(
                     call: Call<DeleteFriendRespose>,

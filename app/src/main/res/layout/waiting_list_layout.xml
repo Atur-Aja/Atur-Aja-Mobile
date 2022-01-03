@@ -55,15 +55,15 @@
         android:id="@+id/buttonIgnore"
         android:layout_width="67dp"
         android:layout_height="35dp"
-        android:layout_marginStart="24dp"
         android:backgroundTint="#D7D7D7"
         android:fontFamily="@font/mulish_semi_bold"
         android:text="Ignore"
         android:textAllCaps="false"
         android:textColor="#141414"
         android:textSize="10dp"
+        android:layout_marginLeft="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewFriendEmail"
+        app:layout_constraintStart_toEndOf="@+id/textViewFriendName"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button

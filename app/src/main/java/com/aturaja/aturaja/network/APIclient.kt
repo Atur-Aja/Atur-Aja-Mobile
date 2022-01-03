@@ -16,6 +16,7 @@ class APIClient {
     private lateinit var apiService: API
     private val BASE_URL = "http://192.168.1.66:8000/api/"
 //    https://api.aturaja.me/api/
+//    http://192.168.1.66:8000/api/
 
     var gson = GsonBuilder()
         .setLenient()

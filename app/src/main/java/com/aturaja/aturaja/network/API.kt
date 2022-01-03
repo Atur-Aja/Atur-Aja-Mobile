@@ -186,8 +186,8 @@ interface API {
     ):Call<ChangeEmailResponse>
 
 
-    @DELETE("friend/delete")
+    @HTTP(method = "DELETE", path = "friend/delete", hasBody = true)
     fun deleteFriend(
-        @Body userId: String
+        @Body params: RequestBody
     ):Call<DeleteFriendRespose>
 }
