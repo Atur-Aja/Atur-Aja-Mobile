@@ -5,6 +5,8 @@ import android.app.DatePickerDialog
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +20,8 @@ import com.aturaja.aturaja.adapter.TodoAdapter
 import com.aturaja.aturaja.model.*
 import com.aturaja.aturaja.network.APIClient
 import com.aturaja.aturaja.service.AlarmBroadcast
+import com.aturaja.aturaja.session.SessionManager
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,7 +47,7 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     private lateinit var memberRecyclerView: RecyclerView
     private lateinit var btnAddFriends: ImageButton
 
-    private val timeFormatDB = SimpleDateFormat("HH:mm:ss")
+    private val timeFormatDB = SimpleDateFormat("HH:mm")
     private val timeFormatView = SimpleDateFormat("hh:mm a")
     private val dateFormatView = SimpleDateFormat("dd MMMM yyyy")
     private val dateFormatDB = SimpleDateFormat("yyyy-MM-dd")
@@ -59,7 +63,8 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     private var savedDate = 0
     private var savedMonth = 0
     private var savedYear = 0
-    private var bool = true
+    private var userId = 0
+
 
     private var todos = ArrayList<String>()
     private var friends =  ArrayList<GetFriendResponse>()
@@ -67,6 +72,7 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     private var friendsChoose = ""
     private var dataFriends = ArrayList<GetFriendResponse>()
     private var friendsString = ArrayList<String>()
+    private var bitmapArray = ArrayList<Bitmap>()
 
     private lateinit var priorityList: Array<String>
     private lateinit var priorityListNumber: Array<String>
@@ -105,7 +111,6 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
             autoComplete.setText("")
 
             checkFriends()
-            showRecyclistFriends()
         }
 
         fetchData()
@@ -159,7 +164,11 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     private fun setFriends(member: List<MemberItem?>?) {
         if (member != null) {
             for(i in member) {
-                friendsDb.add(i?.id!!)
+                if(i?.username != SessionManager(this).fetchUsername()) {
+                    friendsDb.add(i?.id!!.toInt())
+                } else {
+                    userId = i?.id!!
+                }
             }
         }
     }
@@ -233,10 +242,34 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
             for (j in friendsDb) {
                 if(j == i.id.toInt()) {
                     friends.add(i)
+                    getImageUser(i.photo.toString())
                 }
             }
         }
-        showRecyclistFriends()
+    }
+
+    private fun getImageUser(imageName: String) {
+        val apiClient = APIClient()
+
+        apiClient.getApiService(this).getPhoto(imageName)
+            .enqueue(object: Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if(response.code() == 200) {
+                        bitmapArray.add(BitmapFactory.decodeStream(response.body()!!.byteStream()))
+                        Log.d(TAG, "bitmap : ${bitmapArray.size}")
+                        if(bitmapArray.size == friends.size) {
+                            showRecyclistFriends()
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.d(TAG, "Error : $t") }
+
+            })
     }
 
     private fun showRecyclistFriends() {
@@ -244,15 +277,16 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
             LinearLayoutManager.HORIZONTAL,false)
         memberRecyclerView.setHasFixedSize(true)
 
-        val adapter = FriendsAdapterTask(friends)
+        val adapter = FriendsAdapterTask(friends, bitmapArray)
         memberRecyclerView.adapter = adapter
 
         adapter.setOnButtonClickCallback(object: FriendsAdapterTask.OnButtonCLickCallback {
-            override fun onClickButton(data: GetFriendResponse) {
+            override fun onClickButton(data: GetFriendResponse, bitmap: Bitmap) {
                 Log.d(TAG, "id = ${data.id}")
                 friendsDb.remove(data.id.toInt())
                 friends.remove(data)
                 friendsString.remove(data.username)
+                bitmapArray.remove(bitmap)
                 Log.d(TAG, "friends : ${friendsDb} \n ${friends}")
                 showRecyclistFriends()
             }
@@ -268,6 +302,7 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
                 if (i.username == friendsChoose) {
                     friends.add(i)
                     friendsDb.add(i.id.toInt())
+                    getImageUser(i.photo.toString())
                 }
             }
         }
@@ -306,7 +341,7 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         priorityListNumber = resources.getStringArray(R.array.priority_number)
 
         val adapter = ArrayAdapter(this,
-            android.R.layout.simple_spinner_item, this.priorityList
+            android.R.layout.simple_spinner_dropdown_item, this.priorityList
         )
 
         spinner.adapter = adapter
@@ -372,6 +407,10 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         val intent = Intent(this, ListTaskActivity::class.java)
         val description = editTextDescrpition.text.toString()
         val priority = priorityListNumber[spinner.selectedItemPosition]
+
+        friendsDb.add(userId)
+
+        Log.d(TAG ,"todo saved : $todos")
 
         apiClient.getApiService(this).updateTask(id,
             title,

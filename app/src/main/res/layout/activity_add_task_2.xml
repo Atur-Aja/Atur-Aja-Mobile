@@ -234,10 +234,11 @@
 
         <AutoCompleteTextView
             android:id="@+id/auto_complete_friends_add_task"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
             android:hint="Friends"
+            android:backgroundTint="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="@+id/abMembers"
             app:layout_constraintStart_toEndOf="@+id/abMembers"
             app:layout_constraintTop_toTopOf="@+id/abMembers" />

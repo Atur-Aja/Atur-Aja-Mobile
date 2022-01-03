@@ -59,7 +59,6 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="20dp"
                         android:fontFamily="@font/mulish_bold"
-                        android:text="4"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="38dp" />

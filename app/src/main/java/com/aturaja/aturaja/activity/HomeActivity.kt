@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -37,6 +36,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var textSizeTotal: TextView
     private lateinit var viewAll: TextView
     private lateinit var recyclerView: RecyclerView
+
     private var arraySorting = ArrayList<SchedulesItem>()
     private var listSchedule = ArrayList<SchedulesItem>()
     private val dateFormatDb = SimpleDateFormat("yyyy-MM-dd", Locale.US)
@@ -52,11 +52,12 @@ class HomeActivity : AppCompatActivity() {
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
+
+        checkProfile()
         iniComponent()
         scheduleSize()
         taskSize()
 
-        val status  = SessionManager(this).fetchStatusService()
 
         toolbar.setNavigationOnClickListener {
             drawerLayout.open()
@@ -64,12 +65,20 @@ class HomeActivity : AppCompatActivity() {
 
         navigationView.setNavigationItemSelectedListener{item ->
             when(item.itemId) {
+                R.id.profil -> {
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                    true
+                }
                 R.id.teman -> {
                     startActivity(Intent(this, FriendListActivity::class.java))
                     true
                 }
                 R.id.mode_fokus -> {
-                    startActivity(Intent(applicationContext, FocusActivity::class.java))
+                    startActivity(Intent(this, FocusActivity::class.java))
+                    true
+                }
+                R.id.setelan -> {
+                    startActivity(Intent(this, SettingActivity::class.java))
                     true
                 }
                 else -> false
@@ -120,6 +129,30 @@ class HomeActivity : AppCompatActivity() {
         textScheduleTotal = findViewById(R.id.scheduelSize)
         textSizeTotal = findViewById(R.id.taskSize)
         viewAll = findViewById(R.id.textView4)
+    }
+
+    private fun checkProfile() {
+        val apiClient = APIClient()
+
+        apiClient.getApiService(this).getProfile(SessionManager(this).fetchUsername().toString())
+            .enqueue(object : Callback<GetProfileResponse> {
+                override fun onResponse(
+                    call: Call<GetProfileResponse>,
+                    response: Response<GetProfileResponse>
+                ) {
+                    if (response.code() == 200) {
+                        if(response.body()?.photo == null) {
+                            startActivity(Intent(this@HomeActivity, SetupProfileActivity::class.java))
+                        }
+
+                    }
+                }
+
+                override fun onFailure(call: Call<GetProfileResponse>, t: Throwable) {
+                    Log.d(TAG, "error $t")
+                }
+
+            })
     }
 
     fun showRecyclist(date: Date?) {

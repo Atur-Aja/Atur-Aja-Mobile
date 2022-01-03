@@ -1,5 +1,7 @@
 package com.aturaja.aturaja.adapter
 
+import android.content.Context
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
 import com.aturaja.aturaja.model.GetFriendResponse
 
-class FriendsAdapterSchedule(private val friendList: ArrayList<GetFriendResponse>) : RecyclerView.Adapter<FriendsAdapterSchedule.ViewHolder>() {
+class FriendsAdapterSchedule(
+    private val context: Context,
+    private val friendList: ArrayList<GetFriendResponse>,
+    private val bitmapArray: ArrayList<Bitmap>
+) : RecyclerView.Adapter<FriendsAdapterSchedule.ViewHolder>() {
     private lateinit var onFriendsRecyclerClickCallback: OnFriendsRecyclerClickCallback
     private var TAG = "FriendsAdapter"
     interface OnFriendsRecyclerClickCallback {
-        fun onClickItem(data: GetFriendResponse)
+        fun onClickItem(data: GetFriendResponse, bitmap: Bitmap)
     }
 
     fun setOnFriendsRecyclerClickCallback(onFriendsRecyclerClickCallback: OnFriendsRecyclerClickCallback) {
@@ -38,11 +44,13 @@ class FriendsAdapterSchedule(private val friendList: ArrayList<GetFriendResponse
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = friendList[position]
+        val currentPhoto = bitmapArray[position]
 
-        holder.image.setImageResource(R.drawable.c)
+//        holder.image.setImageBitmap(getImageUser(currentItem.photo as String))
         holder.tvUsername.text = currentItem.username
+        holder.image.setImageBitmap(currentPhoto)
         holder.button.setOnClickListener{
-            onFriendsRecyclerClickCallback.onClickItem(friendList[holder.adapterPosition])
+            onFriendsRecyclerClickCallback.onClickItem(friendList[holder.adapterPosition], bitmapArray[holder.adapterPosition])
 //            Log.d(TAG, "${friendList[holder.adapterPosition]}")
         }
     }

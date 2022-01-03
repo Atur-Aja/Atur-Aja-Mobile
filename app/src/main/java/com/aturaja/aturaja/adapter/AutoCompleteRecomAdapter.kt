@@ -37,10 +37,12 @@ class AutoCompleteRecomAdapter(
 
         val tvTimeFrom = view.findViewById<TextView>(R.id.tv_time_from_recom_add_schedule)
         val tvTimeTo = view.findViewById<TextView>(R.id.tv_time_to_recom_add_schedule)
+        val date = view.findViewById<TextView>(R.id.tv_date_recom_schedule)
         val item = getItem(position)
 
         tvTimeFrom?.text = item?.startTime
         tvTimeTo?.text = item?.endTime
+        date?.text = item?.date
         view.setOnClickListener {
             item?.let { it1 -> onRecomClickCallback.onCLickRecom(item) }
         }

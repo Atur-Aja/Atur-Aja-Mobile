@@ -1,6 +1,9 @@
 package com.aturaja.aturaja.fragment
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,37 +13,29 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
+import com.aturaja.aturaja.activity.ProfilFriendsActivity
 import com.aturaja.aturaja.adapter.FriendsAdapter
 import com.aturaja.aturaja.databinding.FragmentFriendsBinding
 import com.aturaja.aturaja.model.Friends
+import com.aturaja.aturaja.model.FriendsRecycler
 import com.aturaja.aturaja.model.GetFriendResponse
 import com.aturaja.aturaja.network.APIClient
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [FriendsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FriendsFragment : Fragment(), Updateable {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var arrayList: ArrayList<Friends>
     private lateinit var friendName : Array<String>
     private lateinit var friendEmail : Array<String>
     private lateinit var friendImage : Array<Int>
+    private var arrayRecycler = ArrayList<FriendsRecycler>()
     private var _binding : FragmentFriendsBinding? = null
     private val binding get() = _binding!!
+    private var friends = ArrayList<GetFriendResponse>()
     private lateinit var konteks: Context
     private val TAG = "FriendsFragment"
-    private var newArrayList = ArrayList<GetFriendResponse>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,24 +51,6 @@ class FriendsFragment : Fragment(), Updateable {
         super.onViewCreated(view, savedInstanceState)
 
         recyclerView = binding.friendRecyclerView
-
-        friendName = arrayOf(
-            "Jack Sparrow",
-            "Jack Sparrow",
-            "Jack Sparrow"
-
-        )
-
-        friendEmail = arrayOf(
-            "pirates@gmail.com",
-            "pirates@gmail.com",
-            "pirates@gmail.com"
-
-        )
-
-        friendImage = arrayOf(
-            R.drawable.a
-        )
 
         getData()
         refresh()
@@ -96,7 +73,12 @@ class FriendsFragment : Fragment(), Updateable {
                 ) {
                     if(response.code() == 200) {
                         _binding!!.swiperefresh.isRefreshing = false
-                        showRecyclist(response.body())
+                        response.body()?.let {
+                            friends.clear()
+                            arrayRecycler.clear()
+                            friends.addAll(it)
+                            getDataRecycler()
+                        }
                     }
                 }
 
@@ -108,10 +90,55 @@ class FriendsFragment : Fragment(), Updateable {
             })
     }
 
-    private fun showRecyclist(body: List<GetFriendResponse>?) {
+    private fun getDataRecycler() {
+        for (i in friends) {
+            getImageUser(i)
+        }
+    }
+
+    private fun getImageUser(data: GetFriendResponse) {
+        val apiClient = APIClient()
+        var bitmap: Bitmap
+
+        apiClient.getApiService(konteks).getPhoto(data.photo.toString())
+            .enqueue(object: Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if(response.code() == 200) {
+                        bitmap = BitmapFactory.decodeStream(response.body()!!.byteStream())
+                        val model = FriendsRecycler(data, bitmap)
+
+                        arrayRecycler.add(model)
+                        if(arrayRecycler.size == friends.size) {
+                            showRecyclist()
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.d(TAG, "Error : $t")
+                }
+            })
+    }
+
+    private fun showRecyclist() {
+        val adapter = FriendsAdapter(arrayRecycler)
+
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.setHasFixedSize(true)
-        recyclerView.adapter = FriendsAdapter(body as ArrayList<GetFriendResponse>)
+        recyclerView.adapter = adapter
+
+        adapter.setOnFriendsFragmentClickCallback(object: FriendsAdapter.OnFriendsFragmentClickCallback {
+            override fun onClickItem(data: FriendsRecycler) {
+                val intent = Intent(konteks, ProfilFriendsActivity::class.java)
+                intent.putExtra("username", data.friends.username)
+
+                startActivity(intent)
+            }
+
+        })
     }
 
     override fun onAttach(context: Context) {

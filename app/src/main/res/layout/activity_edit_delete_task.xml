@@ -552,9 +552,10 @@
 
         <AutoCompleteTextView
             android:id="@+id/auto_complete_friends_edit_task"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
+            android:backgroundTint="@android:color/transparent"
             android:hint="Friends"
             app:layout_constraintBottom_toBottomOf="@+id/abMembers"
             app:layout_constraintStart_toEndOf="@+id/abMembers"

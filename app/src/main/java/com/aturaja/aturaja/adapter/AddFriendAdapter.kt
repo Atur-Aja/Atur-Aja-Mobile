@@ -1,5 +1,6 @@
 package com.aturaja.aturaja.adapter
 
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
-import com.aturaja.aturaja.model.GetSearchResponseItem
+import com.aturaja.aturaja.model.FriendsRecyclerAddFriend
 
-class AddFriendAdapter(private val addFriendList: ArrayList<GetSearchResponseItem>) : RecyclerView.Adapter<AddFriendAdapter.ViewHolder>() {
+class AddFriendAdapter(
+    private val addFriendList: ArrayList<FriendsRecyclerAddFriend>
+) : RecyclerView.Adapter<AddFriendAdapter.ViewHolder>() {
 
     private lateinit var onAddClickCallback: OnAddClickCallBack
 
@@ -27,10 +30,12 @@ class AddFriendAdapter(private val addFriendList: ArrayList<GetSearchResponseIte
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = addFriendList[position]
 
-        holder.friendImage.setImageResource(R.drawable.c)
-        holder.friendName.text = currentItem.username
+        holder.friendImage.setImageBitmap(currentItem.bitmap)
+        holder.friendName.text = currentItem.data.username
         holder.buttonAccept.setOnClickListener{
             onAddClickCallback.onAddClicked(addFriendList[holder.adapterPosition])
+            holder.buttonAccept.isClickable = false
+            holder.buttonAccept.visibility = View.GONE
         }
     }
 
@@ -53,6 +58,6 @@ class AddFriendAdapter(private val addFriendList: ArrayList<GetSearchResponseIte
 
 
     interface OnAddClickCallBack {
-        fun onAddClicked (data : GetSearchResponseItem)
+        fun onAddClicked (data: FriendsRecyclerAddFriend)
     }
 }

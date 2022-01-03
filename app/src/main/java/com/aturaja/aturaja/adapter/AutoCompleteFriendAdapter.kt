@@ -2,15 +2,23 @@ package com.aturaja.aturaja.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Filter
+import android.widget.ImageView
 import android.widget.TextView
 import com.aturaja.aturaja.R
 import com.aturaja.aturaja.model.GetFriendResponse
-import java.util.*
+import com.aturaja.aturaja.network.APIClient
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import kotlin.collections.ArrayList
 
 
 //class AutoCompleteFriendAdapter(
@@ -137,9 +145,10 @@ import java.util.*
 class AutoCompleteFriendAdapter(
     context: Context,
     resource: Int,
-    objects: MutableList<GetFriendResponse>
+    objects: MutableList<GetFriendResponse>,
 ) : ArrayAdapter<GetFriendResponse>(context, resource, objects) {
     var TAG = "adapter"
+    var konteks = context
 
     private lateinit var onFriendsClickCallback: OnFriendsClickCallback
     private var friendList: ArrayList<GetFriendResponse> = ArrayList<GetFriendResponse>(objects)
@@ -164,10 +173,12 @@ class AutoCompleteFriendAdapter(
 
         val textViewName = view.findViewById<TextView>(R.id.textViewFriendName)
         val textViewEmali = view.findViewById<TextView>(R.id.textViewFriendEmail)
+        val imageView = view.findViewById<ImageView>(R.id.imageViewFriends)
         val item = getItem(position)
 
         textViewName?.text = item?.username
         textViewEmali?.text = item?.email
+//        imageView.setImageBitmap(getImageUser(item?.photo.toString()))
         view.setOnClickListener {
             item?.let { it1 -> onFriendsClickCallback.onClickFriends(it1) }
         }

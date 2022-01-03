@@ -12,7 +12,7 @@ data class GetProfileResponse(
 	val updatedAt: String? = null,
 
 	@field:SerializedName("photo")
-	val photo: File? = null,
+	val photo: String? = null,
 
 	@field:SerializedName("created_at")
 	val createdAt: String? = null,

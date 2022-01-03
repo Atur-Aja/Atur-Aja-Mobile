@@ -27,30 +27,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main_2)
 
         initComponent()
-//            override fun onClick(view: View): Unit {
-//                val username = textUsername.editText?.text.toString()
-//                val email = textEmail.editText?.text.toString()
-//                val password = textPassword.editText?.text.toString()
-//                val confirmPassword = textConfirmPassword.editText?.text.toString()
-//                val phoneNumber = textPhoneNumber.editText?.text.toString()
-
-//                RetrofitClient.instance.createUser(username, email, password, confirmPassword, phoneNumber)
-//                    .enqueue(object: Callback<RegisterResponse> {
-//                        override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-//                            Toast.makeText(applicationContext, t.message, Toast.LENGTH_LONG).show()
-//                        }
-//
-//                        override fun onResponse(
-//                            call: Call<RegisterResponse>,
-//                            response: Response<RegisterResponse>
-//                        ) {
-//                            if(response.code().equals(201)) {
-//                                Toast.makeText(applicationContext, "Register sukses", Toast.LENGTH_LONG).show()
-//                            } else {
-//                                Toast.makeText(applicationContext, "username sudah terpakai", Toast.LENGTH_LONG).show()
-//                            }
-//                        }
-//                    })
     }
 
     fun initComponent () {
@@ -68,27 +44,29 @@ class MainActivity : AppCompatActivity() {
         val confirmPassword = textConfirmPassword.editText?.text.toString()
         val apiClient = APIClient()
 
-        apiClient.getApiService(this).createUser(email, username, password, confirmPassword)
-            .enqueue(object: Callback<RegisterResponse> {
-                override fun onResponse(
-                    call: Call<RegisterResponse>,
-                    response: Response<RegisterResponse>
-                ) {
-                    if(response.code().equals(201)) {
-                        val intent = Intent(applicationContext, LoginActivity::class.java)
-                        Toast.makeText(applicationContext, "registrasi berhasil", Toast.LENGTH_LONG).show()
+        if(username.trim().isNotEmpty() && email.trim().isNotEmpty() && password.trim().isNotEmpty() && confirmPassword.trim().isNotEmpty()) {
+            apiClient.getApiService(this).createUser(email, username, password, confirmPassword)
+                .enqueue(object: Callback<RegisterResponse> {
+                    override fun onResponse(
+                        call: Call<RegisterResponse>,
+                        response: Response<RegisterResponse>
+                    ) {
+                        if(response.code() == 201) {
+                            val intent = Intent(applicationContext, LoginActivity::class.java)
+                            Toast.makeText(applicationContext, "registrasi success, please check your email", Toast.LENGTH_LONG).show()
 
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(applicationContext, "registrasi gagal", Toast.LENGTH_LONG).show()
+                            startActivity(intent)
+                        } else {
+                            Toast.makeText(applicationContext, "${response.body()?.message}", Toast.LENGTH_LONG).show()
+                        }
                     }
-                }
 
-                override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                    Log.d("error register", "$t")
-                }
+                    override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                        Log.d("error register", "$t")
+                    }
 
-            })
+                })
+        }
     }
 
     fun signInCLick(view: View) {

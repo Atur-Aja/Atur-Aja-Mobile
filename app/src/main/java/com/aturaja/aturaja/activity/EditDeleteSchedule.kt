@@ -6,6 +6,8 @@ import android.app.DatePickerDialog
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +21,8 @@ import com.aturaja.aturaja.adapter.FriendsAdapterSchedule
 import com.aturaja.aturaja.model.*
 import com.aturaja.aturaja.network.APIClient
 import com.aturaja.aturaja.service.AlarmBroadcast
+import com.aturaja.aturaja.session.SessionManager
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,41 +31,44 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class EditDeleteSchedule : AppCompatActivity() {
-    lateinit var editTextTitle: EditText
-    lateinit var editTextDescription: EditText
-    lateinit var editTextPeople: AutoCompleteTextView
+    private lateinit var editTextTitle: EditText
+    private lateinit var editTextDescription: EditText
+    private lateinit var editTextPeople: AutoCompleteTextView
     private lateinit var autoCompleteRecom: AutoCompleteTextView
-    lateinit var editTextLocation: EditText
-    lateinit var buttonDate: ImageButton
-    lateinit var buttonTo: ImageButton
+    private lateinit var editTextLocation: EditText
+    private lateinit var buttonDate: ImageButton
+    private lateinit var buttonTo: ImageButton
     private lateinit var buttonFrom: ImageButton
-    lateinit var buttonExit: ImageButton
-    lateinit var textFrom: TextView
-    lateinit var textTo: TextView
-    lateinit var timeFrom: String
-    lateinit var timeTo: String
-    lateinit var btnSave: Button
-    lateinit var btnDelete: Button
+    private lateinit var buttonExit: ImageButton
+    private lateinit var textFrom: TextView
+    private lateinit var textTo: TextView
+    private lateinit var timeFrom: String
+    private lateinit var timeTo: String
+    private lateinit var btnSave: Button
+    private lateinit var btnDelete: Button
     private lateinit var textDate: TextView
     private lateinit var spinnerNotification: Spinner
     private lateinit var spinnerRepeat: Spinner
     private lateinit var dateDb: String
-    private var friends = ArrayList<Int>()
+    private var userIdArray = ArrayList<Int>()
     private lateinit var notificationDb: String
     private lateinit var repeatDb: String
     private lateinit var friendsRecycler: RecyclerView
-    var id: Int? = 0
+    private var id: Int? = 0
     private var dataFriends = ArrayList<GetFriendResponse>()
     private lateinit var notificationList: Array<String>
     private lateinit var repeatList: Array<String>
     private var TAG = "edit_schedule"
     private var friendsChoose = ArrayList<GetFriendResponse>()
     private var friendsDb = ArrayList<Int>()
+    private var recomendation = ArrayList<RekomendasiItem>()
     private var timeFromRecom = ""
     private var timeToRecom = ""
     private lateinit var updatedAt: String
     private lateinit var oldTitle: String
     private var userId: Int ?= 0
+    private var bitmapArray = ArrayList<Bitmap>()
+    private var dateRecom = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,8 +119,8 @@ class EditDeleteSchedule : AppCompatActivity() {
             editTextDescription.setText(data.schedule?.description)
             editTextLocation.setText(data.schedule?.location)
             dateDb = data.schedule?.date.toString()
-            timeFrom = data.schedule?.startTime.toString()
-            timeTo = data.schedule?.endTime.toString()
+            timeFrom = convertTimeDb(data.schedule?.startTime.toString())
+            timeTo = convertTimeDb(data.schedule?.endTime.toString())
             notificationDb = data.schedule?.notification.toString()
             repeatDb = data.schedule?.repeat.toString()
             textDate.text = convertCalendar(dateDb)
@@ -124,8 +131,11 @@ class EditDeleteSchedule : AppCompatActivity() {
             userId = data.schedule?.pivot?.userId
             Log.d(TAG, "ini : ${data.member}")
             if(data.member != null) {
+                Log.d(TAG , " data intent : ${data.member}")
                 for (i in data.member) {
-                    friendsDb.add(i?.id!!.toInt())
+                    if(i?.username != SessionManager(this).fetchUsername()) {
+                        friendsDb.add(i?.id!!.toInt())
+                    }
                 }
             }
         }
@@ -156,12 +166,40 @@ class EditDeleteSchedule : AppCompatActivity() {
         } else {
             friendsDb.add(data.id.toInt())
             friendsChoose.add(data)
+            getImageUser(data.photo.toString())
         }
-        showRecyclist(friendsChoose)
     }
 
-    fun showRecyclist(friends: List<GetFriendResponse>) {
-        val friendAdapter = FriendsAdapterSchedule(friends as ArrayList<GetFriendResponse>)
+    private fun getImageUser(imageName: String) {
+        val apiClient = APIClient()
+
+        apiClient.getApiService(this).getPhoto(imageName)
+            .enqueue(object: Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if(response.code() == 200) {
+                        bitmapArray.add(BitmapFactory.decodeStream(response.body()!!.byteStream()))
+                        Log.d(TAG, "bitmap : ${bitmapArray.size}")
+                        if(bitmapArray.size == friendsChoose.size) {
+                            showRecyclist()
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.d(TAG, "Error : $t") }
+
+            })
+    }
+
+    fun showRecyclist() {
+        val friendAdapter = FriendsAdapterSchedule(
+            this,
+            friendsChoose,
+            bitmapArray
+        )
 
         friendsRecycler.setHasFixedSize(true)
         friendsRecycler.layoutManager = LinearLayoutManager(this)
@@ -169,10 +207,13 @@ class EditDeleteSchedule : AppCompatActivity() {
 
         friendAdapter.setOnFriendsRecyclerClickCallback(object :
             FriendsAdapterSchedule.OnFriendsRecyclerClickCallback {
-            override fun onClickItem(data: GetFriendResponse) {
+            override fun onClickItem(data: GetFriendResponse, bitmap: Bitmap) {
+                Log.d(TAG, "data send : ${data.id}")
                 friendsDb.remove(data.id.toInt())
+                Log.d(TAG, "friends DB : ${friendsDb}")
                 friendsChoose.remove(data)
-                showRecyclist(friendsChoose)
+                bitmapArray.remove(bitmap)
+                showRecyclist()
             }
 
         })
@@ -183,11 +224,11 @@ class EditDeleteSchedule : AppCompatActivity() {
         repeatList = resources.getStringArray(R.array.repeat)
 
         val adapter = ArrayAdapter(this,
-            android.R.layout.simple_spinner_item, this.notificationList
+            android.R.layout.simple_spinner_dropdown_item, this.notificationList
         )
 
         val adapterRepeat = ArrayAdapter(this,
-            android.R.layout.simple_spinner_item, this.repeatList
+            android.R.layout.simple_spinner_dropdown_item, this.repeatList
         )
 
         val postitionNotification = adapter.getPosition(notification)
@@ -199,6 +240,12 @@ class EditDeleteSchedule : AppCompatActivity() {
         spinnerRepeat.setSelection(positionRepeat)
     }
 
+    private fun convertTimeDb(date : String): String {
+        val timeFormatDB = SimpleDateFormat("HH:mm", Locale.US)
+
+        return timeFormatDB.format(timeFormatDB.parse(date))
+    }
+
     private fun convertCalendar(date: String): String {
         val dateFormatDB = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val dateFormatView = SimpleDateFormat("EEE, d MMM yyyy", Locale.US)
@@ -207,7 +254,7 @@ class EditDeleteSchedule : AppCompatActivity() {
     }
 
     private fun convertTime(time: String): String {
-        val timeFormatDB = SimpleDateFormat("HH:mm:ss", Locale.US)
+        val timeFormatDB = SimpleDateFormat("HH:mm", Locale.US)
         val timeFormatView = SimpleDateFormat("hh:mm a", Locale.US)
 
         return timeFormatView.format(timeFormatDB.parse(time))
@@ -272,19 +319,13 @@ class EditDeleteSchedule : AppCompatActivity() {
                         response.body()?.let {
                             dataFriends.addAll(it)
                         }
-                        for(j in dataFriends) {
-                            for(i in friendsDb) {
-                                if(j.id.toInt() == i) {
-                                    friendsChoose.add(j)
-                                }
-                            }
-                            Log.d(TAG, "$j")
-                            Log.d(TAG, "$friendsChoose")
-                        }
-                        showRecyclist(friendsChoose)
-//                        autocomplete.setAdapter(AutoCompleteFriendAdapter(this@AddScheduleActivity, R.layout.friends_layout, dataFriends))
+                        setFriendsDb()
                         response.body()?.let { setAutoCompleteFriends(it) }
-                        Log.d(TAG, "get friends : $dataFriends")
+                        Log.d(TAG, "get friends : $friendsChoose")
+
+                        for(i in friendsChoose) {
+                            getImageUser(i.photo.toString())
+                        }
                     }
                 }
 
@@ -295,53 +336,74 @@ class EditDeleteSchedule : AppCompatActivity() {
             })
     }
 
+    private fun setFriendsDb() {
+        for(j in dataFriends) {
+            for(i in friendsDb) {
+                if(j.id.toInt() == i) {
+                    friendsChoose.add(j)
+                }
+            }
+        }
+    }
+
     fun getRecomendation() {
-        val apiCLient = APIClient()
-        val dateFormatDB = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        dateDb = dateFormatDB.format(dateFormatDB.parse(dateDb))
-        val timeFormatDb = SimpleDateFormat("HH:mm", Locale.US)
+        if(dateDb.isEmpty() || timeFrom.isEmpty() || timeTo.isEmpty() || friendsDb.isNullOrEmpty()) {
+            Toast.makeText(this, "input date, time and friends", Toast.LENGTH_SHORT).show()
+        } else {
+            val apiCLient = APIClient()
+            val dateFormatDB = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            dateDb = dateFormatDB.format(dateFormatDB.parse(dateDb))
 
-        timeTo = timeFormatDb.format(timeFormatDb.parse(timeTo))
-        timeFrom = timeFormatDb.format(timeFormatDb.parse(timeFrom))
+            Log.d(TAG, "date : $dateDb")
+            Log.d(TAG, "timeFrom : $timeFrom")
+            Log.d(TAG, "timeTo : $timeTo")
+            Log.d(TAG, "friends: $friendsDb")
 
-        apiCLient.getApiService(this).getRecomendation(dateDb, timeFrom, timeTo, friendsDb)
-            .enqueue(object : Callback<RecomendationResponse> {
-                override fun onResponse(
-                    call: Call<RecomendationResponse>,
-                    response: Response<RecomendationResponse>
-                ) {
-                    if(response.code() == 200) {
-                        if(response.body()?.rekomendasi != null) {
-                            setAutoCompleteRecomendation(response.body()!!.rekomendasi)
+            userId?.let { friendsDb.add(it) }
+
+            apiCLient.getApiService(this).getRecomendation(dateDb, timeFrom, timeTo, friendsDb)
+                .enqueue(object : Callback<RecomendationResponse> {
+                    override fun onResponse(
+                        call: Call<RecomendationResponse>,
+                        response: Response<RecomendationResponse>
+                    ) {
+                        if(response.code() == 200) {
+                            response.body()?.let {
+                                setAutoCompleteRecomendation(it.rekomendasi)
+                            }
+//                            setAutoCompleteRecomendation(response.body()!!.rekomendasi)
                         }
                     }
-                }
 
-                override fun onFailure(call: Call<RecomendationResponse>, t: Throwable) {
-                    TODO("Not yet implemented")
-                }
+                    override fun onFailure(call: Call<RecomendationResponse>, t: Throwable) {
+                        TODO("Not yet implemented")
+                    }
 
-            })
+                })
+        }
     }
 
     private fun setAutoCompleteRecomendation(rekomendasi: List<RekomendasiItem>) {
-        val adapter = AutoCompleteRecomAdapter(
-            this, R.layout.recomendation_layout,
-            rekomendasi as MutableList<RekomendasiItem>
-        )
+        if(rekomendasi.isNotEmpty()) {
+            val adapter = AutoCompleteRecomAdapter(
+                this, R.layout.recomendation_layout,
+                rekomendasi as MutableList<RekomendasiItem>
+            )
 
-        autoCompleteRecom.setAdapter(adapter)
-        autoCompleteRecom.showDropDown()
+            autoCompleteRecom.setAdapter(adapter)
+           autoCompleteRecom.showDropDown()
 
-        adapter.setOnRecomClickCallback(object: AutoCompleteRecomAdapter.OnRecomCLickCallback {
-            @SuppressLint("SetTextI18n")
-            override fun onCLickRecom(data: RekomendasiItem) {
-                timeFromRecom = data.startTime
-                timeToRecom = data.endTime
-                autoCompleteRecom.setText("From : ${data.startTime} To : ${data.endTime}", false)
-            }
+            adapter.setOnRecomClickCallback(object: AutoCompleteRecomAdapter.OnRecomCLickCallback {
+                @SuppressLint("SetTextI18n")
+                override fun onCLickRecom(data: RekomendasiItem) {
+                    timeFromRecom = data.startTime
+                    timeToRecom = data.endTime
+                    dateRecom = data.date
+                    autoCompleteRecom.setText("Date : ${data.date}\n\nFrom : ${data.startTime} To : ${data.endTime}", false)
+                }
 
-        })
+            })
+        }
     }
 
     private fun openDatePicker() {
@@ -404,7 +466,7 @@ class EditDeleteSchedule : AppCompatActivity() {
         val location = editTextLocation.text.toString()
         val repeat = spinnerRepeat.selectedItem.toString()
         val notification = spinnerNotification.selectedItem.toString()
-        val myIntent = Intent(this, CalendarActivity::class.java)
+        val myIntent = Intent(this, ListScheduleActivity::class.java)
         val dateFormatDB = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val timeFormatDb = SimpleDateFormat("HH:mm", Locale.US)
         dateDb = dateFormatDB.format(dateFormatDB.parse(dateDb))
@@ -416,6 +478,7 @@ class EditDeleteSchedule : AppCompatActivity() {
             if(timeFromRecom.isNotEmpty() && timeToRecom.isNotEmpty()) {
                 timeFrom = timeFormatDb.format(timeFormatDb.parse(timeFromRecom))
                 timeTo = timeFormatDb.format(timeFormatDb.parse(timeToRecom))
+                dateDb = dateFormatDB.format(dateFormatDB.parse(dateRecom))
             }
         }
 
@@ -457,7 +520,7 @@ class EditDeleteSchedule : AppCompatActivity() {
 
     fun deleteSchedule() {
         val apiClient = APIClient()
-        var myIntent = Intent(this, CalendarActivity::class.java)
+        var myIntent = Intent(this, ListScheduleActivity::class.java)
 
         id?.let {
             apiClient.getApiService(this).deleteSchedule(it)

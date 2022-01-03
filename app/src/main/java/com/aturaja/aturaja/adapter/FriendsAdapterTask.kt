@@ -1,22 +1,23 @@
 package com.aturaja.aturaja.adapter
 
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
 import com.aturaja.aturaja.model.GetFriendResponse
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 
-class FriendsAdapterTask(private val friendList: ArrayList<GetFriendResponse>): RecyclerView.Adapter<FriendsAdapterTask.ViewHolder>() {
+class FriendsAdapterTask(
+    private val friendList: ArrayList<GetFriendResponse>,
+    private val bitmapArray: ArrayList<Bitmap>
+): RecyclerView.Adapter<FriendsAdapterTask.ViewHolder>() {
     private lateinit var onButtonClickCallback: OnButtonCLickCallback
 
     interface OnButtonCLickCallback {
-        fun onClickButton(data: GetFriendResponse)
+        fun onClickButton(data: GetFriendResponse, bitmap: Bitmap)
     }
 
     fun setOnButtonClickCallback(onButtonClickCallback: OnButtonCLickCallback) {
@@ -33,14 +34,12 @@ class FriendsAdapterTask(private val friendList: ArrayList<GetFriendResponse>): 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = friendList[position]
+        val currentBitmap = bitmapArray[position]
 
-        Glide.with(holder.itemView.context)
-            .load(R.drawable.a)
-            .apply(RequestOptions().override(55, 55))
-            .into(holder.friendImage)
+        holder.friendImage.setImageBitmap(currentBitmap)
 
         holder.button.setOnClickListener {
-            onButtonClickCallback.onClickButton(friendList[holder.adapterPosition])
+            onButtonClickCallback.onClickButton(friendList[holder.adapterPosition], bitmapArray[holder.adapterPosition])
         }
     }
 

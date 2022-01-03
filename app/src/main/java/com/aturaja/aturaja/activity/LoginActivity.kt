@@ -46,9 +46,6 @@ class LoginActivity : AppCompatActivity() {
         val apiCLient = APIClient()
         val intent = Intent(applicationContext, HomeActivity::class.java)
 
-        if(email == "iqbal" && password == "Iqbal1411") {
-            startActivity(intent)
-        } else {
             apiCLient.getApiService(this).loginUser(email, password)
                 .enqueue(object: Callback<LoginResponse> {
                     override fun onResponse(
@@ -66,11 +63,10 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                        Log.d("error lgoin", "$t")
+                        Log.d("error login", "$t")
                     }
 
                 })
-        }
     }
 
     override fun onStart() {

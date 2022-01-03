@@ -25,7 +25,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ListTaskActivity : AppCompatActivity() {
-    private lateinit var tvTodayDate : TextView
     private lateinit var recyclerViewTask: RecyclerView
     private lateinit var buttonAdd: ImageButton
     private lateinit var buttonExit: ImageButton
@@ -41,7 +40,6 @@ class ListTaskActivity : AppCompatActivity() {
         setContentView(R.layout.activity_task)
 
         InitComponent()
-        showDate(tvTodayDate)
 
         recyclerViewTask.layoutManager = LinearLayoutManager(this)
         recyclerViewTask.setHasFixedSize(true)
@@ -57,12 +55,10 @@ class ListTaskActivity : AppCompatActivity() {
     }
 
     private fun InitComponent() {
-        tvTodayDate = findViewById(R.id.tvTodayDate)
         recyclerViewTask = findViewById(R.id.taskRecyclerView)
         buttonAdd = findViewById(R.id.imageButton2)
         buttonExit = findViewById(R.id.imageButton)
     }
-
 
     fun getData() {
         val apiClient = APIClient()
@@ -77,7 +73,7 @@ class ListTaskActivity : AppCompatActivity() {
                         if(it.tasks != null) {
                             newArrayList.addAll(it.tasks)
                             loopAlarm(it.tasks)
-                           sortingTask()
+                            sortingTask()
                         }
                     }
                 }
@@ -125,15 +121,11 @@ class ListTaskActivity : AppCompatActivity() {
         )
         val alarmUp = pendingIntentChecker != null
 
-        if(bol) {
-            Log.d(TAG, "tidak buat alarm")
-        } else {
+        if(!bol) {
             if(timeTask != null) {
                 if(alarmUp) {
-                    Log.d(TAG, "ada")
+                    Log.d(TAG, "alarm up : $alarmUp")
                 } else {
-                    Log.d(TAG, "tidak ada")
-                    Log.d(TAG, "milis : ${timeTask.time}")
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         p.setExactAndAllowWhileIdle(
                             AlarmManager.RTC_WAKEUP,
@@ -163,17 +155,25 @@ class ListTaskActivity : AppCompatActivity() {
 
     private fun sortingTask() {
         arraySorting.clear()
-        for (i in newArrayList) {
-            if(i.task?.priority == "3") {
-                arraySorting.add(i)
-            } else if(i.task?.priority == "2") {
-                arraySorting.add(i)
-            } else if(i.task?.priority == "1") {
-                arraySorting.add(i)
-            }else {
-                arraySorting.add(i)
+
+        for(iter in 3 downTo 0) {
+            for(j in newArrayList) {
+                if(j.task?.priority == "$iter") {
+                    arraySorting.add(j)
+                }
             }
         }
+//        for (i in newArrayList) {
+//            if(i.task?.priority == "3") {
+//                arraySorting.add(i)
+//            } else if(i.task?.priority == "2") {
+//                arraySorting.add(i)
+//            } else if(i.task?.priority == "1") {
+//                arraySorting.add(i)
+//            }else {
+//                arraySorting.add(i)
+//            }
+//        }
         showRecyclist()
     }
 
@@ -189,12 +189,5 @@ class ListTaskActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
-    }
-
-    fun showDate (view: TextView){
-        val sdf = SimpleDateFormat("dd MMMM yyyy")
-        val currentDate = sdf.format(Date())
-
-        view.text = currentDate
     }
 }

@@ -1,20 +1,21 @@
 package com.aturaja.aturaja.activity
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
-import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
 import com.aturaja.aturaja.adapter.AddFriendAdapter
 import com.aturaja.aturaja.model.AddFriendResponse
-import com.aturaja.aturaja.model.GetFriendResponse
+import com.aturaja.aturaja.model.FriendsRecyclerAddFriend
 import com.aturaja.aturaja.model.GetSearchResponseItem
 import com.aturaja.aturaja.network.APIClient
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,25 +29,19 @@ import retrofit2.Response
 
 class AddFriendActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var arrayList: ArrayList<GetSearchResponseItem>
-    private lateinit var friendName : Array<String>
-    private lateinit var friendEmail : Array<String>
-    private lateinit var friendImage : Array<Int>
     private lateinit var etSearchUsername : EditText
-    private var dataFriens = ArrayList<GetFriendResponse>()
+
+    private var arrayList = ArrayList<GetSearchResponseItem>()
+    private var bitmapArray = ArrayList<Bitmap>()
+    private var arrayRecycler = ArrayList<FriendsRecyclerAddFriend>()
+
+    private val TAG = "addFriends"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_friend)
 
         etSearchUsername = findViewById(R.id.etSearchUsername)
-
-        etSearchUsername.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
-            if (event != null && event.keyCode === KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE) {
-                getSearchdata()
-            }
-            false
-        })
     }
 
     private fun getSearchdata() {
@@ -59,8 +54,12 @@ class AddFriendActivity : AppCompatActivity() {
                     response: Response<List<GetSearchResponseItem>>
                 ) {
                     Log.d("Success getting friends", "${response.body()?.size}")
-                    if(response.code().equals(200)){
-                        setRecyclerView(response.body() as ArrayList<GetSearchResponseItem>)
+                    if(response.code() == 200) {
+                        response.body()?.let {
+                            arrayList.clear()
+                            arrayList.addAll(it)
+                            getDataRecycler()
+                        }
                     }
                 }
 
@@ -78,53 +77,62 @@ class AddFriendActivity : AppCompatActivity() {
         getSearchdata()
     }
 
-    private fun getFriends() {
-        val apiCLient = APIClient()
+    private fun getDataRecycler() {
+        for (i in arrayList) {
+            getImageUser(i)
+            Log.d(TAG, "data array : $i")
+        }
+    }
 
-        apiCLient.getApiService(this).getFriends()
-            .enqueue(object: Callback<List<GetFriendResponse>> {
+    private fun getImageUser(data: GetSearchResponseItem) {
+        val apiClient = APIClient()
+        var bitmap: Bitmap
+
+        apiClient.getApiService(this).getPhoto(data.photo.toString())
+            .enqueue(object: Callback<ResponseBody> {
                 override fun onResponse(
-                    call: Call<List<GetFriendResponse>>,
-                    response: Response<List<GetFriendResponse>>
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
                 ) {
                     if(response.code() == 200) {
-                        response.body()?.let { dataFriens.addAll(it) }
+                        bitmap = BitmapFactory.decodeStream(response.body()!!.byteStream())
+                        val model = FriendsRecyclerAddFriend(data, bitmap)
+                        arrayRecycler.add(model)
+                        if(arrayRecycler.size == arrayList.size) {
+                            setRecyclerView()
+                        }
                     }
                 }
 
-                override fun onFailure(call: Call<List<GetFriendResponse>>, t: Throwable) {
-                    TODO("Not yet implemented")
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.d(TAG, "Error : $t")
                 }
-
             })
     }
 
-    fun setRecyclerView(arrayList: ArrayList<GetSearchResponseItem>) {
-        val addfriendAdapter = AddFriendAdapter(arrayList)
+    private fun setRecyclerView() {
+        val addFriendAdapter = AddFriendAdapter(arrayRecycler)
         val apiClient = APIClient()
 
         recyclerView = findViewById(R.id.addFriendRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
-        recyclerView.adapter = addfriendAdapter
+        recyclerView.adapter = addFriendAdapter
 
-        addfriendAdapter.setOnAddClickCallback(object : AddFriendAdapter.OnAddClickCallBack{
-            override fun onAddClicked(data: GetSearchResponseItem) {
-                apiClient.getApiService(this@AddFriendActivity).addFriend(data.id.toString())
+        addFriendAdapter.setOnAddClickCallback(object : AddFriendAdapter.OnAddClickCallBack{
+            override fun onAddClicked(data: FriendsRecyclerAddFriend) {
+                apiClient.getApiService(this@AddFriendActivity).addFriend(data.data.id.toString())
                     .enqueue(object : Callback<AddFriendResponse>{
                         override fun onResponse(
                             call: Call<AddFriendResponse>,
                             response: Response<AddFriendResponse>
                         ) {
-                            Log.d("Success adding friend", "${response.body()}")
-                            if(response.code().equals(200)){
-                                getSearchdata()
-                            }
+                            checkSuccessResponse(response)
                         }
 
                         override fun onFailure(call: Call<AddFriendResponse>, t: Throwable) {
-                            Log.d("Error adding friend", "$t")
+                            Toast.makeText(this@AddFriendActivity, t.toString(), Toast.LENGTH_SHORT).show()
                         }
 
                     })
@@ -132,4 +140,13 @@ class AddFriendActivity : AppCompatActivity() {
 
         })
     }
+
+    private fun checkSuccessResponse(response: Response<AddFriendResponse>) {
+        if(response.code() == 200) {
+            Toast.makeText(this, response.body()?.message, Toast.LENGTH_SHORT).show()
+        } else if(response.code() == 409) {
+            Toast.makeText(this, "you have invited him or her", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 }

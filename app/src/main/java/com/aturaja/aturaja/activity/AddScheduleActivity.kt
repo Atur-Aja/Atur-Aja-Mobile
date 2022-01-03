@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -20,6 +22,7 @@ import com.aturaja.aturaja.model.GetFriendResponse
 import com.aturaja.aturaja.model.RecomendationResponse
 import com.aturaja.aturaja.model.RekomendasiItem
 import com.aturaja.aturaja.network.APIClient
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,19 +42,26 @@ class AddScheduleActivity : AppCompatActivity() {
     private lateinit var textFrom: TextView
     private lateinit var textTo: TextView
     private lateinit var textDate: TextView
-    private var timeFrom = ""
-    private var timeTo = ""
     private lateinit var spinnerNotification: Spinner
     private lateinit var spinnerRepeat: Spinner
     private lateinit var autocomplete: AutoCompleteTextView
     private lateinit var autoCompleteRecomendation: AutoCompleteTextView
-    private var  dateDb= ""
     private lateinit var recyclerView: RecyclerView
+
+
+    private var timeFrom = ""
+    private var timeTo = ""
+    private var  dateDb= ""
     private var timeFromRecom = ""
     private var timeToRecom = ""
+    private var dateRecom = ""
+
+    private var bitmapArray = ArrayList<Bitmap>()
+    private var bitmapArrayData = ArrayList<Bitmap>()
     private var friendsDb = ArrayList<Int>()
     private var friendsChoose = ArrayList<GetFriendResponse>()
     private var dataFriends = ArrayList<GetFriendResponse>()
+
     private val TAG = "addSchedule"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,16 +101,18 @@ class AddScheduleActivity : AppCompatActivity() {
 
         val adapter = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_item, notification
+            android.R.layout.simple_spinner_dropdown_item, notification
         )
 
         val adapterRepeat = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_item, repeat
+            android.R.layout.simple_spinner_dropdown_item, repeat
         )
 
         spinnerNotification.adapter = adapter
         spinnerRepeat.adapter = adapterRepeat
+
+
     }
 
     private fun initComponent() {
@@ -144,55 +156,70 @@ class AddScheduleActivity : AppCompatActivity() {
         } else {
             friendsDb.add(data.id.toInt())
             friendsChoose.add(data)
+            getImageUser(data.photo as String)
         }
-        showRecyclist(friendsChoose)
+
+        Log.d(TAG, "bitmap : ${bitmapArray.size}")
+//
     }
 
     private fun setAutoCompleteRecomendation(rekomendasi: List<RekomendasiItem>) {
-        val adapter = AutoCompleteRecomAdapter(
-            this, R.layout.recomendation_layout,
-            rekomendasi as MutableList<RekomendasiItem>
-        )
+        if(rekomendasi.isNotEmpty()) {
+            val adapter = AutoCompleteRecomAdapter(
+                this, R.layout.recomendation_layout,
+                rekomendasi as MutableList<RekomendasiItem>
+            )
 
-        autoCompleteRecomendation.setAdapter(adapter)
-        autoCompleteRecomendation.showDropDown()
+            autoCompleteRecomendation.setAdapter(adapter)
+            autoCompleteRecomendation.showDropDown()
 
-        adapter.setOnRecomClickCallback(object: AutoCompleteRecomAdapter.OnRecomCLickCallback {
-            @SuppressLint("SetTextI18n")
-            override fun onCLickRecom(data: RekomendasiItem) {
-                timeFromRecom = data.startTime
-                timeToRecom = data.endTime
-                autoCompleteRecomendation.setText("From : ${data.startTime} To : ${data.endTime}", false)
-            }
-
-        })
-    }
-
-    fun getRecomendation() {
-        val apiCLient = APIClient()
-        val dateFormatDB = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        dateDb = dateFormatDB.format(dateFormatDB.parse(dateDb))
-
-        apiCLient.getApiService(this).getRecomendation(dateDb, timeFrom, timeTo, friendsDb)
-            .enqueue(object : Callback<RecomendationResponse> {
-                override fun onResponse(
-                    call: Call<RecomendationResponse>,
-                    response: Response<RecomendationResponse>
-                ) {
-                    if(response.code() == 200) {
-                        setAutoCompleteRecomendation(response.body()!!.rekomendasi)
-                    }
-                }
-
-                override fun onFailure(call: Call<RecomendationResponse>, t: Throwable) {
-                    TODO("Not yet implemented")
+            adapter.setOnRecomClickCallback(object: AutoCompleteRecomAdapter.OnRecomCLickCallback {
+                @SuppressLint("SetTextI18n")
+                override fun onCLickRecom(data: RekomendasiItem) {
+                    timeFromRecom = data.startTime
+                    timeToRecom = data.endTime
+                    dateRecom = data.date
+                    autoCompleteRecomendation.setText("Date : ${data.date}\n\nFrom : ${data.startTime} To : ${data.endTime}", false)
                 }
 
             })
+        }
     }
 
-    fun showRecyclist(friends: List<GetFriendResponse>) {
-        val friendAdapter = FriendsAdapterSchedule(friends as ArrayList<GetFriendResponse>)
+    fun getRecomendation() {
+        if(dateDb.isEmpty() || timeFrom.isEmpty() || timeTo.isEmpty() || friendsDb.isNullOrEmpty()) {
+            Toast.makeText(this, "input date, time and friends", Toast.LENGTH_SHORT).show()
+        } else {
+            val apiCLient = APIClient()
+            val dateFormatDB = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            dateDb = dateFormatDB.format(dateFormatDB.parse(dateDb))
+
+            Log.d(TAG, "date : $dateDb")
+            Log.d(TAG, "timeFrom : $timeFrom")
+            Log.d(TAG, "timeTo : $timeTo")
+            Log.d(TAG, "friends: $friendsDb")
+
+            apiCLient.getApiService(this).getRecomendation(dateDb, timeFrom, timeTo, friendsDb)
+                .enqueue(object : Callback<RecomendationResponse> {
+                    override fun onResponse(
+                        call: Call<RecomendationResponse>,
+                        response: Response<RecomendationResponse>
+                    ) {
+                        if(response.code() == 200) {
+                            response.body()?.let { setAutoCompleteRecomendation(it.rekomendasi) }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<RecomendationResponse>, t: Throwable) {
+                        TODO("Not yet implemented")
+                    }
+
+                })
+        }
+    }
+
+    fun showRecyclist(friends: List<GetFriendResponse>, bitmapArray: ArrayList<Bitmap>) {
+        val friendAdapter = FriendsAdapterSchedule(this, friends as ArrayList<GetFriendResponse>, bitmapArray)
 
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -200,13 +227,36 @@ class AddScheduleActivity : AppCompatActivity() {
 
         friendAdapter.setOnFriendsRecyclerClickCallback(object :
             FriendsAdapterSchedule.OnFriendsRecyclerClickCallback {
-            override fun onClickItem(data: GetFriendResponse) {
+            override fun onClickItem(data: GetFriendResponse, bitmap: Bitmap) {
                 friendsDb.remove(data.id.toInt())
                 friendsChoose.remove(data)
-                showRecyclist(friendsChoose)
+                bitmapArray.remove(bitmap)
+                showRecyclist(friendsChoose, this@AddScheduleActivity.bitmapArray)
             }
 
         })
+    }
+
+    private fun getImageUser(imageName: String) {
+        val apiClient = APIClient()
+
+        apiClient.getApiService(this).getPhoto(imageName)
+            .enqueue(object: Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if(response.code() == 200) {
+                            bitmapArray.add(BitmapFactory.decodeStream(response.body()!!.byteStream()))
+                            showRecyclist(friendsChoose, bitmapArray)
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.d(TAG, "Error : $t")
+                }
+
+            })
     }
 
     private fun openDatePicker() {
@@ -256,7 +306,7 @@ class AddScheduleActivity : AppCompatActivity() {
                     if (response.code() == 200) {
                         response.body()?.let { dataFriends.addAll(it) }
 //                        autocomplete.setAdapter(AutoCompleteFriendAdapter(this@AddScheduleActivity, R.layout.friends_layout, dataFriends))
-                        response.body()?.let { setAutoComplete(it) }
+                        response.body()?.let {  setAutoComplete(it)}
                     }
                 }
 
@@ -300,6 +350,7 @@ class AddScheduleActivity : AppCompatActivity() {
             if(timeFromRecom.isNotEmpty() && timeToRecom.isNotEmpty()) {
                 timeFrom = timeFormatDb.format(timeFormatDb.parse(timeFromRecom))
                 timeTo = timeFormatDb.format(timeFormatDb.parse(timeToRecom))
+                dateDb = dateFormatDB.format(dateFormatDB.parse(dateRecom))
             }
         }
         if(title.isEmpty() || dateDb.isEmpty() || timeFrom.isEmpty() || timeTo.isEmpty()) {

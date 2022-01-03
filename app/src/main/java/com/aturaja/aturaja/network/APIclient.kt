@@ -5,17 +5,28 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import com.google.gson.GsonBuilder
+
+import com.google.gson.Gson
+
+
+
 
 class APIClient {
     private lateinit var apiService: API
-    private val BASE_URL = "https://api.aturaja.me/api/"
+    private val BASE_URL = "http://192.168.1.66:8000/api/"
+//    https://api.aturaja.me/api/
+
+    var gson = GsonBuilder()
+        .setLenient()
+        .create()
 
     fun getApiService(context: Context): API {
 
         if (!::apiService.isInitialized) {
             val retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(okhttpClient(context))
                 .build()
 

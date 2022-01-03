@@ -8,19 +8,35 @@
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_logo_foreground"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_logo_round"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.AturAja"
-        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activity.StupProfileActivity"
+            android:name=".activity.ProfilFriendsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.PasswordSettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.EmailSettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.SetupProfileActivity"
             android:exported="false" />
         <activity
             android:name=".activity.AddFriendActivity"

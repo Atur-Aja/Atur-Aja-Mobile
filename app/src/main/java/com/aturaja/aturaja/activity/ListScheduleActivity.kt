@@ -133,8 +133,8 @@ class ListScheduleActivity : AppCompatActivity() {
 
         Log.d(TAG, "$bol")
 
-        if(calen >= timeScheduleAlarm) {
-            Log.d(TAG, "tidak buta alarm")
+        if(calen.time >= timeScheduleAlarm?.time!! - notif) {
+            Log.d(TAG, "tidak buat alarm")
         } else {
             if(timeScheduleAlarm != null) {
                 if(alarmUp) {
@@ -185,7 +185,7 @@ class ListScheduleActivity : AppCompatActivity() {
         )
         val alarmUp = pendingIntentChecker != null
 
-        if(calen >= timeScheduleAlarm) {
+        if(calen.time >= (timeScheduleAlarm?.time!! - notifAlarm)) {
             Log.d(TAG, "not make alarm")
         } else {
             if(timeScheduleAlarm != null) {

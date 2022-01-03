@@ -3,6 +3,8 @@ package com.aturaja.aturaja.network
 import com.aturaja.aturaja.model.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.Response
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -154,8 +156,38 @@ interface API {
         @Part("phone_number") phone_number: RequestBody
     ):Call<SetUpProfileResponse>
 
+    @Multipart
+    @POST("password/email")
+    fun sendForgetPassword(
+        @Part("email") email:RequestBody
+    ):Call <ForgotPasswordResponse>
+
     @GET("user/{username}/profile")
     fun getProfile(
         @Path("username") username: String
     ):Call<GetProfileResponse>
+
+    @GET("user/image/{photo}")
+    fun getPhoto(
+        @Path("photo") photo:String
+    ):Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST("auth/change-password")
+    fun changePassword(
+        @Field("password") password: String,
+        @Field("password_validate") passwordValidate: String
+    ):Call<ChangePasswordResponse>
+
+    @FormUrlEncoded
+    @POST("auth/change-email")
+    fun changeEmail(
+        @Field("email") email: String
+    ):Call<ChangeEmailResponse>
+
+
+    @DELETE("friend/delete")
+    fun deleteFriend(
+        @Body userId: String
+    ):Call<DeleteFriendRespose>
 }
