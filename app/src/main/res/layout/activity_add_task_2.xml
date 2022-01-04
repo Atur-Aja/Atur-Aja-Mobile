@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="8dp"
-            android:backgroundTint="#4CD5C3"
+            android:backgroundTint="@color/white"
             app:cardCornerRadius="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTask">
@@ -80,7 +80,7 @@
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="2dp"
                 android:text="Today"
-                android:textColor="@color/white"
+                android:textColor="@color/aturaja"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

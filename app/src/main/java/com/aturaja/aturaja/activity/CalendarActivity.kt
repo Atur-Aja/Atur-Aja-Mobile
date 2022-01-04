@@ -23,6 +23,7 @@ import android.app.PendingIntent
 import android.os.Build
 import android.widget.CalendarView
 import com.aturaja.aturaja.service.AlarmBroadcast
+import com.aturaja.aturaja.session.SessionManager
 
 
 class CalendarActivity : AppCompatActivity() {
@@ -62,12 +63,18 @@ class CalendarActivity : AppCompatActivity() {
                     call: Call<GetAllScheduleResponse2>,
                     response: Response<GetAllScheduleResponse2>
                 ) {
-                    response.body()?.let {
-                        if(it.schedules != null) {
-                            newArrayList.addAll(it.schedules)
-                            showRecyclist(it.schedules, date)
-                            countNotifAndInterval(it.schedules)
+                    if(response.code() == 200) {
+                        response.body()?.let {
+                            if(it.schedules != null) {
+                                newArrayList.addAll(it.schedules)
+                                showRecyclist(it.schedules, date)
+                                countNotifAndInterval(it.schedules)
+                            }
                         }
+                    } else if(response.code() == 401){
+                        startActivity(Intent(applicationContext, LoginActivity::class.java))
+                        SessionManager(applicationContext).clearTokenAndUsername()
+                        finish()
                     }
                 }
 
@@ -280,5 +287,10 @@ class CalendarActivity : AppCompatActivity() {
     fun addTaskOnClick(view: android.view.View) {
         startActivity(Intent (applicationContext, AddScheduleActivity::class.java))
         finish()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, HomeActivity::class.java))
     }
 }

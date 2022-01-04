@@ -6,22 +6,27 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import com.aturaja.aturaja.R
 import com.aturaja.aturaja.activity.HomeActivity
 
 class AlarmBroadcast: BroadcastReceiver() {
     override fun onReceive(context: Context, p1: Intent?) {
+        val bundle: Bundle? = p1?.extras
+        val text: String? = bundle?.getString("title")
+        val startTime: String? = bundle?.getString("startTime")
+        val endTime: String? = bundle?.getString("endTime")
+
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val intent = Intent(context,HomeActivity::class.java)
-
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         var mBuilder = NotificationCompat.Builder(context, "notify_001")
-            .setSmallIcon(R.drawable.icon_people_addschedule)
-            .setContentTitle("My Alarm")
-            .setContentText("Hello World!\nmalu-malu tapi mau")
+            .setSmallIcon(R.mipmap.ic_launcher_logo)
+            .setContentTitle("$text")
+            .setContentText("$startTime - $endTime")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
 

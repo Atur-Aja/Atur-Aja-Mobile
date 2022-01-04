@@ -69,4 +69,9 @@ class ForgotPassword : AppCompatActivity() {
     private fun failureResponse(t: Throwable) {
         Toast.makeText(this, "$t", Toast.LENGTH_SHORT).show()
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, LoginActivity::class.java))
+    }
 }

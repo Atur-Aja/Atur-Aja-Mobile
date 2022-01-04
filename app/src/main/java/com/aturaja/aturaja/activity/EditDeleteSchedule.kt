@@ -58,6 +58,7 @@ class EditDeleteSchedule : AppCompatActivity() {
     private var dataFriends = ArrayList<GetFriendResponse>()
     private lateinit var notificationList: Array<String>
     private lateinit var repeatList: Array<String>
+    private var arrayRecycler = ArrayList<ArrayFriendSchedule>()
     private var TAG = "edit_schedule"
     private var friendsChoose = ArrayList<GetFriendResponse>()
     private var friendsDb = ArrayList<Int>()
@@ -166,23 +167,25 @@ class EditDeleteSchedule : AppCompatActivity() {
         } else {
             friendsDb.add(data.id.toInt())
             friendsChoose.add(data)
-            getImageUser(data.photo.toString())
+            getImageUser(data)
         }
     }
 
-    private fun getImageUser(imageName: String) {
+    private fun getImageUser(data: GetFriendResponse) {
         val apiClient = APIClient()
+        var bitmap: Bitmap
 
-        apiClient.getApiService(this).getPhoto(imageName)
+        apiClient.getApiService(this).getPhoto(data.photo.toString())
             .enqueue(object: Callback<ResponseBody> {
                 override fun onResponse(
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>
                 ) {
                     if(response.code() == 200) {
-                        bitmapArray.add(BitmapFactory.decodeStream(response.body()!!.byteStream()))
-                        Log.d(TAG, "bitmap : ${bitmapArray.size}")
-                        if(bitmapArray.size == friendsChoose.size) {
+                        bitmap = BitmapFactory.decodeStream(response.body()!!.byteStream())
+                        val model = ArrayFriendSchedule(data, bitmap)
+                        arrayRecycler.add(model)
+                        if(arrayRecycler.size == friendsChoose.size) {
                             showRecyclist()
                         }
                     }
@@ -196,9 +199,7 @@ class EditDeleteSchedule : AppCompatActivity() {
 
     fun showRecyclist() {
         val friendAdapter = FriendsAdapterSchedule(
-            this,
-            friendsChoose,
-            bitmapArray
+            arrayRecycler
         )
 
         friendsRecycler.setHasFixedSize(true)
@@ -207,12 +208,10 @@ class EditDeleteSchedule : AppCompatActivity() {
 
         friendAdapter.setOnFriendsRecyclerClickCallback(object :
             FriendsAdapterSchedule.OnFriendsRecyclerClickCallback {
-            override fun onClickItem(data: GetFriendResponse, bitmap: Bitmap) {
-                Log.d(TAG, "data send : ${data.id}")
-                friendsDb.remove(data.id.toInt())
-                Log.d(TAG, "friends DB : ${friendsDb}")
-                friendsChoose.remove(data)
-                bitmapArray.remove(bitmap)
+            override fun onClickItem(data: ArrayFriendSchedule) {
+                friendsDb.remove(data.data.id.toInt())
+                friendsChoose.remove(data.data)
+                arrayRecycler.remove(data)
                 showRecyclist()
             }
 
@@ -324,8 +323,12 @@ class EditDeleteSchedule : AppCompatActivity() {
                         Log.d(TAG, "get friends : $friendsChoose")
 
                         for(i in friendsChoose) {
-                            getImageUser(i.photo.toString())
+                            getImageUser(i)
                         }
+                    } else if(response.code() == 401){
+                        startActivity(Intent(applicationContext, LoginActivity::class.java))
+                        SessionManager(applicationContext).clearTokenAndUsername()
+                        finish()
                     }
                 }
 
@@ -371,7 +374,10 @@ class EditDeleteSchedule : AppCompatActivity() {
                             response.body()?.let {
                                 setAutoCompleteRecomendation(it.rekomendasi)
                             }
-//                            setAutoCompleteRecomendation(response.body()!!.rekomendasi)
+                        } else if(response.code() == 401){
+                            startActivity(Intent(applicationContext, LoginActivity::class.java))
+                            SessionManager(applicationContext).clearTokenAndUsername()
+                            finish()
                         }
                     }
 
@@ -506,6 +512,10 @@ class EditDeleteSchedule : AppCompatActivity() {
                             Toast.makeText(applicationContext, "schedule berhasil di update", Toast.LENGTH_SHORT).show()
                             cancelAlarm()
                             startActivity(myIntent)
+                        } else if(response.code() == 401){
+                            startActivity(Intent(applicationContext, LoginActivity::class.java))
+                            SessionManager(applicationContext).clearTokenAndUsername()
+                            finish()
                         } else {
                             Log.d("update schedule", "gagal")
                         }
@@ -533,6 +543,10 @@ class EditDeleteSchedule : AppCompatActivity() {
                             Toast.makeText(applicationContext, "schedule berhasil di delete", Toast.LENGTH_SHORT).show()
                             cancelAlarm()
                             startActivity(myIntent)
+                        } else if(response.code() == 401){
+                            startActivity(Intent(applicationContext, LoginActivity::class.java))
+                            SessionManager(applicationContext).clearTokenAndUsername()
+                            finish()
                         }
                     }
 

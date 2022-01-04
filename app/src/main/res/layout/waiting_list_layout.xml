@@ -45,6 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp"
         android:text="email@perusahaan.com"
         android:fontFamily="@font/mulish_regular"
         android:textSize="12sp"
@@ -61,23 +62,22 @@
         android:textAllCaps="false"
         android:textColor="#141414"
         android:textSize="10dp"
-        android:layout_marginLeft="80dp"
+        android:layout_marginEnd="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewFriendName"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAccept"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonAccept"
         android:layout_width="70dp"
         android:layout_height="35dp"
-        android:layout_marginStart="8dp"
         android:backgroundTint="#50D890"
         android:fontFamily="@font/mulish_semi_bold"
         android:text="Accept"
         android:textAllCaps="false"
         android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonIgnore"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 

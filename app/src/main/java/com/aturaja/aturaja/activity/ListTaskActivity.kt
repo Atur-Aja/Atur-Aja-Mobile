@@ -17,6 +17,7 @@ import com.aturaja.aturaja.model.GetAllTaskResponse2
 import com.aturaja.aturaja.model.TasksItem
 import com.aturaja.aturaja.network.APIClient
 import com.aturaja.aturaja.service.AlarmBroadcast
+import com.aturaja.aturaja.session.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -69,12 +70,18 @@ class ListTaskActivity : AppCompatActivity() {
                     call: Call<GetAllTaskResponse2>,
                     response: Response<GetAllTaskResponse2>
                 ) {
-                    response.body()?.let {
-                        if(it.tasks != null) {
-                            newArrayList.addAll(it.tasks)
-                            loopAlarm(it.tasks)
-                            sortingTask()
+                    if(response.code() == 200) {
+                        response.body()?.let {
+                            if(it.tasks != null) {
+                                newArrayList.addAll(it.tasks)
+                                loopAlarm(it.tasks)
+                                sortingTask()
+                            }
                         }
+                    } else if(response.code() == 401){
+                        startActivity(Intent(applicationContext, LoginActivity::class.java))
+                        SessionManager(applicationContext).clearTokenAndUsername()
+                        finish()
                     }
                 }
 
@@ -163,17 +170,7 @@ class ListTaskActivity : AppCompatActivity() {
                 }
             }
         }
-//        for (i in newArrayList) {
-//            if(i.task?.priority == "3") {
-//                arraySorting.add(i)
-//            } else if(i.task?.priority == "2") {
-//                arraySorting.add(i)
-//            } else if(i.task?.priority == "1") {
-//                arraySorting.add(i)
-//            }else {
-//                arraySorting.add(i)
-//            }
-//        }
+
         showRecyclist()
     }
 
@@ -189,5 +186,10 @@ class ListTaskActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, HomeActivity::class.java))
     }
 }

@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
 import com.aturaja.aturaja.model.FriendsRecyclerAddFriend
+import org.w3c.dom.Text
 
 class AddFriendAdapter(
     private val addFriendList: ArrayList<FriendsRecyclerAddFriend>

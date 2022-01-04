@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.aturaja.aturaja.activity.LoginActivity
 import com.aturaja.aturaja.model.RegisterResponse
 import com.aturaja.aturaja.network.APIClient
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputLayout
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textEmail: TextInputLayout
     private lateinit var textPassword: TextInputLayout
     private lateinit var textConfirmPassword: TextInputLayout
+    private lateinit var progressBar: LinearProgressIndicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         textEmail = findViewById(R.id.outlinedemail)
         textPassword = findViewById(R.id.outlinedpassword)
         textConfirmPassword = findViewById(R.id.outlinedconfirmpassword)
+        progressBar = findViewById(R.id.progerss_bar)
     }
 
     fun signUpClick(view: View) {
@@ -45,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         val apiClient = APIClient()
 
         if(username.trim().isNotEmpty() && email.trim().isNotEmpty() && password.trim().isNotEmpty() && confirmPassword.trim().isNotEmpty()) {
+            progressBar.visibility = View.VISIBLE
             apiClient.getApiService(this).createUser(email, username, password, confirmPassword)
                 .enqueue(object: Callback<RegisterResponse> {
                     override fun onResponse(
@@ -52,12 +57,23 @@ class MainActivity : AppCompatActivity() {
                         response: Response<RegisterResponse>
                     ) {
                         if(response.code() == 201) {
+                            progressBar.visibility = View.GONE
                             val intent = Intent(applicationContext, LoginActivity::class.java)
                             Toast.makeText(applicationContext, "registrasi success, please check your email", Toast.LENGTH_LONG).show()
 
                             startActivity(intent)
                         } else {
-                            Toast.makeText(applicationContext, "${response.body()?.message}", Toast.LENGTH_LONG).show()
+                            try {
+                                progressBar.visibility = View.GONE
+                                val json = response.errorBody()
+                                val json2 = json.toString()
+                                val jObjError = JSONObject(json2.substring(json2.indexOf("{"), json2.lastIndexOf("}") + 2))
+                                Toast.makeText(applicationContext, "${jObjError}", Toast.LENGTH_LONG).show()
+                            }catch (e: Exception) {
+                                progressBar.visibility = View.GONE
+                                Toast.makeText(applicationContext, "$e", Toast.LENGTH_LONG).show()
+                            }
+
                         }
                     }
 

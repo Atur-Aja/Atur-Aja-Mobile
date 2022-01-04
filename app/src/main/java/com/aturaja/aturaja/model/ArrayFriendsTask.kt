@@ -2,7 +2,7 @@ package com.aturaja.aturaja.model
 
 import android.graphics.Bitmap
 
-data class ArrayFriendsEditSchedule(
+data class ArrayFriendsTask(
     val data: GetFriendResponse,
     val bitmap: Bitmap
 )

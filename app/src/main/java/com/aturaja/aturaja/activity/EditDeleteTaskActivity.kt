@@ -74,7 +74,7 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     private var friends =  ArrayList<GetFriendResponse>()
     private var friendsDb = ArrayList<Int>()
     private var friendsChoose = ""
-    private var arrayRecycler = ArrayList<ArrayFriendsEditSchedule>()
+    private var arrayRecycler = ArrayList<ArrayFriendsTask>()
     private var dataFriends = ArrayList<GetFriendResponse>()
     private var friendsString = ArrayList<String>()
     private var bitmapArray = ArrayList<Bitmap>()
@@ -381,7 +381,7 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
                 ) {
                     if(response.code() == 200) {
                         bitmap = BitmapFactory.decodeStream(response.body()!!.byteStream())
-                        val model = ArrayFriendsEditSchedule(data, bitmap)
+                        val model = ArrayFriendsTask(data, bitmap)
                         arrayRecycler.add(model)
 //                        Log.d(TAG, "bitmap : ${bitmapArray.size}")
                         if(arrayRecycler.size == friends.size) {
@@ -405,7 +405,7 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         memberRecyclerView.adapter = adapter
 
         adapter.setOnButtonClickCallback(object: FriendsAdapterTask.OnButtonCLickCallback {
-            override fun onClickButton(data: ArrayFriendsEditSchedule) {
+            override fun onClickButton(data: ArrayFriendsTask) {
                 friendsDb.remove(data.data.id.toInt())
                 friends.remove(data.data)
                 friendsString.remove(data.data.username)
@@ -512,6 +512,10 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
                         Toast.makeText(applicationContext, "task deleted successfully", Toast.LENGTH_SHORT).show()
                         cancelAlarm()
                         startActivity(intent)
+                    } else if(response.code() == 401){
+                        startActivity(Intent(applicationContext, LoginActivity::class.java))
+                        SessionManager(applicationContext).clearTokenAndUsername()
+                        finish()
                     } else {
                         Toast.makeText(applicationContext, "task deleted failed", Toast.LENGTH_SHORT).show()
                     }
@@ -553,6 +557,10 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
                         Toast.makeText(applicationContext, "task updated successfully", Toast.LENGTH_SHORT).show()
                         cancelAlarm()
                         startActivity(intent)
+                    } else if(response.code() == 401){
+                        startActivity(Intent(applicationContext, LoginActivity::class.java))
+                        SessionManager(applicationContext).clearTokenAndUsername()
+                        finish()
                     } else {
                         Toast.makeText(applicationContext, "task updated failed", Toast.LENGTH_SHORT).show()
                     }
@@ -603,5 +611,12 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
 
         tvDate.text = "$savedDate-$savedMonth-$savedYear"
         dateSave = "$savedYear-$savedMonth-$savedDate"
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        startActivity(Intent(this, ListTaskActivity::class.java))
+        finish()
     }
 }

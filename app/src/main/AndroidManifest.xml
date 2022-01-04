@@ -56,9 +56,6 @@
             android:name=".activity.FocusActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.AddTodo"
-            android:exported="false" />
-        <activity
             android:name=".activity.AddTaskActivity"
             android:exported="false" />
         <activity

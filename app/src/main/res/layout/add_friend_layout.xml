@@ -24,22 +24,10 @@
         android:text="Nama Orang"
         android:textColor="#141414"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/textViewFriendEmail"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageViewFriends"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
-
-    <TextView
-        android:id="@+id/textViewFriendEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/mulish_regular"
-        android:text="email@perusahaan.com"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageViewFriends"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFriendName" />
 
 
     <Button

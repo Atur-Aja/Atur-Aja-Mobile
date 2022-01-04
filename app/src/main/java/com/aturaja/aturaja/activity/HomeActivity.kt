@@ -23,6 +23,12 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import android.R.id.home
+
+import com.aturaja.aturaja.MainActivity
+
+
+
 
 
 class HomeActivity : AppCompatActivity() {
@@ -251,6 +257,10 @@ class HomeActivity : AppCompatActivity() {
                         response.body()?.let { SessionManager(applicationContext).saveUsername(it.username) }
                         scheduleSize()
                         taskSize()
+                    } else if(response.code() == 401){
+                        startActivity(Intent(applicationContext, LoginActivity::class.java))
+                        SessionManager(applicationContext).clearTokenAndUsername()
+                        finish()
                     }
                 }
 
@@ -266,6 +276,13 @@ class HomeActivity : AppCompatActivity() {
 
         SessionManager(this).clearTokenAndUsername()
         startActivity(myIntent)
+        finish()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
         finish()
     }
 }

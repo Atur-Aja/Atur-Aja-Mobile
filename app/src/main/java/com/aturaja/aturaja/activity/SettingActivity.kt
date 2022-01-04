@@ -68,4 +68,9 @@ class SettingActivity : AppCompatActivity() {
     private fun failureResponse(t: Throwable) {
         Toast.makeText(this, "$t", Toast.LENGTH_SHORT).show()
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, HomeActivity::class.java))
+    }
 }

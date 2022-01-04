@@ -12,6 +12,7 @@ import com.aturaja.aturaja.model.LoginResponse
 import com.aturaja.aturaja.network.APIClient
 import com.aturaja.aturaja.session.SessionManager
 import com.google.android.material.textfield.TextInputLayout
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -58,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
 
                             startActivity(intent)
                         } else {
-                            Toast.makeText(applicationContext, "email atau password salah", Toast.LENGTH_LONG).show()
+                            Toast.makeText(applicationContext, "email or username wrong", Toast.LENGTH_SHORT).show()
                         }
                     }
 
@@ -77,5 +78,11 @@ class LoginActivity : AppCompatActivity() {
 
             startActivity(myIntent)
         }
+    }
+
+    override fun onBackPressed() {
+        val setIntent = Intent(applicationContext, HomeActivity::class.java)
+        startActivity(setIntent)
+        finish()
     }
 }

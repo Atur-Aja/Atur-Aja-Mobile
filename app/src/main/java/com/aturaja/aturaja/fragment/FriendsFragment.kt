@@ -27,9 +27,6 @@ import retrofit2.Response
 class FriendsFragment : Fragment(), Updateable {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var friendName : Array<String>
-    private lateinit var friendEmail : Array<String>
-    private lateinit var friendImage : Array<Int>
     private var arrayRecycler = ArrayList<FriendsRecycler>()
     private var _binding : FragmentFriendsBinding? = null
     private val binding get() = _binding!!

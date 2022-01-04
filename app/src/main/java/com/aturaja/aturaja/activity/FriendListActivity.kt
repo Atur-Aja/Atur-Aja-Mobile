@@ -36,4 +36,10 @@ class FriendListActivity : AppCompatActivity() {
         startActivity(Intent(this, HomeActivity::class.java))
         finish()
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, HomeActivity::class.java))
+        finish()
+    }
 }

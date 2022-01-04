@@ -12,6 +12,7 @@ import com.aturaja.aturaja.R
 import com.aturaja.aturaja.dialog.ConfirmPasswordDialog
 import com.aturaja.aturaja.model.ChangePasswordResponse
 import com.aturaja.aturaja.network.APIClient
+import com.aturaja.aturaja.session.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -82,6 +83,10 @@ class PasswordSettingActivity : AppCompatActivity(), ConfirmPasswordDialog.Dialo
     private fun checkSuccessResponse(response: Response<ChangePasswordResponse>) {
         if(response.code() == 201) {
             Toast.makeText(this, "${response.body()?.message}", Toast.LENGTH_SHORT).show()
+        } else if(response.code() == 401) {
+            startActivity(Intent(applicationContext, LoginActivity::class.java))
+            SessionManager(applicationContext).clearTokenAndUsername()
+            finish()
         } else {
             Toast.makeText(this, "the given data was invalid", Toast.LENGTH_SHORT).show()
         }
@@ -89,5 +94,10 @@ class PasswordSettingActivity : AppCompatActivity(), ConfirmPasswordDialog.Dialo
 
     private fun failureResponse(t: Throwable) {
         Toast.makeText(this@PasswordSettingActivity, "$t", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, SettingActivity::class.java))
     }
 }

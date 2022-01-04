@@ -17,6 +17,7 @@ import com.aturaja.aturaja.model.GetAllScheduleResponse2
 import com.aturaja.aturaja.model.SchedulesItem
 import com.aturaja.aturaja.network.APIClient
 import com.aturaja.aturaja.service.AlarmBroadcast
+import com.aturaja.aturaja.session.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,6 +31,9 @@ class ListScheduleActivity : AppCompatActivity() {
     private lateinit var recyler: RecyclerView
     private lateinit var btnAdd: ImageButton
     private val TAG = "ListSchedule"
+    private var title = ""
+    private var timeStart = ""
+    private var timeEnd = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_schedule)
@@ -59,11 +63,17 @@ class ListScheduleActivity : AppCompatActivity() {
                     call: Call<GetAllScheduleResponse2>,
                     response: Response<GetAllScheduleResponse2>
                 ) {
-                    response.body()?.let {
-                        if(it.schedules != null) {
-                            showRecyclist(it.schedules)
-                            countNotifAndInterval(it.schedules)
+                    if(response.code() == 200) {
+                        response.body()?.let {
+                            if(it.schedules != null) {
+                                showRecyclist(it.schedules)
+                                countNotifAndInterval(it.schedules)
+                            }
                         }
+                    }else if(response.code() == 401){
+                        startActivity(Intent(applicationContext, LoginActivity::class.java))
+                        SessionManager(applicationContext).clearTokenAndUsername()
+                        finish()
                     }
                 }
 
@@ -84,6 +94,9 @@ class ListScheduleActivity : AppCompatActivity() {
         val dateFormatDB = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val dateTimeFormatAlarm = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
         for( i in schedules) {
+            title = i.schedule?.title.toString()
+            timeStart = i.schedule?.startTime.toString()
+            timeEnd = i.schedule?.endTime.toString()
             date = "${dateFormatDB.format(dateFormatDB.parse(i.schedule?.date))}"
             time = "${timeFormatDB.format(timeFormatDB.parse(i.schedule?.startTime))}"
             timeSchedule = dateTimeFormatAlarm.parse("${date} ${time}")
@@ -108,6 +121,9 @@ class ListScheduleActivity : AppCompatActivity() {
     private fun setAlarmWithoutInterval(timeScheduleAlarm: Date?, notif: Long, idAlarm: Long) {
         val p = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(applicationContext, AlarmBroadcast::class.java)
+        intent.putExtra("title", title)
+        intent.putExtra("startTime", timeStart)
+        intent.putExtra("endTime", timeEnd)
         val cal = Calendar.getInstance()
         val dateTimeFormatAlarm = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
         val calen = dateTimeFormatAlarm.parse(dateTimeFormatAlarm.format(cal.timeInMillis))
@@ -169,6 +185,9 @@ class ListScheduleActivity : AppCompatActivity() {
     private fun setAlarmWithInterval(timeScheduleAlarm: Date?, notifAlarm: Long, id: Long, interval: Long) {
         val p = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(applicationContext, AlarmBroadcast::class.java)
+        intent.putExtra("title", title)
+        intent.putExtra("startTime", timeStart)
+        intent.putExtra("endTime", timeEnd)
         val cal = Calendar.getInstance()
         val dateTimeFormatAlarm = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
         val calen = dateTimeFormatAlarm.parse(dateTimeFormatAlarm.format(cal.timeInMillis - notifAlarm))
@@ -243,7 +262,7 @@ class ListScheduleActivity : AppCompatActivity() {
         recyler.layoutManager = LinearLayoutManager(this)
 
 
-        val scheduleListAdapter: ScheduleAdapter = ScheduleAdapter(schedules as ArrayList<SchedulesItem>)
+        val scheduleListAdapter = ScheduleAdapter(schedules as ArrayList<SchedulesItem>)
         recyler.adapter = scheduleListAdapter
 
         scheduleListAdapter.setOnItemClickCallback(object : ScheduleAdapter.OnItemClickCallback {
@@ -260,5 +279,10 @@ class ListScheduleActivity : AppCompatActivity() {
 
     private fun addSchedule() {
         startActivity(Intent(this, AddScheduleActivity::class.java))
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, HomeActivity::class.java))
     }
 }

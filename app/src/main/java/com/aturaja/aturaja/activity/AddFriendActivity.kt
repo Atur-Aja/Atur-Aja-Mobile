@@ -1,10 +1,12 @@
 package com.aturaja.aturaja.activity
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +17,8 @@ import com.aturaja.aturaja.model.AddFriendResponse
 import com.aturaja.aturaja.model.FriendsRecyclerAddFriend
 import com.aturaja.aturaja.model.GetSearchResponseItem
 import com.aturaja.aturaja.network.APIClient
+import com.aturaja.aturaja.session.SessionManager
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,9 +34,9 @@ import retrofit2.Response
 class AddFriendActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var etSearchUsername : EditText
+    private lateinit var progressBar: LinearProgressIndicator
 
     private var arrayList = ArrayList<GetSearchResponseItem>()
-    private var bitmapArray = ArrayList<Bitmap>()
     private var arrayRecycler = ArrayList<FriendsRecyclerAddFriend>()
 
     private val TAG = "addFriends"
@@ -42,10 +46,12 @@ class AddFriendActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_friend)
 
         etSearchUsername = findViewById(R.id.etSearchUsername)
+        progressBar = findViewById(R.id.progerss_bar)
     }
 
     private fun getSearchdata() {
         val apiClient = APIClient()
+        progressBar.visibility = View.VISIBLE
 
         apiClient.getApiService(this).getSearch(etSearchUsername.text.toString())
             .enqueue(object : Callback<List<GetSearchResponseItem>> {
@@ -55,11 +61,18 @@ class AddFriendActivity : AppCompatActivity() {
                 ) {
                     Log.d("Success getting friends", "${response.body()?.size}")
                     if(response.code() == 200) {
+                        progressBar.visibility = View.GONE
                         response.body()?.let {
+                            arrayRecycler.clear()
                             arrayList.clear()
                             arrayList.addAll(it)
                             getDataRecycler()
                         }
+                    } else if(response.code() == 401) {
+                        progressBar.visibility = View.GONE
+                        startActivity(Intent(applicationContext, LoginActivity::class.java))
+                        SessionManager(applicationContext).clearTokenAndUsername()
+                        finish()
                     }
                 }
 
@@ -101,6 +114,10 @@ class AddFriendActivity : AppCompatActivity() {
                         if(arrayRecycler.size == arrayList.size) {
                             setRecyclerView()
                         }
+                    } else if(response.code() == 401){
+                        startActivity(Intent(applicationContext, LoginActivity::class.java))
+                        SessionManager(applicationContext).clearTokenAndUsername()
+                        finish()
                     }
                 }
 
@@ -144,6 +161,10 @@ class AddFriendActivity : AppCompatActivity() {
     private fun checkSuccessResponse(response: Response<AddFriendResponse>) {
         if(response.code() == 200) {
             Toast.makeText(this, response.body()?.message, Toast.LENGTH_SHORT).show()
+        } else if(response.code() == 401){
+            startActivity(Intent(applicationContext, LoginActivity::class.java))
+            SessionManager(applicationContext).clearTokenAndUsername()
+            finish()
         } else if(response.code() == 409) {
             Toast.makeText(this, "you have invited him or her", Toast.LENGTH_SHORT).show()
         }

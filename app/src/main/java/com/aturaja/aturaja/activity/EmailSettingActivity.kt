@@ -13,6 +13,7 @@ import com.aturaja.aturaja.R
 import com.aturaja.aturaja.dialog.ConfirmEmailDialog
 import com.aturaja.aturaja.model.ChangeEmailResponse
 import com.aturaja.aturaja.network.APIClient
+import com.aturaja.aturaja.session.SessionManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -88,9 +89,12 @@ class EmailSettingActivity : AppCompatActivity(), ConfirmEmailDialog.DialogEmail
     private fun checkSuccesResponse(response: Response<ChangeEmailResponse>) {
         if(response.code() == 201) {
             Toast.makeText(this, "${response.body()?.message}", Toast.LENGTH_SHORT).show()
+        } else if(response.code() == 401){
+            startActivity(Intent(this, LoginActivity::class.java))
+            SessionManager(this).clearTokenAndUsername()
+            finish()
         } else {
-            Log.d(TAG, "error : ${response.body()?.errors?.email}")
-            Toast.makeText(this, "${response.body()?.errors}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "email alredy used", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -98,5 +102,8 @@ class EmailSettingActivity : AppCompatActivity(), ConfirmEmailDialog.DialogEmail
         Toast.makeText(this, "$t", Toast.LENGTH_SHORT).show()
     }
 
-
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, SettingActivity::class.java))
+    }
 }

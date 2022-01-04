@@ -16,9 +16,10 @@ import com.aturaja.aturaja.adapter.AutoCompleteFriendAdapter
 import com.aturaja.aturaja.adapter.FriendsAdapterTask
 import com.aturaja.aturaja.adapter.TodoAdapter
 import com.aturaja.aturaja.model.AddTaskResponse
-import com.aturaja.aturaja.model.ArrayFriendsEditSchedule
+import com.aturaja.aturaja.model.ArrayFriendsTask
 import com.aturaja.aturaja.model.GetFriendResponse
 import com.aturaja.aturaja.network.APIClient
+import com.aturaja.aturaja.session.SessionManager
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -54,7 +55,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
     private var friendsString = ArrayList<String>()
     private var friendsChoose = ""
     private var bitmapArray = ArrayList<Bitmap>()
-    private var arrayRecycler = ArrayList<ArrayFriendsEditSchedule>()
+    private var arrayRecycler = ArrayList<ArrayFriendsTask>()
 
     private val dateFormatDb = SimpleDateFormat("yyyy-MM-dd")
     private val timeFormatDb = SimpleDateFormat("HH:mm:ss")
@@ -160,7 +161,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
         memberRecyclerView.adapter = adapter
 
         adapter.setOnButtonClickCallback(object: FriendsAdapterTask.OnButtonCLickCallback {
-            override fun onClickButton(data: ArrayFriendsEditSchedule) {
+            override fun onClickButton(data: ArrayFriendsTask) {
                 friendsDb.remove(data.data.id.toInt())
                 friends.remove(data.data)
                 friendsString.remove(data.data.username)
@@ -198,11 +199,15 @@ class AddTaskActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
                 ) {
                     if(response.code() == 200) {
                         bitmap = BitmapFactory.decodeStream(response.body()!!.byteStream())
-                        val model = ArrayFriendsEditSchedule(data, bitmap)
+                        val model = ArrayFriendsTask(data, bitmap)
                         arrayRecycler.add(model)
                         if(arrayRecycler.size == friends.size) {
                             showRecyclistFriends()
                         }
+                    } else if(response.code() == 401){
+                        startActivity(Intent(applicationContext, LoginActivity::class.java))
+                        SessionManager(applicationContext).clearTokenAndUsername()
+                        finish()
                     }
                 }
 
@@ -236,9 +241,11 @@ class AddTaskActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
                         if(response.code().equals(201)) {
                             Toast.makeText(applicationContext, "Task created", Toast.LENGTH_SHORT).show()
                             startActivity(myIntent)
+                        } else if(response.code() == 401){
+                            startActivity(Intent(applicationContext, LoginActivity::class.java))
+                            SessionManager(applicationContext).clearTokenAndUsername()
+                            finish()
                         }
-
-                        Log.d(TAG, "$response")
                     }
 
                     override fun onFailure(call: Call<AddTaskResponse>, t: Throwable) {
@@ -272,6 +279,10 @@ class AddTaskActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
                     if (response.code() == 200) {
                         response.body()?.let { dataFriends.addAll(it) }
                         response.body()?.let { setAutoComplete(it) }
+                    } else if(response.code() == 401){
+                        startActivity(Intent(applicationContext, LoginActivity::class.java))
+                        SessionManager(applicationContext).clearTokenAndUsername()
+                        finish()
                     }
                 }
 
@@ -334,5 +345,11 @@ class AddTaskActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
         tvDate.text = "$savedYear-$savedMonth-$savedDate"
         dateSave = "$savedYear-$savedMonth-$savedDate"
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, ListTaskActivity::class.java))
+        finish()
     }
 }

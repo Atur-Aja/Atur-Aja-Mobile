@@ -17,11 +17,9 @@ import com.aturaja.aturaja.R
 import com.aturaja.aturaja.adapter.AutoCompleteFriendAdapter
 import com.aturaja.aturaja.adapter.AutoCompleteRecomAdapter
 import com.aturaja.aturaja.adapter.FriendsAdapterSchedule
-import com.aturaja.aturaja.model.CreateScheduleResponse
-import com.aturaja.aturaja.model.GetFriendResponse
-import com.aturaja.aturaja.model.RecomendationResponse
-import com.aturaja.aturaja.model.RekomendasiItem
+import com.aturaja.aturaja.model.*
 import com.aturaja.aturaja.network.APIClient
+import com.aturaja.aturaja.session.SessionManager
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -61,6 +59,7 @@ class AddScheduleActivity : AppCompatActivity() {
     private var friendsDb = ArrayList<Int>()
     private var friendsChoose = ArrayList<GetFriendResponse>()
     private var dataFriends = ArrayList<GetFriendResponse>()
+    private var arrayRecycler = ArrayList<ArrayFriendSchedule>()
 
     private val TAG = "addSchedule"
 
@@ -156,7 +155,7 @@ class AddScheduleActivity : AppCompatActivity() {
         } else {
             friendsDb.add(data.id.toInt())
             friendsChoose.add(data)
-            getImageUser(data.photo as String)
+            getImageUser(data)
         }
 
         Log.d(TAG, "bitmap : ${bitmapArray.size}")
@@ -207,6 +206,10 @@ class AddScheduleActivity : AppCompatActivity() {
                     ) {
                         if(response.code() == 200) {
                             response.body()?.let { setAutoCompleteRecomendation(it.rekomendasi) }
+                        } else if(response.code() == 401){
+                            startActivity(Intent(applicationContext, LoginActivity::class.java))
+                            SessionManager(applicationContext).clearTokenAndUsername()
+                            finish()
                         }
                     }
 
@@ -218,8 +221,8 @@ class AddScheduleActivity : AppCompatActivity() {
         }
     }
 
-    fun showRecyclist(friends: List<GetFriendResponse>, bitmapArray: ArrayList<Bitmap>) {
-        val friendAdapter = FriendsAdapterSchedule(this, friends as ArrayList<GetFriendResponse>, bitmapArray)
+    fun showRecyclist() {
+        val friendAdapter = FriendsAdapterSchedule(arrayRecycler)
 
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -227,28 +230,34 @@ class AddScheduleActivity : AppCompatActivity() {
 
         friendAdapter.setOnFriendsRecyclerClickCallback(object :
             FriendsAdapterSchedule.OnFriendsRecyclerClickCallback {
-            override fun onClickItem(data: GetFriendResponse, bitmap: Bitmap) {
-                friendsDb.remove(data.id.toInt())
-                friendsChoose.remove(data)
-                bitmapArray.remove(bitmap)
-                showRecyclist(friendsChoose, this@AddScheduleActivity.bitmapArray)
+            override fun onClickItem(data: ArrayFriendSchedule) {
+                friendsDb.remove(data.data.id.toInt())
+                arrayRecycler.remove(data)
+                showRecyclist()
             }
 
         })
     }
 
-    private fun getImageUser(imageName: String) {
+    private fun getImageUser(data: GetFriendResponse) {
         val apiClient = APIClient()
+        var bitmap: Bitmap
 
-        apiClient.getApiService(this).getPhoto(imageName)
+        apiClient.getApiService(this).getPhoto(data.photo.toString())
             .enqueue(object: Callback<ResponseBody> {
                 override fun onResponse(
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>
                 ) {
                     if(response.code() == 200) {
-                            bitmapArray.add(BitmapFactory.decodeStream(response.body()!!.byteStream()))
-                            showRecyclist(friendsChoose, bitmapArray)
+                        bitmap = BitmapFactory.decodeStream(response.body()!!.byteStream())
+                        val model = ArrayFriendSchedule(data, bitmap)
+                        arrayRecycler.add(model)
+                        showRecyclist()
+                    } else if(response.code() == 401){
+                        startActivity(Intent(applicationContext, LoginActivity::class.java))
+                        SessionManager(applicationContext).clearTokenAndUsername()
+                        finish()
                     }
                 }
 
@@ -345,6 +354,7 @@ class AddScheduleActivity : AppCompatActivity() {
         val notification = spinnerNotification.selectedItem.toString()
         val dateFormatDB = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val timeFormatDb = SimpleDateFormat("HH:mm", Locale.US)
+        val responseFail = "end time must be an hour after start time"
 
         if(autoCompleteRecomendation.text.isNotEmpty()) {
             if(timeFromRecom.isNotEmpty() && timeToRecom.isNotEmpty()) {
@@ -377,8 +387,12 @@ class AddScheduleActivity : AppCompatActivity() {
                         if (responseCreate.equals("schedule created successfully")) {
                             Toast.makeText(applicationContext, responseCreate, Toast.LENGTH_LONG).show()
                             startActivity(myIntent)
-                        } else {
-                            Toast.makeText(applicationContext, responseCreate, Toast.LENGTH_LONG).show()
+                        } else if(response.code() == 401){
+                            startActivity(Intent(applicationContext, LoginActivity::class.java))
+                            SessionManager(applicationContext).clearTokenAndUsername()
+                            finish()
+                        } else  {
+                            Toast.makeText(applicationContext, responseFail, Toast.LENGTH_LONG).show()
                         }
                     }
 
@@ -387,5 +401,10 @@ class AddScheduleActivity : AppCompatActivity() {
                     }
                 })
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, ListScheduleActivity::class.java))
     }
 }

@@ -17,6 +17,7 @@
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/drawable/rounded_button.xml" value="0.12532894736842104" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/drawable/rounded_dialog.xml" value="0.1673611111111111" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout-land/floating_layout.xml" value="0.10400000000000001" />
+        <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/activity_add_friend.xml" value="0.16052631578947368" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/activity_add_schedule.xml" value="0.176" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/activity_add_schedule_2.xml" value="0.176" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/activity_add_task.xml" value="0.136" />
@@ -25,7 +26,7 @@
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/activity_calendar.xml" value="0.12" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/activity_edit_delete_schedule.xml" value="0.176" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/activity_edit_delete_schedule_2.xml" value="0.136" />
-        <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/activity_edit_delete_task.xml" value="0.176" />
+        <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/activity_edit_delete_task.xml" value="0.2" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/activity_email_setting.xml" value="0.176" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/activity_focus.xml" value="0.2" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/activity_forgot_password.xml" value="0.152" />
@@ -56,11 +57,11 @@
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/friends_recycler_task.xml" value="0.36893203883495146" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/header_nav.xml" value="0.16052631578947368" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/list_item_app.xml" value="0.2" />
-        <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/list_schedule.xml" value="0.16052631578947368" />
+        <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/list_schedule.xml" value="0.264" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/recomendation_layout.xml" value="0.5941176470588235" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/schedule_layout.xml" value="0.10394736842105264" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/spinner_view.xml" value="0.16052631578947368" />
-        <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/task_layout.xml" value="0.16052631578947368" />
+        <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/task_layout.xml" value="0.136" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/todo_layout.xml" value="0.264" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/layout/waiting_list_layout.xml" value="0.176" />
         <entry key="..\:/tugas/Semester-5/WPPL/bismillah_sukses/Atur-Aja-Mobile/app/src/main/res/menu/menu_nav.xml" value="0.14638157894736842" />

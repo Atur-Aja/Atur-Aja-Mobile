@@ -149,6 +149,7 @@ class ProfileActivity : AppCompatActivity() {
     private fun uploadPhoto() {
         val apiCLient = APIClient()
         val file = File(imagePath)
+        val responseOut = "file size is too big or format file not PNG, JPG"
         val name: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), editTextName.text.toString())
         val phone: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), editTextPN.text.toString())
         val requestFile: RequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), file)
@@ -164,6 +165,12 @@ class ProfileActivity : AppCompatActivity() {
                         if(response.code() == 200) {
                             Toast.makeText(applicationContext, "profil changed succesfully", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(applicationContext, HomeActivity::class.java))
+                        } else if(response.code() == 401){
+                            startActivity(Intent(applicationContext, LoginActivity::class.java))
+                            SessionManager(applicationContext).clearTokenAndUsername()
+                            finish()
+                        } else {
+                            Toast.makeText(applicationContext, responseOut, Toast.LENGTH_SHORT).show()
                         }
                     }
 
@@ -277,5 +284,10 @@ class ProfileActivity : AppCompatActivity() {
         } else {
             checkUpload()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, HomeActivity::class.java))
     }
 }

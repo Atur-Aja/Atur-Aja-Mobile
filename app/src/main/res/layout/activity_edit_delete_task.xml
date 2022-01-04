@@ -383,7 +383,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="8dp"
-            android:backgroundTint="#4CD5C3"
+            android:backgroundTint="@color/white"
             app:cardCornerRadius="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTask">
@@ -398,7 +398,7 @@
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="2dp"
                 android:text="Today"
-                android:textColor="@color/white"
+                android:textColor="@color/aturaja"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -522,7 +522,6 @@
             android:id="@+id/buttonSave"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="60dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/rounded_button"
             android:fontFamily="@font/mulish_black"
@@ -530,7 +529,8 @@
             android:textAllCaps="false"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintEnd_toStartOf="@+id/buttonDelete"
+            app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/abMembers" />
 
@@ -586,9 +586,9 @@
             android:textAllCaps="false"
             android:textSize="18sp"
             app:backgroundTint="@null"
-            android:layout_marginHorizontal="60dp"
             app:layout_constraintBottom_toBottomOf="@+id/buttonSave"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/buttonSave"
             app:layout_constraintTop_toTopOf="@+id/buttonSave"
             app:layout_constraintVertical_bias="0.0" />
 

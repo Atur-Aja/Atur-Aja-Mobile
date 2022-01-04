@@ -139,15 +139,16 @@ class SetupProfileActivity : AppCompatActivity() {
     }
 
     private fun uploadPhoto() {
-        val apiCLient = APIClient()
+        val apiClient = APIClient()
         val file = File(imagePath)
+        val responseOut = "file size is too big or format file not PNG, JPG"
         val name: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), editTextName.text.toString())
         val phone: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), editTextPN.text.toString())
         val requestFile: RequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), file)
         val photo: MultipartBody.Part =
             MultipartBody.Part.createFormData("photo", file.name, requestFile)
 
-            apiCLient.getApiService(this).setUpProfile(name, photo, phone)
+            apiClient.getApiService(this).setUpProfile(name, photo, phone)
                 .enqueue(object : Callback<SetUpProfileResponse> {
                     override fun onResponse(
                         call: Call<SetUpProfileResponse>,
@@ -156,6 +157,12 @@ class SetupProfileActivity : AppCompatActivity() {
                         if(response.code() == 200) {
                             Toast.makeText(applicationContext, "profil changed succesfully", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(applicationContext, HomeActivity::class.java))
+                        } else if(response.code() == 401){
+                            startActivity(Intent(applicationContext, LoginActivity::class.java))
+                            SessionManager(applicationContext).clearTokenAndUsername()
+                            finish()
+                        }else {
+                            Toast.makeText(applicationContext, responseOut, Toast.LENGTH_SHORT).show()
                         }
                     }
 

@@ -10,17 +10,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
+import com.aturaja.aturaja.model.ArrayFriendSchedule
 import com.aturaja.aturaja.model.GetFriendResponse
 
 class FriendsAdapterSchedule(
-    private val context: Context,
-    private val friendList: ArrayList<GetFriendResponse>,
-    private val bitmapArray: ArrayList<Bitmap>
+    private val friendList: ArrayList<ArrayFriendSchedule>
 ) : RecyclerView.Adapter<FriendsAdapterSchedule.ViewHolder>() {
     private lateinit var onFriendsRecyclerClickCallback: OnFriendsRecyclerClickCallback
     private var TAG = "FriendsAdapter"
     interface OnFriendsRecyclerClickCallback {
-        fun onClickItem(data: GetFriendResponse, bitmap: Bitmap)
+        fun onClickItem(data: ArrayFriendSchedule)
     }
 
     fun setOnFriendsRecyclerClickCallback(onFriendsRecyclerClickCallback: OnFriendsRecyclerClickCallback) {
@@ -44,13 +43,12 @@ class FriendsAdapterSchedule(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = friendList[position]
-        val currentPhoto = bitmapArray[position]
 
 //        holder.image.setImageBitmap(getImageUser(currentItem.photo as String))
-        holder.tvUsername.text = currentItem.username
-        holder.image.setImageBitmap(currentPhoto)
+        holder.tvUsername.text = currentItem.data.username
+        holder.image.setImageBitmap(currentItem.bitmap)
         holder.button.setOnClickListener{
-            onFriendsRecyclerClickCallback.onClickItem(friendList[holder.adapterPosition], bitmapArray[holder.adapterPosition])
+            onFriendsRecyclerClickCallback.onClickItem(friendList[holder.adapterPosition])
 //            Log.d(TAG, "${friendList[holder.adapterPosition]}")
         }
     }

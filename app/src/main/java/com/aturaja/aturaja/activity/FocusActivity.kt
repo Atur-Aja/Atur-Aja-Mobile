@@ -27,6 +27,15 @@ import com.robertohuertas.endless.Actions
 import com.robertohuertas.endless.ServiceState
 import com.robertohuertas.endless.getServiceState
 import log
+import java.io.IOException
+
+import android.os.Environment
+
+import java.io.File
+
+import java.io.FileInputStream
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 //class FocusActivity : AppCompatActivity() {
@@ -262,14 +271,9 @@ class FocusActivity : AppCompatActivity() {
 
         title = "Endless Service"
 
-        startActivity(
-            Intent(
-                Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse(
-                    "package:$packageName"
-                )
-            )
-        )
         recyler = findViewById(R.id.recycler)
+
+        onDisplayPopupPermission()
 
         getData()
         showRecyclerList()
@@ -277,8 +281,16 @@ class FocusActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnStartService).let {
             it.setOnClickListener {
                 if(checkPrermission()) {
-                    log("START THE FOREGROUND SERVICE ON DEMAND")
-                    actionOnService(Actions.START)
+                    if(appName.isNotEmpty()) {
+                        if (getServiceState(this) == ServiceState.STARTED) {
+                            Toast.makeText(applicationContext, "service already started", Toast.LENGTH_SHORT).show()
+                        } else {
+                            log("START THE FOREGROUND SERVICE ON DEMAND")
+                            actionOnService(Actions.START)
+                        }
+                    } else {
+                        Toast.makeText(applicationContext, "choose application", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
                     startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION))
@@ -353,10 +365,8 @@ class FocusActivity : AppCompatActivity() {
             override fun onSwitchChecked(status: Boolean, data: DetailItem) {
                 if(status) {
                     appName.add(data)
-                    Toast.makeText(applicationContext, "added ${data.name}", Toast.LENGTH_SHORT).show()
                 } else {
                     appName.remove(data)
-                    Toast.makeText(applicationContext, "remove ${data.name}", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -393,4 +403,64 @@ class FocusActivity : AppCompatActivity() {
         return grantedReturn
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, HomeActivity::class.java))
+    }
+
+    private fun onDisplayPopupPermission() {
+        if (!isMIUI()) {
+            return
+        }
+        try {
+            // MIUI 8
+            val localIntent = Intent("miui.intent.action.APP_PERM_EDITOR")
+            localIntent.setClassName(
+                "com.miui.securitycenter",
+                "com.miui.permcenter.permissions.PermissionsEditorActivity"
+            )
+            localIntent.putExtra("extra_pkgname", packageName)
+            startActivity(localIntent)
+            return
+        } catch (ignore: Exception) {
+        }
+        try {
+            // MIUI 5/6/7
+            val localIntent = Intent("miui.intent.action.APP_PERM_EDITOR")
+            localIntent.setClassName(
+                "com.miui.securitycenter",
+                "com.miui.permcenter.permissions.AppPermissionsEditorActivity"
+            )
+            localIntent.putExtra("extra_pkgname", packageName)
+            startActivity(localIntent)
+            return
+        } catch (ignore: Exception) {
+        }
+        // Otherwise jump to application details
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", packageName, null)
+        intent.data = uri
+        startActivity(intent)
+    }
+
+
+    private fun isMIUI(): Boolean {
+        val device = Build.MANUFACTURER
+        if (device == "Xiaomi") {
+            try {
+                val prop = Properties()
+                prop.load(FileInputStream(File(Environment.getRootDirectory(), "build.prop")))
+                return prop.getProperty(
+                    "ro.miui.ui.version.code",
+                    null
+                ) != null || prop.getProperty(
+                    "ro.miui.ui.version.name",
+                    null
+                ) != null || prop.getProperty("ro.miui.internal.storage", null) != null
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return false
+    }
 }

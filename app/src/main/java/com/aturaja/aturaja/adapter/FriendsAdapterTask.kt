@@ -1,6 +1,5 @@
 package com.aturaja.aturaja.adapter
 
-import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,16 +7,15 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
-import com.aturaja.aturaja.model.ArrayFriendsEditSchedule
-import com.aturaja.aturaja.model.GetFriendResponse
+import com.aturaja.aturaja.model.ArrayFriendsTask
 
 class FriendsAdapterTask(
-    private val friendList: ArrayList<ArrayFriendsEditSchedule>
+    private val friendList: ArrayList<ArrayFriendsTask>
 ): RecyclerView.Adapter<FriendsAdapterTask.ViewHolder>() {
     private lateinit var onButtonClickCallback: OnButtonCLickCallback
 
     interface OnButtonCLickCallback {
-        fun onClickButton(data: ArrayFriendsEditSchedule)
+        fun onClickButton(data: ArrayFriendsTask)
     }
 
     fun setOnButtonClickCallback(onButtonClickCallback: OnButtonCLickCallback) {

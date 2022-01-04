@@ -200,7 +200,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
-            android:background="@color/white"
+            android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="@+id/title_from_edi_delete_schedule"
             app:layout_constraintStart_toEndOf="@+id/title_from_edi_delete_schedule"
             app:layout_constraintTop_toTopOf="@+id/title_from_edi_delete_schedule"

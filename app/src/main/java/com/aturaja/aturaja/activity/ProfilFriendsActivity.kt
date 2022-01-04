@@ -17,6 +17,7 @@ import com.aturaja.aturaja.model.FriendsRecyclerWaitingList
 import com.aturaja.aturaja.model.GetAllFriendRequestResponse
 import com.aturaja.aturaja.model.GetProfileResponse
 import com.aturaja.aturaja.network.APIClient
+import com.aturaja.aturaja.session.SessionManager
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -82,6 +83,10 @@ class ProfilFriendsActivity : AppCompatActivity() {
             tvEmail.text = response.body()?.email
             userId = response.body()?.id.toString()
             getImageUser(response.body()?.photo.toString())
+        }else if(response.code() == 401){
+            startActivity(Intent(applicationContext, LoginActivity::class.java))
+            SessionManager(applicationContext).clearTokenAndUsername()
+            finish()
         }
     }
 
@@ -130,6 +135,10 @@ class ProfilFriendsActivity : AppCompatActivity() {
                     if(response.code() == 200) {
                         Toast.makeText(this@ProfilFriendsActivity, "friend deleted successfully", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this@ProfilFriendsActivity, FriendListActivity::class.java))
+                    } else if(response.code() == 401){
+                        startActivity(Intent(applicationContext, LoginActivity::class.java))
+                        SessionManager(applicationContext).clearTokenAndUsername()
+                        finish()
                     }
                 }
 
@@ -139,5 +148,10 @@ class ProfilFriendsActivity : AppCompatActivity() {
 
             })
 
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, FriendListActivity::class.java))
     }
 }
