@@ -76,7 +76,9 @@ class SetupProfileActivity : AppCompatActivity() {
                 arrayPermssion[1]) == PackageManager.PERMISSION_GRANTED
             && ContextCompat.checkSelfPermission(this,
                 arrayPermssion[2]) == PackageManager.PERMISSION_GRANTED){
-            openExternalStorage()
+            requestPermissions(this,
+                arrayPermssion,
+                100)
         }else{
             requestPermissions(this,
                 arrayPermssion,

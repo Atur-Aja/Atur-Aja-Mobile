@@ -363,34 +363,34 @@ class FocusActivity : AppCompatActivity() {
         })
     }
 
-        private fun checkPrermission(): Boolean {
+    private fun checkPrermission(): Boolean {
         var granted: Boolean
         var granted2: Boolean
         var grantedReturn = false
+
         val appOps: AppOpsManager = this.getSystemService(APP_OPS_SERVICE) as AppOpsManager
         val mode = appOps.checkOpNoThrow(
             AppOpsManager.OPSTR_GET_USAGE_STATS,
             Process.myUid(), this.packageName
         )
+
         val appOps2: AppOpsManager = this.getSystemService(APP_OPS_SERVICE) as AppOpsManager
         val lmode2 = appOps2.checkOpNoThrow(
             AppOpsManager.OPSTR_SYSTEM_ALERT_WINDOW,
             Process.myUid(), this.packageName
         )
-            if (mode == AppOpsManager.MODE_DEFAULT && lmode2 == AppOpsManager.MODE_DEFAULT) {
-                granted = (applicationContext.checkCallingOrSelfPermission(android.Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED)
-                granted2 = (applicationContext.checkCallingOrSelfPermission(android.Manifest.permission.SYSTEM_ALERT_WINDOW) == PackageManager.PERMISSION_GRANTED)
-            } else {
-                granted = (mode == AppOpsManager.MODE_ALLOWED)
-                granted2 = (lmode2 == AppOpsManager.MODE_ALLOWED)
-            }
 
-        if(granted && granted2) {
-            grantedReturn = true
+        if (mode == AppOpsManager.MODE_DEFAULT && lmode2 == AppOpsManager.MODE_DEFAULT) {
+            granted = (applicationContext.checkCallingOrSelfPermission(android.Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED)
+            granted2 = (applicationContext.checkCallingOrSelfPermission(android.Manifest.permission.SYSTEM_ALERT_WINDOW) == PackageManager.PERMISSION_GRANTED)
         } else {
-            grantedReturn = false
+            granted = (mode == AppOpsManager.MODE_ALLOWED)
+            granted2 = (lmode2 == AppOpsManager.MODE_ALLOWED)
         }
+
+        grantedReturn = granted && granted2
 
         return grantedReturn
     }
+
 }

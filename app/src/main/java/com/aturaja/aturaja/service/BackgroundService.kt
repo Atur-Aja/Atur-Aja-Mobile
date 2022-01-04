@@ -7,10 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PixelFormat
-import android.os.Build
-import android.os.IBinder
-import android.os.Looper
-import android.os.SystemClock
+import android.os.*
 import android.util.Log
 import android.view.*
 import android.widget.Button
@@ -271,9 +268,11 @@ class BackgroundService : Service() {
         try {
             for(i in appName) {
                 if(i.packageName == app) {
-                    Looper.prepare()
-                    floatButton()
-                    Looper.loop()
+                    if(Looper.myLooper() == null) {
+                        Looper.prepare()
+                        floatButton()
+                        Looper.loop()
+                    }
                 }
             }
         } catch (e: java.lang.Exception) {
@@ -315,20 +314,20 @@ class BackgroundService : Service() {
         layoutParams.height = metrics.heightPixels
 
         view.findViewById<Button>(R.id.button_back).setOnClickListener {
-//            toHome()
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             windowManager.removeViewImmediate(view)
             view.invalidate()
 
 
-            startActivity(Intent(this, HomeActivity::class.java))
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                log("Starting the service in >=26 Mode")
-//                startForegroundService(restartService)
-//            }
-//            log("Starting the service in < 26 Mode")
+            this.startActivity(intent)
+
+            val handler = Handler()
+
             stopService()
-//            stopService(restartServiceIntent2)
-            startService(restartService)
+            handler.postDelayed({
+                startService(restartService)
+            }, 3000)
         }
 
         windowManager.addView(view, layoutParams)

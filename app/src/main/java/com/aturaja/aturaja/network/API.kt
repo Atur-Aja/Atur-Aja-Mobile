@@ -88,7 +88,6 @@ interface API {
         @Field("date") date:String,
         @Field("time") time:String,
         @Field("priority") priority: Int,
-        @Field("todos[]") todos:ArrayList<String> ?= null,
         @Field("friends[]") friends:ArrayList<Int> ?= null
     ):Call<UpdateTaskResponse>
 
@@ -96,13 +95,6 @@ interface API {
     fun deleteTask(
         @Path("id") id:Int,
     ):Call <DeleteTaskResponse>
-
-    @FormUrlEncoded
-    @POST("todos")
-    fun createTodo(
-        @Field("task_id") id:Int,
-        @Field("todos") todos: List<String>
-    ):Call<AddTodoResponse>
 
     @GET("user/friends")
     fun getFriends():Call<List<GetFriendResponse>>
@@ -190,4 +182,24 @@ interface API {
     fun deleteFriend(
         @Body params: RequestBody
     ):Call<DeleteFriendRespose>
+
+    @FormUrlEncoded
+    @PUT("todos/{id}")
+    fun updateTodo(
+        @Path("id") id:Int,
+        @Field("name") name: String,
+        @Field("status") status: Int
+    ):Call<UpdateTodoResponse>
+
+    @DELETE("todos/{id}")
+    fun deleteTodo(
+        @Path("id") id:Int
+    ):Call<DeleteTodoResponse>
+
+    @FormUrlEncoded
+    @POST("todos")
+    fun createTodo(
+        @Field("task_id") id: Int,
+        @Field("todos[]") todos: ArrayList<String>
+    ):Call<CreateTodoResponse>
 }

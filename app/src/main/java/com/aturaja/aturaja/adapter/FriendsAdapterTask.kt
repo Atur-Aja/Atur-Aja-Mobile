@@ -8,16 +8,16 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
+import com.aturaja.aturaja.model.ArrayFriendsEditSchedule
 import com.aturaja.aturaja.model.GetFriendResponse
 
 class FriendsAdapterTask(
-    private val friendList: ArrayList<GetFriendResponse>,
-    private val bitmapArray: ArrayList<Bitmap>
+    private val friendList: ArrayList<ArrayFriendsEditSchedule>
 ): RecyclerView.Adapter<FriendsAdapterTask.ViewHolder>() {
     private lateinit var onButtonClickCallback: OnButtonCLickCallback
 
     interface OnButtonCLickCallback {
-        fun onClickButton(data: GetFriendResponse, bitmap: Bitmap)
+        fun onClickButton(data: ArrayFriendsEditSchedule)
     }
 
     fun setOnButtonClickCallback(onButtonClickCallback: OnButtonCLickCallback) {
@@ -34,12 +34,11 @@ class FriendsAdapterTask(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = friendList[position]
-        val currentBitmap = bitmapArray[position]
 
-        holder.friendImage.setImageBitmap(currentBitmap)
+        holder.friendImage.setImageBitmap(currentItem.bitmap)
 
         holder.button.setOnClickListener {
-            onButtonClickCallback.onClickButton(friendList[holder.adapterPosition], bitmapArray[holder.adapterPosition])
+            onButtonClickCallback.onClickButton(friendList[holder.adapterPosition])
         }
     }
 

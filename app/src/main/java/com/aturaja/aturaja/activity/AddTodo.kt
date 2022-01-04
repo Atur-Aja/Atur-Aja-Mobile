@@ -40,46 +40,9 @@ class AddTodo : AppCompatActivity() {
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.setHasFixedSize(true)
 
-//        imgButton.setOnClickListener {
-//            var todo = editTExt.text.toString()
-//            var angka = 0
-//            val arrayOfZeros = Array<String>(10){"aku"}
-//
-//            todoArrayList.add(Todo(todo))
-//            toName.add(todo)
-//            toDos.add(todo)
-//
-//            recycler.adapter = TodoAdapter(todoArrayList)
-//        }
 
         buttonSave.setOnClickListener {
-            var apiClietn = APIClient()
-            var cobalah = List<String>(toName.size){""}
-            var cobaloh: List<String> = toDos
-            var iter = 0
 
-            for(i in toName) {
-                iter++
-            }
-
-            Toast.makeText(this, "${cobalah[0]}", Toast.LENGTH_SHORT).show()
-
-            apiClietn.getApiService(this).createTodo(1, cobaloh)
-                .enqueue(object: Callback<AddTodoResponse> {
-                    override fun onResponse(
-                        call: Call<AddTodoResponse>,
-                        response: Response<AddTodoResponse>
-                    ) {
-                        Log.d("add todo ", "$response")
-                        Log.d("add todo ", "berhasil masuk")
-                    }
-
-                    override fun onFailure(call: Call<AddTodoResponse>, t: Throwable) {
-                        Log.d("add todo ", "$t")
-                        Log.d("add todo ", "gagal masuk")
-                    }
-
-                })
         }
     }
 }

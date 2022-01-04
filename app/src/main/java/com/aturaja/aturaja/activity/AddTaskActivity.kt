@@ -16,6 +16,7 @@ import com.aturaja.aturaja.adapter.AutoCompleteFriendAdapter
 import com.aturaja.aturaja.adapter.FriendsAdapterTask
 import com.aturaja.aturaja.adapter.TodoAdapter
 import com.aturaja.aturaja.model.AddTaskResponse
+import com.aturaja.aturaja.model.ArrayFriendsEditSchedule
 import com.aturaja.aturaja.model.GetFriendResponse
 import com.aturaja.aturaja.network.APIClient
 import okhttp3.ResponseBody
@@ -53,6 +54,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
     private var friendsString = ArrayList<String>()
     private var friendsChoose = ""
     private var bitmapArray = ArrayList<Bitmap>()
+    private var arrayRecycler = ArrayList<ArrayFriendsEditSchedule>()
 
     private val dateFormatDb = SimpleDateFormat("yyyy-MM-dd")
     private val timeFormatDb = SimpleDateFormat("HH:mm:ss")
@@ -154,16 +156,15 @@ class AddTaskActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
             LinearLayoutManager.HORIZONTAL,false)
         memberRecyclerView.setHasFixedSize(true)
 
-        val adapter =FriendsAdapterTask(friends, bitmapArray)
+        val adapter =FriendsAdapterTask(arrayRecycler)
         memberRecyclerView.adapter = adapter
 
         adapter.setOnButtonClickCallback(object: FriendsAdapterTask.OnButtonCLickCallback {
-            override fun onClickButton(data: GetFriendResponse, bitmap: Bitmap) {
-                Log.d(TAG, "id = ${data.id}")
-                friendsDb.remove(data.id.toInt())
-                friends.remove(data)
-                friendsString.remove(data.username)
-                bitmapArray.remove(bitmap)
+            override fun onClickButton(data: ArrayFriendsEditSchedule) {
+                friendsDb.remove(data.data.id.toInt())
+                friends.remove(data.data)
+                friendsString.remove(data.data.username)
+                arrayRecycler.remove(data)
                 Log.d(TAG, "friends : ${friendsDb} \n ${friends}")
                 showRecyclistFriends()
             }
@@ -179,14 +180,15 @@ class AddTaskActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
                 if (i.username == friendsChoose) {
                     friends.add(i)
                     friendsDb.add(i.id.toInt())
-                    getImageUser(i.photo.toString())
+                    getImageUser(i, i.photo.toString())
                 }
             }
         }
     }
 
-    private fun getImageUser(imageName: String) {
+    private fun getImageUser(data: GetFriendResponse, imageName: String) {
         val apiClient = APIClient()
+        var bitmap: Bitmap
 
         apiClient.getApiService(this).getPhoto(imageName)
             .enqueue(object: Callback<ResponseBody> {
@@ -195,8 +197,10 @@ class AddTaskActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
                     response: Response<ResponseBody>
                 ) {
                     if(response.code() == 200) {
-                        bitmapArray.add(BitmapFactory.decodeStream(response.body()!!.byteStream()))
-                        if(bitmapArray.size == friends.size) {
+                        bitmap = BitmapFactory.decodeStream(response.body()!!.byteStream())
+                        val model = ArrayFriendsEditSchedule(data, bitmap)
+                        arrayRecycler.add(model)
+                        if(arrayRecycler.size == friends.size) {
                             showRecyclistFriends()
                         }
                     }

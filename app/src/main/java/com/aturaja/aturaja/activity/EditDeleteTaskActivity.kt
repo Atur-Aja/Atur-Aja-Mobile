@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
 import com.aturaja.aturaja.adapter.AutoCompleteFriendAdapter
 import com.aturaja.aturaja.adapter.FriendsAdapterTask
-import com.aturaja.aturaja.adapter.TodoAdapter
+import com.aturaja.aturaja.adapter.TodoAdapterEditDelete
 import com.aturaja.aturaja.model.*
 import com.aturaja.aturaja.network.APIClient
 import com.aturaja.aturaja.service.AlarmBroadcast
@@ -27,6 +27,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
@@ -67,9 +68,13 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
 
 
     private var todos = ArrayList<String>()
+    private var todosItem = ArrayList<TodoItem>()
+    private var todoItemDelete = ArrayList<TodoItem>()
+    private var todoItemUpdate = ArrayList<TodoUpdate>()
     private var friends =  ArrayList<GetFriendResponse>()
     private var friendsDb = ArrayList<Int>()
     private var friendsChoose = ""
+    private var arrayRecycler = ArrayList<ArrayFriendsEditSchedule>()
     private var dataFriends = ArrayList<GetFriendResponse>()
     private var friendsString = ArrayList<String>()
     private var bitmapArray = ArrayList<Bitmap>()
@@ -145,14 +150,13 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
             oldTitle = data.task!!.title.toString()
             updatedAt = data.task!!.updatedAt.toString()
             setSpinner(data.task!!.priority)
-            setTodo(data.todo)
+            setTodo(data.todo as List<TodoItem>?)
             setFriends(data.member)
         }
     }
 
     private fun setFriendsDb() {
         for(j in dataFriends) {
-            Log.d(TAG, "j : ${j.id.toInt()}")
             for (k in friendsDb) {
                 if (j.id.toInt() == k) {
                     friendsString.add(j.username)
@@ -177,38 +181,155 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         if(editTextTodo.text.isEmpty()) {
             Toast.makeText(this, "Masukkan Todo", Toast.LENGTH_SHORT).show()
         } else {
-            todos.add(editTextTodo.text.toString())
+            val name = editTextTodo.text.toString()
+            val model = TodoItem(null, name)
+
+            todosItem.add(model)
+            todos.add(name)
             showRecyclistTodo()
         }
     }
 
-    private fun setTodo(todo: List<TodoItem?>?) {
-        if(todo != null) {
-            for(i in todo) {
-                if (i != null) {
-                    i.name?.let { todos.add(it) }
-                    Log.d(TAG, "$i")
-                }
-            }
+    private fun setTodo(todo: List<TodoItem>?) {
+        if (todo != null) {
+            todosItem.addAll(todo)
             showRecyclistTodo()
         }
     }
 
     private fun showRecyclistTodo() {
-        val adapter = TodoAdapter(todos)
+        val adapter = TodoAdapterEditDelete(todosItem)
         Log.d(TAG, "$todos")
 
         recycler.setHasFixedSize(true)
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
 
-        adapter.setOnClickDeleteTodo(object: TodoAdapter.OnClickDeleteTodo {
-            override fun onClickItem(data: String) {
-                todos.remove(data)
+        adapter.setOnClickDeleteTodo(object: TodoAdapterEditDelete.OnClickDeleteTodoEditDelete {
+            override fun onClickItem(data: TodoItem) {
+                todoItemDelete.add(data)
+                todosItem.remove(data)
+                todos.remove(data.name)
+
                 showRecyclistTodo()
             }
 
         })
+
+        adapter.setOnCheckedTodo(object: TodoAdapterEditDelete.OnCheckedTodo {
+            override fun onCheckedItem(data: TodoItem, status: Boolean) {
+                for(i in todosItem) {
+                    if(data.id == i.id) {
+                        if(status){
+                            i.status = 1
+                        } else {
+                            i.status = 0
+                        }
+                    }
+                }
+
+                val model = TodoUpdate(data, checkNewStatusSchedule(status))
+                val oldModel = TodoUpdate(data, checkStatusOldSchedule(status))
+
+                todoItemUpdate.remove(oldModel)
+                todoItemUpdate.add(model)
+                Log.d(TAG, "todoitemupdate : $todoItemUpdate")
+            }
+
+        })
+    }
+
+    private fun checkNewStatusSchedule(status: Boolean): Int {
+        return if (status) {
+            1
+        }
+        else {
+            0
+        }
+    }
+
+    private fun checkStatusOldSchedule(status: Boolean): Int {
+        return if(status) {
+            0
+        } else {
+            1
+        }
+    }
+
+    private fun updateTodo(data: ArrayList<TodoUpdate>) {
+        val apiClient = APIClient()
+
+        if(todoItemUpdate.isNotEmpty()) {
+            for(i in todoItemUpdate) {
+                if(i.todo.id != null) {
+                    apiClient.getApiService(this).updateTodo(i.todo.id!!, i.todo.name!!, i.status)
+                        .enqueue(object: Callback<UpdateTodoResponse> {
+                            override fun onResponse(
+                                call: Call<UpdateTodoResponse>,
+                                response: Response<UpdateTodoResponse>
+                            ) {
+                                if(response.code() == 200) {
+                                    Log.d(TAG, "update todo berhasil")
+                                }
+                            }
+
+                            override fun onFailure(call: Call<UpdateTodoResponse>, t: Throwable) {
+                                TODO("Not yet implemented")
+                            }
+
+                        })
+                }
+            }
+        }
+    }
+
+    private fun deleteTodo(data: ArrayList<TodoItem>) {
+        val apiClient = APIClient()
+
+        if(todoItemDelete.isNotEmpty()) {
+            for(i in todoItemDelete) {
+                if(i.id != null) {
+                    apiClient.getApiService(this).deleteTodo(i.id!!)
+                        .enqueue(object : Callback<DeleteTodoResponse> {
+                            override fun onResponse(
+                                call: Call<DeleteTodoResponse>,
+                                response: Response<DeleteTodoResponse>
+                            ) {
+                                if(response.code() == 200) {
+                                    Log.d(TAG, "Berhasil delete todo")
+                                }
+                            }
+
+                            override fun onFailure(call: Call<DeleteTodoResponse>, t: Throwable) {
+                                Log.d(TAG, "$t")
+                            }
+                        })
+                }
+            }
+        }
+    }
+
+    private fun createTodo() {
+        val apiClient = APIClient()
+
+        if(todos.isNotEmpty()) {
+            apiClient.getApiService(this).createTodo(id, todos)
+                .enqueue(object: Callback<CreateTodoResponse> {
+                    override fun onResponse(
+                        call: Call<CreateTodoResponse>,
+                        response: Response<CreateTodoResponse>
+                    ) {
+                        if(response.code() == 200) {
+                            Log.d(TAG, "create todo success")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<CreateTodoResponse>, t: Throwable) {
+                        Log.d(TAG, "$t")
+                    }
+
+                })
+        }
     }
 
     private fun getFriends() {
@@ -242,14 +363,15 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
             for (j in friendsDb) {
                 if(j == i.id.toInt()) {
                     friends.add(i)
-                    getImageUser(i.photo.toString())
+                    getImageUser(i, i.photo.toString())
                 }
             }
         }
     }
 
-    private fun getImageUser(imageName: String) {
+    private fun getImageUser(data: GetFriendResponse, imageName: String) {
         val apiClient = APIClient()
+        var bitmap: Bitmap
 
         apiClient.getApiService(this).getPhoto(imageName)
             .enqueue(object: Callback<ResponseBody> {
@@ -258,9 +380,11 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
                     response: Response<ResponseBody>
                 ) {
                     if(response.code() == 200) {
-                        bitmapArray.add(BitmapFactory.decodeStream(response.body()!!.byteStream()))
-                        Log.d(TAG, "bitmap : ${bitmapArray.size}")
-                        if(bitmapArray.size == friends.size) {
+                        bitmap = BitmapFactory.decodeStream(response.body()!!.byteStream())
+                        val model = ArrayFriendsEditSchedule(data, bitmap)
+                        arrayRecycler.add(model)
+//                        Log.d(TAG, "bitmap : ${bitmapArray.size}")
+                        if(arrayRecycler.size == friends.size) {
                             showRecyclistFriends()
                         }
                     }
@@ -277,16 +401,15 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
             LinearLayoutManager.HORIZONTAL,false)
         memberRecyclerView.setHasFixedSize(true)
 
-        val adapter = FriendsAdapterTask(friends, bitmapArray)
+        val adapter = FriendsAdapterTask(arrayRecycler)
         memberRecyclerView.adapter = adapter
 
         adapter.setOnButtonClickCallback(object: FriendsAdapterTask.OnButtonCLickCallback {
-            override fun onClickButton(data: GetFriendResponse, bitmap: Bitmap) {
-                Log.d(TAG, "id = ${data.id}")
-                friendsDb.remove(data.id.toInt())
-                friends.remove(data)
-                friendsString.remove(data.username)
-                bitmapArray.remove(bitmap)
+            override fun onClickButton(data: ArrayFriendsEditSchedule) {
+                friendsDb.remove(data.data.id.toInt())
+                friends.remove(data.data)
+                friendsString.remove(data.data.username)
+                arrayRecycler.remove(data)
                 Log.d(TAG, "friends : ${friendsDb} \n ${friends}")
                 showRecyclistFriends()
             }
@@ -302,7 +425,7 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
                 if (i.username == friendsChoose) {
                     friends.add(i)
                     friendsDb.add(i.id.toInt())
-                    getImageUser(i.photo.toString())
+                    getImageUser(i, i.photo.toString())
                 }
             }
         }
@@ -363,7 +486,7 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     }
 
     fun getIdAlarm(): Long{
-        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
         val timeUpdatedAt = format.parse(updatedAt).time
         var hasil = 0
 
@@ -412,11 +535,15 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
 
         Log.d(TAG ,"todo saved : $todos")
 
+        updateTodo(todoItemUpdate)
+        deleteTodo(todoItemDelete)
+        createTodo()
+
         apiClient.getApiService(this).updateTask(id,
             title,
             description,
             dateSave,
-            timeSave, priority.toInt(), todos, friendsDb)
+            timeSave, priority.toInt(), friendsDb)
             .enqueue(object: Callback<UpdateTaskResponse> {
                 override fun onResponse(
                     call: Call<UpdateTaskResponse>,

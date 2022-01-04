@@ -70,7 +70,7 @@ class ProfileActivity : AppCompatActivity() {
     private fun checkAndGetCamerapermissions() {
         val arrayPermission = arrayOf(
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.CAMERA,
+            Manifest.permission.MANAGE_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
         if(ContextCompat.checkSelfPermission(this,
@@ -85,7 +85,11 @@ class ProfileActivity : AppCompatActivity() {
                 100
             )
         }else{
-            openExternalStorage()
+            ActivityCompat.requestPermissions(
+                this,
+                arrayPermission,
+                100
+            )
         }
     }
 
@@ -97,7 +101,7 @@ class ProfileActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 100) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Camera permission granted", Toast.LENGTH_SHORT).show()
+                openExternalStorage()
             }
             else {
                 Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
