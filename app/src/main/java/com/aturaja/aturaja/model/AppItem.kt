@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 data class AppItem(
     val icon: Drawable,
+    var status: Boolean ?= null,
     val detailApp: DetailItem
     )
 

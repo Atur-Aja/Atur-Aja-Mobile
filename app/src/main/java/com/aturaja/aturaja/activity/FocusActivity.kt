@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -17,9 +16,9 @@ import com.aturaja.aturaja.model.DetailItem
 import com.aturaja.aturaja.service.BackgroundService
 import com.aturaja.aturaja.session.SessionManager
 import android.app.AppOpsManager
+import android.content.Context
 import android.net.Uri
-import android.os.Build
-import android.os.Process
+import android.os.*
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
@@ -29,13 +28,16 @@ import com.robertohuertas.endless.getServiceState
 import log
 import java.io.IOException
 
-import android.os.Environment
-
 import java.io.File
 
 import java.io.FileInputStream
+import java.lang.reflect.Method
 import java.util.*
 import kotlin.collections.ArrayList
+import android.os.Binder
+
+
+
 
 
 //class FocusActivity : AppCompatActivity() {
@@ -264,6 +266,7 @@ class FocusActivity : AppCompatActivity() {
     var appItem = ArrayList<AppItem>()
     var appName = ArrayList<DetailItem>()
     lateinit var recyler: RecyclerView
+    private val TAG ="Focus"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -273,28 +276,16 @@ class FocusActivity : AppCompatActivity() {
 
         recyler = findViewById(R.id.recycler)
 
-        onDisplayPopupPermission()
-
         getData()
         showRecyclerList()
 
+        if(isXiaomi()) {
+            startActivity( Intent("miui.intent.action.APP_PERM_EDITOR").putExtra("extra_pkgname", getPackageName()))
+        }
+
         findViewById<Button>(R.id.btnStartService).let {
             it.setOnClickListener {
-                if(checkPrermission()) {
-                    if(appName.isNotEmpty()) {
-                        if (getServiceState(this) == ServiceState.STARTED) {
-                            Toast.makeText(applicationContext, "Focuse mode already started", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(this, "Focus mode Start", Toast.LENGTH_SHORT).show()
-                            actionOnService(Actions.START)
-                        }
-                    } else {
-                        Toast.makeText(applicationContext, "choose application", Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-                    startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION))
-                }
+                askPermission()
             }
         }
 
@@ -304,6 +295,71 @@ class FocusActivity : AppCompatActivity() {
                 actionOnService(Actions.STOP)
             }
         }
+    }
+
+
+    private fun askPermission() {
+        if(checkPrermission()) {
+            if(appName.isNotEmpty()) {
+                if (getServiceState(this) == ServiceState.STARTED) {
+                    Toast.makeText(applicationContext, "Focuse mode already started", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Focus mode Start", Toast.LENGTH_SHORT).show()
+                    actionOnService(Actions.START)
+                }
+            } else {
+                Toast.makeText(applicationContext, "choose application", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+            startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION))
+        }
+    }
+
+    fun isFloatWindowOptionAllowed(context: Context): Boolean {
+        val manager = context.getSystemService(APP_OPS_SERVICE) as AppOpsManager
+        val localClass: Class<*> = manager.javaClass
+        val arrayOfClass: Array<Class<*>?> = arrayOfNulls(3)
+        arrayOfClass[0] = Integer.TYPE
+        arrayOfClass[1] = Integer.TYPE
+        arrayOfClass[2] = String::class.java
+        return try {
+            val method = localClass.getMethod("checkOp", *arrayOfClass) ?: return false
+            val arrayOfObjects = arrayOfNulls<Any>(3)
+            arrayOfObjects[0] = Integer.valueOf(24)
+            arrayOfObjects[1] = Integer.valueOf(Binder.getCallingUid())
+            arrayOfObjects[2] = context.packageName
+            val m = (method.invoke(manager as Any, *arrayOfObjects) as Int).toInt()
+            m == AppOpsManager.MODE_ALLOWED
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun canDrawOverlaysUsingReflection(context: Context): Boolean {
+        return try {
+            val manager = context.getSystemService(APP_OPS_SERVICE) as AppOpsManager
+            val clazz: Class<*> = AppOpsManager::class.java
+            val dispatchMethod = clazz.getMethod(
+                "checkOp", *arrayOf<Class<*>?>(
+                    Int::class.javaPrimitiveType,
+                    Int::class.javaPrimitiveType,
+                    String::class.java
+                )
+            )
+            //AppOpsManager.OP_SYSTEM_ALERT_WINDOW = 24
+            val mode = dispatchMethod.invoke(
+                manager,
+                *arrayOf<Any>(24, Binder.getCallingUid(), context.applicationContext.packageName)
+            ) as Int
+            AppOpsManager.MODE_ALLOWED == mode
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun isXiaomi(): Boolean {
+        return "xiaomi".equals(Build.MANUFACTURER, ignoreCase = true)
     }
 
     private fun actionOnService(action: Actions) {
@@ -330,6 +386,7 @@ class FocusActivity : AppCompatActivity() {
             )
             val item = AppItem(
                 this.packageManager.getApplicationIcon(it),
+                null,
                 itemDetail
 //                this.packageManager.getApplicationLabel(it.packageName),
 //                it.packageName,
@@ -366,9 +423,11 @@ class FocusActivity : AppCompatActivity() {
                 if(status) {
                     appName.remove(data)
                     appName.add(data)
+                    Log.d(TAG, "$appName")
                     Toast.makeText(applicationContext, "added ${data.name}", Toast.LENGTH_SHORT).show()
                 } else {
                     appName.remove(data)
+                    Log.d(TAG, "$appName")
                     Toast.makeText(applicationContext, "remove ${data.name}", Toast.LENGTH_SHORT).show()
                 }
             }

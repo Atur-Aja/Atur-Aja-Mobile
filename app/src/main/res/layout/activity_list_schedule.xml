@@ -47,6 +47,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/group_179"
+            android:elevation="5dp"
             android:backgroundTint="@android:color/transparent"
             android:clickable="true" />
 

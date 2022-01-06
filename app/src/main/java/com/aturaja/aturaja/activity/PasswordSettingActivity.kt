@@ -13,13 +13,14 @@ import com.aturaja.aturaja.dialog.ConfirmPasswordDialog
 import com.aturaja.aturaja.model.ChangePasswordResponse
 import com.aturaja.aturaja.network.APIClient
 import com.aturaja.aturaja.session.SessionManager
+import com.google.android.material.textfield.TextInputLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class PasswordSettingActivity : AppCompatActivity(), ConfirmPasswordDialog.DialogPasswordListener{
-    private lateinit var etPassword: EditText
-    private lateinit var etConfPassword: EditText
+    private lateinit var etPassword: TextInputLayout
+    private lateinit var etConfPassword: TextInputLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +30,8 @@ class PasswordSettingActivity : AppCompatActivity(), ConfirmPasswordDialog.Dialo
     }
 
     private fun initComponent() {
-        etPassword = findViewById(R.id.etNewPassword)
-        etConfPassword = findViewById(R.id.etNewPasswordValidate)
+        etPassword = findViewById(R.id.editTextPassword)
+        etConfPassword = findViewById(R.id.editTextConfirmPassword)
     }
 
     fun backOnClick(view: View) {
@@ -51,8 +52,8 @@ class PasswordSettingActivity : AppCompatActivity(), ConfirmPasswordDialog.Dialo
     }
 
     private fun saveNewPassword() {
-        val password = etPassword.text.trim().toString()
-        val passwordVal = etConfPassword.text.trim().toString()
+        val password = etPassword.editText?.text?.trim().toString()
+        val passwordVal = etConfPassword.editText?.text?.trim().toString()
 
         if(password.isNotEmpty() && passwordVal.isNotEmpty()) {
             callAPI(password, passwordVal)

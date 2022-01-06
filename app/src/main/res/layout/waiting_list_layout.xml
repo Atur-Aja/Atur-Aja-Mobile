@@ -61,11 +61,12 @@
         android:text="Ignore"
         android:textAllCaps="false"
         android:textColor="#141414"
-        android:textSize="10dp"
+        android:textSize="9sp"
         android:layout_marginEnd="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonAccept"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SmallSp" />
 
     <Button
         android:id="@+id/buttonAccept"
@@ -75,7 +76,7 @@
         android:fontFamily="@font/mulish_semi_bold"
         android:text="Accept"
         android:textAllCaps="false"
-        android:textSize="10dp"
+        android:textSize="9sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

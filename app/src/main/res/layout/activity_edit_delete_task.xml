@@ -345,7 +345,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/mulish_bold"
-            android:text="New Task"
+            android:text="Edit Task"
             android:textColor="#141414"
             android:textSize="21sp"
             app:layout_constraintEnd_toEndOf="parent"

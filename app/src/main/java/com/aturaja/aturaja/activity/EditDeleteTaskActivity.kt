@@ -537,7 +537,7 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
                         SessionManager(applicationContext).clearTokenAndUsername()
                         finish()
                     } else {
-                        Toast.makeText(applicationContext, "task deleted failed", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, "task updated failed", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -631,7 +631,7 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         savedYear = p1
-        savedMonth = p2
+        savedMonth = p2 + 1
         savedDate = p3
 
         tvDate.text = "$savedDate-$savedMonth-$savedYear"

@@ -12,6 +12,7 @@ import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
+import com.aturaja.aturaja.adapter.AdapterListSchedule
 import com.aturaja.aturaja.adapter.ScheduleAdapter
 import com.aturaja.aturaja.model.GetAllScheduleResponse2
 import com.aturaja.aturaja.model.SchedulesItem
@@ -111,6 +112,8 @@ class ListScheduleActivity : AppCompatActivity() {
     private fun intervalSetter(timeSchedule: Date?, notif: Long, idAlarm: Long, interval: String) {
         if(interval == "never") {
             setAlarmWithoutInterval(timeSchedule, notif, idAlarm)
+        } else if(interval == "daily") {
+            setAlarmWithInterval(timeSchedule, notif, idAlarm, 1)
         }
         else if (interval == "weekly") {
             setAlarmWithInterval(timeSchedule, notif, idAlarm, 7)
@@ -270,10 +273,10 @@ class ListScheduleActivity : AppCompatActivity() {
         recyler.layoutManager = LinearLayoutManager(this)
 
 
-        val scheduleListAdapter = ScheduleAdapter(schedules as ArrayList<SchedulesItem>)
+        val scheduleListAdapter = AdapterListSchedule(schedules as ArrayList<SchedulesItem>)
         recyler.adapter = scheduleListAdapter
 
-        scheduleListAdapter.setOnItemClickCallback(object : ScheduleAdapter.OnItemClickCallback {
+        scheduleListAdapter.setOnItemClickCallback(object : AdapterListSchedule.OnItemClickCallbackListSchedule {
             override fun onClickItem(data: SchedulesItem) {
                 intent.putExtra("schedule_data", data)
                 startActivity(intent)

@@ -45,9 +45,11 @@ class AppListAdapter(private val appList: ArrayList<AppItem>): RecyclerView.Adap
 
         holder.switch.setOnCheckedChangeListener(null)
 
-        holder.switch.isChecked = false
+        holder.switch.isChecked = appItem.status == true
+
 
         holder.switch.setOnCheckedChangeListener { _, status ->
+            appItem.status = status
             onSwitchCheckedCallback.onSwitchChecked(status, appItem.detailApp)
             if(status) {
                 arrayData.add(appItem.detailApp)

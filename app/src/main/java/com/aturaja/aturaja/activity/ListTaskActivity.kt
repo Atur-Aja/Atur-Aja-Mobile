@@ -7,8 +7,11 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
@@ -17,6 +20,7 @@ import com.aturaja.aturaja.model.*
 import com.aturaja.aturaja.network.APIClient
 import com.aturaja.aturaja.service.AlarmBroadcast
 import com.aturaja.aturaja.session.SessionManager
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,6 +32,7 @@ class ListTaskActivity : AppCompatActivity() {
     private lateinit var recyclerViewTask: RecyclerView
     private lateinit var buttonAdd: ImageButton
     private lateinit var buttonExit: ImageButton
+    private lateinit var progress: LinearProgressIndicator
     private var newArrayList = ArrayList<TasksItem>()
     private var arraySorting = ArrayList<TasksItem>()
     private val dateFormatDB = SimpleDateFormat("yyyy-MM-dd", Locale.US)
@@ -60,10 +65,12 @@ class ListTaskActivity : AppCompatActivity() {
         recyclerViewTask = findViewById(R.id.taskRecyclerView)
         buttonAdd = findViewById(R.id.imageButton2)
         buttonExit = findViewById(R.id.imageButton)
+        progress = findViewById(R.id.progerss_bar)
     }
 
     fun getData() {
         val apiClient = APIClient()
+
 
         apiClient.getApiService(this).getTask()
             .enqueue(object: Callback<GetAllTaskResponse2> {
@@ -78,6 +85,8 @@ class ListTaskActivity : AppCompatActivity() {
                                 arraySorting.clear()
                                 newArrayList.addAll(it.tasks)
                                 loopAlarm(it.tasks)
+                                recyclerViewTask.visibility = View.VISIBLE
+                                progress.visibility = View.GONE
 //                                setCheckedTask()
                                 setCheckedTodo()
                                 sortingTask()
@@ -192,29 +201,15 @@ class ListTaskActivity : AppCompatActivity() {
             if (i.todo != null) {
                 for (j in i.todo) {
                     status = j?.status == 1
-                    checkTodo(i, status)
+                    if(status) {
+                        i.task?.status = 1
+                    } else {
+                        i.task?.status = 0
+                        break
+                    }
+                    count++
                 }
             }
-        }
-    }
-
-//    private fun setCheckedTask() {
-//        for(i in newArrayList) {
-////            if(i.task?.status == 1) {
-////                if(i.todo != null) {
-////                    for(j in i.todo) {
-////                        j?.status = 1
-////                    }
-////                }
-////            }
-//        }
-//    }
-
-    private fun checkTodo(i: TasksItem, status: Boolean) {
-        if(status) {
-            i.task?.status = 1
-        } else {
-            i.task?.status = 0
         }
     }
 
@@ -226,26 +221,31 @@ class ListTaskActivity : AppCompatActivity() {
 
         recyclerViewTask.adapter = adapter
 
-        adapter.setOnTaskClickCallback(object: TaskAdapter.OnTaskClickCallback {
-            override fun onTaskClicked(data: TasksItem) {
-                intent.putExtra("tasks", data)
-                startActivity(intent)
-            }
-        })
 
-        adapter.setOnCheckedTas(object: TaskAdapter.OnCheckedTask {
-            override fun onTaskChecked(data: TasksItem, status: Boolean) {
 
-                if(status) {
-                    convertBool = 1
-                } else {
-                    convertBool = 0
+        if(progress.isVisible == false) {
+            adapter.setOnTaskClickCallback(object: TaskAdapter.OnTaskClickCallback {
+                override fun onTaskClicked(data: TasksItem) {
+                    intent.putExtra("tasks", data)
+                    startActivity(intent)
                 }
-//                onCheckedTask(data, convertBool)
-                checkTodoTaskAdapter(data, convertBool)
-            }
+            })
 
-        })
+            adapter.setOnCheckedTas(object: TaskAdapter.OnCheckedTask {
+                override fun onTaskChecked(data: TasksItem, status: Boolean) {
+
+                    if(status) {
+                        convertBool = 1
+                    } else {
+                        convertBool = 0
+                    }
+                    progress.visibility = View.VISIBLE
+                    recyclerViewTask.visibility = View.GONE
+                    checkTodoTaskAdapter(data, convertBool)
+                }
+
+            })
+        }
     }
 
     private fun checkTodoTaskAdapter(data: TasksItem, convertBool: Int) {

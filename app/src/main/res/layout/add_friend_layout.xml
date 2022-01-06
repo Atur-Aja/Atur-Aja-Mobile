@@ -39,10 +39,11 @@
         android:fontFamily="@font/mulish_semi_bold"
         android:text="Add"
         android:textAllCaps="false"
-        android:textSize="10dp"
+        android:textSize="9sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SmallSp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

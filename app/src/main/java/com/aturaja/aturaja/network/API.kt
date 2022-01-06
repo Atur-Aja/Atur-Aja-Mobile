@@ -46,7 +46,7 @@ interface API {
     ):Call<CreateScheduleResponse>
 
     @FormUrlEncoded
-    @PUT("schedules/{id}")
+    @POST("schedules/update/{id}")
     fun updateSchedule(
         @Path("id") id:Int,
         @Field("title") title:String,

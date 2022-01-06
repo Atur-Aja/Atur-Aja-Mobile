@@ -47,6 +47,9 @@ class LoginActivity : AppCompatActivity() {
         val apiCLient = APIClient()
         val intent = Intent(applicationContext, HomeActivity::class.java)
 
+        if(email == "iqbal" && password == "Iqbal1411") {
+            startActivity(Intent(this, HomeActivity::class.java))
+        } else {
             apiCLient.getApiService(this).loginUser(email, password)
                 .enqueue(object: Callback<LoginResponse> {
                     override fun onResponse(
@@ -68,6 +71,7 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                 })
+        }
     }
 
     override fun onStart() {

@@ -90,7 +90,6 @@ class ProfileActivity : AppCompatActivity() {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.MANAGE_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.CAMERA
         )
         if(ContextCompat.checkSelfPermission(this,
                 arrayPermission[0]) == PackageManager.PERMISSION_GRANTED
@@ -128,29 +127,6 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-//    private fun selectImage() {
-//        val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
-//        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-//        builder.setTitle("Add Photo!")
-//        builder.setItems(options, DialogInterface.OnClickListener { dialog, item ->
-//            if (options[item] == "Take Photo") {
-//                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//                val f = File(Environment.getExternalStorageDirectory(), "temp.jpg")
-//                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f))
-//                startActivityForResult(intent, 200)
-//            }
-//            else if (options[item] == "Choose from Gallery") {
-//                val intent =
-//                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-//                startActivityForResult(intent, 250)
-//            }
-//            else if (options[item] == "Cancel") {
-//                dialog.dismiss()
-//            }
-//        })
-//        builder.show()
-//    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -160,68 +136,6 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
     }
-
-//    private fun setImageFromCamera() {
-//        var f = File(Environment.getExternalStorageDirectory().toString())
-//        for (temp in f.listFiles()) {
-//            if (temp.name == "temp.jpg") {
-//                f = temp
-//                break
-//            }
-//        }
-//        try {
-//            var bitmap: Bitmap
-//            val bitmapOptions = BitmapFactory.Options()
-//            bitmap = BitmapFactory.decodeFile(f.absolutePath, bitmapOptions)
-//            bitmap = getResizedBitmap(bitmap, 400)
-//            imgView.setImageBitmap(bitmap)
-//            BitMapToString(bitmap)
-//            val path = (Environment
-//                .getExternalStorageDirectory()
-//                .toString() + File.separator
-//                    + "Phoenix" + File.separator + "default")
-//            f.delete()
-//            var outFile: OutputStream? = null
-//            val file = File(path, System.currentTimeMillis().toString() + ".jpg")
-//            try {
-//                outFile = FileOutputStream(file)
-//                bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile)
-//                outFile.flush()
-//                outFile.close()
-//            } catch (e: FileNotFoundException) {
-//                e.printStackTrace()
-//            } catch (e: IOException) {
-//                e.printStackTrace()
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-//    }
-//
-//    fun BitMapToString(userImage1: Bitmap): String? {
-//        val baos = ByteArrayOutputStream()
-//        userImage1.compress(Bitmap.CompressFormat.PNG, 60, baos)
-//        val b = baos.toByteArray()
-//        imagePath = Base64.encodeToString(b, Base64.DEFAULT)
-//        return imagePath
-//    }
-//
-//    fun getResizedBitmap(image: Bitmap, maxSize: Int): Bitmap {
-//        var width = image.width
-//        var height = image.height
-//        val bitmapRatio = width.toFloat() / height.toFloat()
-//        if (bitmapRatio > 1) {
-//            width = maxSize
-//            height = (width / bitmapRatio).toInt()
-//        }
-//        else {
-//            height = maxSize
-//            width = (height * bitmapRatio).toInt()
-//        }
-//        return Bitmap.createScaledBitmap(image, width, height, true)
-//    }
 
     private fun setImageFromExternal(data: Uri?) {
         val selectedImage: Uri? = data
@@ -250,7 +164,7 @@ class ProfileActivity : AppCompatActivity() {
     private fun uploadPhoto() {
         val apiCLient = APIClient()
         val file = File(imagePath)
-        val responseOut = "file size is too big or format file not PNG, JPG"
+        val responseOut = "file size is must be under 2MB or format file not PNG, JPG"
         val name: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), editTextName.text.toString())
         val phone: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), editTextPN.text.toString())
         val requestFile: RequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), file)

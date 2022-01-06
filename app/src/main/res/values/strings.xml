@@ -7,9 +7,9 @@
     <string name="singup">Sign Up</string>
     <string name="already_have_account">Already have and account?</string>
     <string name="signin">Sign In</string>
-    <string name="profil">Profil</string>
-    <string name="setelan">Setelan</string>
-    <string name="teman">Teman</string>
+    <string name="profil">Profile</string>
+    <string name="setelan">Setting</string>
+    <string name="teman">Friend</string>
     <string name="tim">Tim</string>
 
     <string name="affirmation1">I am strong.</string>
@@ -23,6 +23,7 @@
     </string-array>
 
     <string-array name="repeat">
+        <item>daily</item>
         <item>weekly</item>
         <item>monthly</item>
         <item>never</item>
@@ -30,9 +31,9 @@
 
     <string-array name="priority">
         <item>none</item>
-        <item>low</item>
-        <item>medium</item>
-        <item>high</item>
+        <item>less</item>
+        <item>urgent</item>
+        <item>very urgent</item>
     </string-array>
 
     <string-array name="priority_number">

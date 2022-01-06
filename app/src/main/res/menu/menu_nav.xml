@@ -13,7 +13,7 @@
     <item android:id="@+id/mode_fokus"
         android:fontFamily="@font/mulish_regular"
         android:icon="@drawable/ic_baseline_center_focus_strong_24"
-        android:title="focus"
+        android:title="Focus"
         />
     <item android:id="@+id/setelan"
         android:fontFamily="@font/mulish_regular"

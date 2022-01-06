@@ -102,7 +102,11 @@ class AddTaskActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
             friendsChoose = autoComplete.text.toString()
             autoComplete.setText("")
 
-            checkFriends()
+            if(friendsChoose.trim().isEmpty()) {
+                Toast.makeText(this, "input username", Toast.LENGTH_SHORT).show()
+            } else {
+                checkFriends()
+            }
         }
     }
 
@@ -339,7 +343,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         savedYear = p1
-        savedMonth = p2
+        savedMonth = p2 + 1
         savedDate = p3
 
         tvDate.text = "$savedYear-$savedMonth-$savedDate"

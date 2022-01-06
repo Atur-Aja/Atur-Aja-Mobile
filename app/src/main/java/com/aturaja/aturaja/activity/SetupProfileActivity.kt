@@ -141,7 +141,7 @@ class SetupProfileActivity : AppCompatActivity() {
     private fun uploadPhoto() {
         val apiClient = APIClient()
         val file = File(imagePath)
-        val responseOut = "file size is too big or format file not PNG, JPG"
+        val responseOut = "file size is must be under 2MB or format file not PNG, JPG"
         val name: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), editTextName.text.toString())
         val phone: RequestBody = RequestBody.create("text/plain".toMediaTypeOrNull(), editTextPN.text.toString())
         val requestFile: RequestBody = RequestBody.create("image/*".toMediaTypeOrNull(), file)
