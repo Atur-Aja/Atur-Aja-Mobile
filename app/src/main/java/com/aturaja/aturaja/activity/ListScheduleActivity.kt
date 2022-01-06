@@ -111,7 +111,8 @@ class ListScheduleActivity : AppCompatActivity() {
     private fun intervalSetter(timeSchedule: Date?, notif: Long, idAlarm: Long, interval: String) {
         if(interval == "never") {
             setAlarmWithoutInterval(timeSchedule, notif, idAlarm)
-        }else if (interval == "weekly") {
+        }
+        else if (interval == "weekly") {
             setAlarmWithInterval(timeSchedule, notif, idAlarm, 7)
         } else {
             setAlarmWithInterval(timeSchedule, notif, idAlarm, 30)
@@ -137,7 +138,7 @@ class ListScheduleActivity : AppCompatActivity() {
             applicationContext,
             idAlarm.toInt(),
             intent,
-            PendingIntent.FLAG_ONE_SHOT
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
         val alarmUp = pendingIntentChecker != null
         Log.d(TAG, "tanggal tanpa interval : $timeScheduleAlarm")
@@ -182,7 +183,7 @@ class ListScheduleActivity : AppCompatActivity() {
         }
     }
 
-    private fun setAlarmWithInterval(timeScheduleAlarm: Date?, notifAlarm: Long, id: Long, interval: Long) {
+    private fun setAlarmWithInterval(timeScheduleAlarm: Date?, notifAlarm: Long, id: Long, interval: Int) {
         val p = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(applicationContext, AlarmBroadcast::class.java)
         intent.putExtra("title", title)
@@ -190,39 +191,48 @@ class ListScheduleActivity : AppCompatActivity() {
         intent.putExtra("endTime", timeEnd)
         val cal = Calendar.getInstance()
         val dateTimeFormatAlarm = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
-        val calen = dateTimeFormatAlarm.parse(dateTimeFormatAlarm.format(cal.timeInMillis - notifAlarm))
+        val calen = dateTimeFormatAlarm.parse(dateTimeFormatAlarm.format(cal.timeInMillis))
         val pendingIntentChecker = PendingIntent.getBroadcast(
             applicationContext,
             id.toInt(),
             intent,
             PendingIntent.FLAG_NO_CREATE
         )
-        val pendingIntent = PendingIntent.getBroadcast(
-            this, id.toInt(),
+        val pendingIntentSet = PendingIntent.getBroadcast(
+            applicationContext,
+            id.toInt(),
             intent,
-            PendingIntent.FLAG_ONE_SHOT
+            PendingIntent.FLAG_UPDATE_CURRENT
         )
+
         val alarmUp = pendingIntentChecker != null
+
 
         if(calen.time >= (timeScheduleAlarm?.time!! - notifAlarm)) {
             Log.d(TAG, "not make alarm")
         } else {
             if(timeScheduleAlarm != null) {
                 if(alarmUp) {
+                    Log.d(TAG, "$id")
                     Log.d(TAG, "ada")
+                    Log.d(TAG, "$alarmUp")
                 } else {
+                    Log.d(TAG, "$id")
+                    Log.d(TAG, "$alarmUp")
+                    Log.d(TAG, "make alarm")
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         p.setInexactRepeating(
                             AlarmManager.RTC_WAKEUP,
                             timeScheduleAlarm.time - notifAlarm,
                             AlarmManager.INTERVAL_DAY * interval,
-                            pendingIntent
+                            pendingIntentSet
                         )
                     } else {
                         p.setRepeating(AlarmManager.RTC_WAKEUP,
                             timeScheduleAlarm.time - notifAlarm,
                             AlarmManager.INTERVAL_DAY * interval,
-                            pendingIntent)
+                            pendingIntentSet
+                        )
                     }
                 }
             }
@@ -231,8 +241,6 @@ class ListScheduleActivity : AppCompatActivity() {
 
     private fun countNotfif(notification: String?): Long{
         val notifTime: Long
-
-        Log.d(TAG, "$notification")
 
         if(notification == "5 minutes") {
             notifTime = TimeUnit.MINUTES.toMillis(5)

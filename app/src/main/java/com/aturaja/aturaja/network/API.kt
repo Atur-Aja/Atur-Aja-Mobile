@@ -85,6 +85,7 @@ interface API {
         @Path("id") id:Int,
         @Field("title") title:String,
         @Field("description") description:String ?= null,
+        @Field("status") status: Int ?= null,
         @Field("date") date:String,
         @Field("time") time:String,
         @Field("priority") priority: Int,

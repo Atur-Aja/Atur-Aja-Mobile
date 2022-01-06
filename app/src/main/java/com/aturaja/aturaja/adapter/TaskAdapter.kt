@@ -3,6 +3,7 @@ package com.aturaja.aturaja.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
@@ -15,6 +16,11 @@ class TaskAdapter (private val taskList : ArrayList<TasksItem>) : RecyclerView.A
     private val timeFormatDB = SimpleDateFormat("HH:mm:ss")
     private val timeFormatView = SimpleDateFormat("hh:mm a")
     private lateinit var onTaskClickCallback: OnTaskClickCallback
+    private lateinit var onCheckedTask: OnCheckedTask
+
+    interface OnCheckedTask {
+        fun onTaskChecked(data: TasksItem, status: Boolean)
+    }
 
     interface OnTaskClickCallback {
         fun onTaskClicked(data: TasksItem)
@@ -22,6 +28,10 @@ class TaskAdapter (private val taskList : ArrayList<TasksItem>) : RecyclerView.A
 
     fun setOnTaskClickCallback(onTaskClickCallback: OnTaskClickCallback) {
         this.onTaskClickCallback = onTaskClickCallback
+    }
+
+    fun setOnCheckedTas(onCheckedTask: OnCheckedTask) {
+        this.onCheckedTask = onCheckedTask
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,11 +47,23 @@ class TaskAdapter (private val taskList : ArrayList<TasksItem>) : RecyclerView.A
        val currentItem = taskList[position]
         val priority = currentItem.task?.priority
 
+        holder.checkBox.setOnCheckedChangeListener(null)
+
         holder.taskName.text = "${setPriority(priority)} ${currentItem.task?.title}"
         holder.taskDate.text = dateFormatView.format(dateFormatDB.parse(currentItem.task?.date))
         holder.taskHour.text = timeFormatView.format(timeFormatDB.parse(currentItem.task?.time))
+
+        holder.checkBox.isChecked = currentItem.task?.status == 1
         holder.itemView.setOnClickListener {
-            onTaskClickCallback.onTaskClicked(taskList[holder.adapterPosition])
+            try {
+                onTaskClickCallback.onTaskClicked(taskList[holder.adapterPosition])
+            } catch (e: Exception) {
+                return@setOnClickListener
+            }
+        }
+
+        holder.checkBox.setOnCheckedChangeListener { _, bool ->
+            onCheckedTask.onTaskChecked(taskList[holder.adapterPosition], bool)
         }
     }
 
@@ -70,5 +92,6 @@ class TaskAdapter (private val taskList : ArrayList<TasksItem>) : RecyclerView.A
         var taskName: TextView = itemView.findViewById(R.id.textViewTask)
         var taskHour: TextView = itemView.findViewById(R.id.textViewTime)
         var taskDate: TextView = itemView.findViewById(R.id.textViewDate)
+        var checkBox: CheckBox = itemView.findViewById(R.id.checkBox_task)
     }
 }

@@ -356,7 +356,7 @@ class AddScheduleActivity : AppCompatActivity() {
         val timeFormatDb = SimpleDateFormat("HH:mm", Locale.US)
         val responseFail = "end time must be an hour after start time"
 
-        if(autoCompleteRecomendation.text.isNotEmpty()) {
+        if(autoCompleteRecomendation.text.trim().isNotEmpty()) {
             if(timeFromRecom.isNotEmpty() && timeToRecom.isNotEmpty()) {
                 timeFrom = timeFormatDb.format(timeFormatDb.parse(timeFromRecom))
                 timeTo = timeFormatDb.format(timeFormatDb.parse(timeToRecom))

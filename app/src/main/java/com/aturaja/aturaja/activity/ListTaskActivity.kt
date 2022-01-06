@@ -8,13 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
 import com.aturaja.aturaja.adapter.TaskAdapter
-import com.aturaja.aturaja.model.GetAllTaskResponse2
-import com.aturaja.aturaja.model.TasksItem
+import com.aturaja.aturaja.model.*
 import com.aturaja.aturaja.network.APIClient
 import com.aturaja.aturaja.service.AlarmBroadcast
 import com.aturaja.aturaja.session.SessionManager
@@ -33,7 +32,9 @@ class ListTaskActivity : AppCompatActivity() {
     private var arraySorting = ArrayList<TasksItem>()
     private val dateFormatDB = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     private val timeFormatDB = SimpleDateFormat("HH:mm:ss", Locale.US)
+    private val timeFormatAlarm = SimpleDateFormat("HH:mm", Locale.US)
     private val TAG ="TaskActivity"
+    private var count = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,8 +74,12 @@ class ListTaskActivity : AppCompatActivity() {
                     if(response.code() == 200) {
                         response.body()?.let {
                             if(it.tasks != null) {
+                                newArrayList.clear()
+                                arraySorting.clear()
                                 newArrayList.addAll(it.tasks)
                                 loopAlarm(it.tasks)
+//                                setCheckedTask()
+                                setCheckedTodo()
                                 sortingTask()
                             }
                         }
@@ -95,6 +100,8 @@ class ListTaskActivity : AppCompatActivity() {
     private fun loopAlarm(tasks: List<TasksItem>) {
         val dateTimeFormatAlarm = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
         var timeTask: Date
+        var title = ""
+        var startTime = ""
         var date = ""
         var time = ""
         var idAlarm: Long
@@ -102,16 +109,20 @@ class ListTaskActivity : AppCompatActivity() {
         for (i in tasks) {
             date = "${dateFormatDB.format(dateFormatDB.parse(i.task?.date))}"
             time = "${timeFormatDB.format(timeFormatDB.parse(i.task?.time))}"
+            title = i.task?.title.toString()
+            startTime = i.task?.time.toString()
             timeTask = dateTimeFormatAlarm.parse("$date $time")
             idAlarm = getIdAlarm(i.task?.updatedAt, i.task?.title)
 
-            setAlarm(idAlarm, timeTask)
+            setAlarm(idAlarm, timeTask, title, startTime)
         }
     }
 
-    private fun setAlarm(idAlarm: Long, timeTask: Date?) {
+    private fun setAlarm(idAlarm: Long, timeTask: Date?, title: String, startTime: String) {
         val p = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(applicationContext, AlarmBroadcast::class.java)
+        intent.putExtra("title", title)
+        intent.putExtra("startTime", timeFormatAlarm.format(timeFormatDB.parse(startTime)))
         val cal = Calendar.getInstance()
         val dateTimeFormatAlarm = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
         val bol : Boolean = dateTimeFormatAlarm.parse(dateTimeFormatAlarm.format(cal.time)) >= timeTask
@@ -174,9 +185,44 @@ class ListTaskActivity : AppCompatActivity() {
         showRecyclist()
     }
 
+    private fun setCheckedTodo() {
+        var status: Boolean
+        var status2: Boolean
+        for(i in newArrayList) {
+            if (i.todo != null) {
+                for (j in i.todo) {
+                    status = j?.status == 1
+                    checkTodo(i, status)
+                }
+            }
+        }
+    }
+
+//    private fun setCheckedTask() {
+//        for(i in newArrayList) {
+////            if(i.task?.status == 1) {
+////                if(i.todo != null) {
+////                    for(j in i.todo) {
+////                        j?.status = 1
+////                    }
+////                }
+////            }
+//        }
+//    }
+
+    private fun checkTodo(i: TasksItem, status: Boolean) {
+        if(status) {
+            i.task?.status = 1
+        } else {
+            i.task?.status = 0
+        }
+    }
+
+
     private fun showRecyclist() {
         val adapter = TaskAdapter(arraySorting)
         var intent = Intent(this, EditDeleteTaskActivity::class.java)
+        var convertBool: Int
 
         recyclerViewTask.adapter = adapter
 
@@ -186,6 +232,108 @@ class ListTaskActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         })
+
+        adapter.setOnCheckedTas(object: TaskAdapter.OnCheckedTask {
+            override fun onTaskChecked(data: TasksItem, status: Boolean) {
+
+                if(status) {
+                    convertBool = 1
+                } else {
+                    convertBool = 0
+                }
+//                onCheckedTask(data, convertBool)
+                checkTodoTaskAdapter(data, convertBool)
+            }
+
+        })
+    }
+
+    private fun checkTodoTaskAdapter(data: TasksItem, convertBool: Int) {
+        if(data.todo != null) {
+            for(i in data.todo) {
+                try {
+                    if(convertBool == 1) {
+                        i?.status = 1
+                        updateTodo(i, convertBool, data)
+                    } else {
+                        i?.status = 0
+                        updateTodo(i, convertBool, data)
+                    }
+                    count++
+                }catch (e: Exception) {
+                    Toast.makeText(this, "$e", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+            onCheckedTask(data, convertBool)
+    }
+
+    private fun updateTodo(i: TodoItem?, convertBool: Int, data: TasksItem) {
+        val apiClient = APIClient()
+
+                if(i?.id != null) {
+                    apiClient.getApiService(this).updateTodo(i.id, i.name.toString(), i.status!!)
+                        .enqueue(object: Callback<UpdateTodoResponse> {
+                            override fun onResponse(
+                                call: Call<UpdateTodoResponse>,
+                                response: Response<UpdateTodoResponse>
+                            ) {
+                                if(response.code() == 200) {
+                                    Log.d(TAG, "update todo berhasil")
+                                }
+                            }
+
+                            override fun onFailure(call: Call<UpdateTodoResponse>, t: Throwable) {
+                                TODO("Not yet implemented")
+                            }
+                        })
+                }
+    }
+
+
+    private fun onCheckedTask(data: TasksItem, status: Int) {
+        val apiClient = APIClient()
+        val friends = getFriendsDb(data.member)
+
+        apiClient.getApiService(this).updateTask(
+            data.task?.id!!.toInt(),
+            data.task.title.toString(),
+            null,
+            status,
+            data.task.date.toString(),
+            timeFormatAlarm.format(timeFormatDB.parse(data.task.time)),
+            data.task.priority!!.toInt(),
+            friends
+        ).enqueue(object: Callback<UpdateTaskResponse> {
+            override fun onResponse(
+                call: Call<UpdateTaskResponse>,
+                response: Response<UpdateTaskResponse>
+            ) {
+                if(response.code() == 200) {
+                    getData()
+                }
+            }
+
+            override fun onFailure(call: Call<UpdateTaskResponse>, t: Throwable) {
+                Toast.makeText(applicationContext, "$t", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+    }
+
+    private fun getFriendsDb(priority: List<MemberItem?>?): ArrayList<Int> {
+        val hasil = ArrayList<Int>()
+
+        if (priority != null) {
+            for(i in priority) {
+                if (i != null) {
+                    i.id?.let { hasil.add(it.toInt()) }
+                }
+            }
+        }
+
+        return hasil
     }
 
     override fun onBackPressed() {

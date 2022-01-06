@@ -43,7 +43,7 @@ data class Task(
 	val priority: String? = null,
 
 	@field:SerializedName("status")
-	val status: @RawValue Any? = null
+	var status: Int? = null
 ) : Parcelable
 
 @Parcelize

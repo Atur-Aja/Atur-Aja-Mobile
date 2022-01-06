@@ -84,6 +84,8 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     private lateinit var updatedAt: String
     private lateinit var oldTitle: String
 
+    private var status: Int?= 1
+
     private var id: Int = 0
     private var TAG = "edittask"
 
@@ -149,6 +151,7 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
             tvTime.text = data.task!!.time?.let { convertTime(it) }
             oldTitle = data.task!!.title.toString()
             updatedAt = data.task!!.updatedAt.toString()
+            status = data.task!!.status
             setSpinner(data.task!!.priority)
             setTodo(data.todo as List<TodoItem>?)
             setFriends(data.member)
@@ -193,8 +196,25 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
     private fun setTodo(todo: List<TodoItem>?) {
         if (todo != null) {
             todosItem.addAll(todo)
-            showRecyclistTodo()
+            setTodoStatus()
         }
+    }
+
+    private fun setTodoStatus() {
+        Log.d(TAG, "status task : $status")
+        for(i in todosItem) {
+            if(status == 1) {
+                i.status = 1
+                val model = TodoUpdate(i, status!!)
+                todoItemUpdate.add(model)
+            } else if(status == null) {
+                break
+            }
+        }
+
+        Log.d(TAG, "$todoItemUpdate")
+
+        showRecyclistTodo()
     }
 
     private fun showRecyclistTodo() {
@@ -543,11 +563,16 @@ class EditDeleteTaskActivity : AppCompatActivity(), DatePickerDialog.OnDateSetLi
         deleteTodo(todoItemDelete)
         createTodo()
 
-        apiClient.getApiService(this).updateTask(id,
+        apiClient.getApiService(this).updateTask(
+            id,
             title,
             description,
-            dateSave,
-            timeSave, priority.toInt(), friendsDb)
+            null,
+            date = dateSave,
+            time = timeSave,
+            priority = priority.toInt(),
+            friends = friendsDb
+        )
             .enqueue(object: Callback<UpdateTaskResponse> {
                 override fun onResponse(
                     call: Call<UpdateTaskResponse>,

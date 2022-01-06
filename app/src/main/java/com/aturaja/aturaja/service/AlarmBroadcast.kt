@@ -15,8 +15,7 @@ class AlarmBroadcast: BroadcastReceiver() {
     override fun onReceive(context: Context, p1: Intent?) {
         val bundle: Bundle? = p1?.extras
         val text: String? = bundle?.getString("title")
-        val startTime: String? = bundle?.getString("startTime")
-        val endTime: String? = bundle?.getString("endTime")
+        var sentence = setString(bundle?.getString("startTime"),  bundle?.getString("endTime"))
 
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -26,7 +25,7 @@ class AlarmBroadcast: BroadcastReceiver() {
         var mBuilder = NotificationCompat.Builder(context, "notify_001")
             .setSmallIcon(R.mipmap.ic_launcher_logo)
             .setContentTitle("$text")
-            .setContentText("$startTime - $endTime")
+            .setContentText("$sentence")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
 
@@ -40,5 +39,16 @@ class AlarmBroadcast: BroadcastReceiver() {
         }
         val notification = mBuilder.build()
         notificationManager.notify(1, notification)
+    }
+
+    private fun setString(string: String?, string1: String?): String {
+        var sentence = ""
+        if(string1 == null) {
+            sentence = "$string"
+        } else {
+            sentence = "$string - $string1"
+        }
+
+        return sentence
     }
 }

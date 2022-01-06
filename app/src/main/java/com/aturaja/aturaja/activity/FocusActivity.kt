@@ -283,9 +283,9 @@ class FocusActivity : AppCompatActivity() {
                 if(checkPrermission()) {
                     if(appName.isNotEmpty()) {
                         if (getServiceState(this) == ServiceState.STARTED) {
-                            Toast.makeText(applicationContext, "service already started", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "Focuse mode already started", Toast.LENGTH_SHORT).show()
                         } else {
-                            log("START THE FOREGROUND SERVICE ON DEMAND")
+                            Toast.makeText(this, "Focus mode Start", Toast.LENGTH_SHORT).show()
                             actionOnService(Actions.START)
                         }
                     } else {
@@ -300,7 +300,7 @@ class FocusActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnStopService).let {
             it.setOnClickListener {
-                log("STOP THE FOREGROUND SERVICE ON DEMAND")
+                Toast.makeText(this, "Focus mode Stop", Toast.LENGTH_SHORT).show()
                 actionOnService(Actions.STOP)
             }
         }
@@ -364,9 +364,12 @@ class FocusActivity : AppCompatActivity() {
         listAppAdapter.setOnSwitchCheckedCallback(object: AppListAdapter.OnSwitchCheckedCallback {
             override fun onSwitchChecked(status: Boolean, data: DetailItem) {
                 if(status) {
+                    appName.remove(data)
                     appName.add(data)
+                    Toast.makeText(applicationContext, "added ${data.name}", Toast.LENGTH_SHORT).show()
                 } else {
                     appName.remove(data)
+                    Toast.makeText(applicationContext, "remove ${data.name}", Toast.LENGTH_SHORT).show()
                 }
             }
 

@@ -2,6 +2,7 @@ package com.aturaja.aturaja
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.JsonReader
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         val password = textPassword.editText?.text.toString()
         val confirmPassword = textConfirmPassword.editText?.text.toString()
         val apiClient = APIClient()
+        val error = "username and email had already taken, or password is not same"
 
         if(username.trim().isNotEmpty() && email.trim().isNotEmpty() && password.trim().isNotEmpty() && confirmPassword.trim().isNotEmpty()) {
             progressBar.visibility = View.VISIBLE
@@ -65,10 +67,7 @@ class MainActivity : AppCompatActivity() {
                         } else {
                             try {
                                 progressBar.visibility = View.GONE
-                                val json = response.errorBody()
-                                val json2 = json.toString()
-                                val jObjError = JSONObject(json2.substring(json2.indexOf("{"), json2.lastIndexOf("}") + 2))
-                                Toast.makeText(applicationContext, "${jObjError}", Toast.LENGTH_LONG).show()
+                                Toast.makeText(applicationContext, error, Toast.LENGTH_LONG).show()
                             }catch (e: Exception) {
                                 progressBar.visibility = View.GONE
                                 Toast.makeText(applicationContext, "$e", Toast.LENGTH_LONG).show()

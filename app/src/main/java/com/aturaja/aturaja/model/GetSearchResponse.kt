@@ -25,5 +25,8 @@ data class GetSearchResponseItem(
 	val id: Int? = null,
 
 	@field:SerializedName("username")
-	val username: String? = null
+	val username: String? = null,
+
+	@field:SerializedName("invited")
+	val invited: Boolean? = null
 ) : Parcelable

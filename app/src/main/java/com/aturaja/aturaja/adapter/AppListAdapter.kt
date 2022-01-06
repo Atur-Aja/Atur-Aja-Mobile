@@ -13,6 +13,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 
 class AppListAdapter(private val appList: ArrayList<AppItem>): RecyclerView.Adapter<AppListAdapter.ViewHolder>() {
     private lateinit var onSwitchCheckedCallback: OnSwitchCheckedCallback
+    private var arrayData = ArrayList<DetailItem>()
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvName: TextView = itemView.findViewById(R.id.app_name)
@@ -42,10 +43,15 @@ class AppListAdapter(private val appList: ArrayList<AppItem>): RecyclerView.Adap
         holder.tvName.text = appItem.detailApp.name
         holder.imgPhoto.setImageDrawable(appItem.icon)
 
+        holder.switch.setOnCheckedChangeListener(null)
+
         holder.switch.isChecked = false
 
         holder.switch.setOnCheckedChangeListener { _, status ->
             onSwitchCheckedCallback.onSwitchChecked(status, appItem.detailApp)
+            if(status) {
+                arrayData.add(appItem.detailApp)
+            }
         }
     }
 

@@ -33,6 +33,7 @@ class AddFriendAdapter(
 
         holder.friendImage.setImageBitmap(currentItem.bitmap)
         holder.friendName.text = currentItem.data.username
+
         holder.buttonAccept.setOnClickListener{
             onAddClickCallback.onAddClicked(addFriendList[holder.adapterPosition])
             holder.buttonAccept.isClickable = false

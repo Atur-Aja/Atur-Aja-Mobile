@@ -186,26 +186,17 @@ class BackgroundService : Service() {
     var appName = ArrayList<DetailItem>()
 
     override fun onBind(intent: Intent): IBinder? {
-        log("Some component want to bind with the service")
-        // We don't provide binding, so return null
         return null
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        log("onStartCommand executed with startId: $startId")
         if (intent != null) {
             appName = intent.getParcelableArrayListExtra("appName")!!
             val action = intent.action
-            log("using an intent with action $action")
             when (action) {
                 Actions.START.name -> startService()
                 Actions.STOP.name -> stopService()
-                else -> log("This should never happen. No action in the received intent")
             }
-        } else {
-            log(
-                "with a null intent. It has been probably restarted by the system."
-            )
         }
 
         return START_NOT_STICKY
@@ -213,14 +204,14 @@ class BackgroundService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        log("The service has been created".toUpperCase())
+
         val notification = createNotification()
         startForeground(1, notification)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        log("The service has been destroyed".toUpperCase())
+
     }
 
     override fun onTaskRemoved(rootIntent: Intent) {
@@ -240,7 +231,7 @@ class BackgroundService : Service() {
 
     private fun startService() {
         if (isServiceStarted) return
-        log("Starting the foreground service task")
+
         isServiceStarted = true
         setServiceState(this, ServiceState.STARTED)
 
@@ -316,6 +307,7 @@ class BackgroundService : Service() {
         view.findViewById<Button>(R.id.button_back).setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             windowManager.removeViewImmediate(view)
             view.invalidate()
 
@@ -327,7 +319,7 @@ class BackgroundService : Service() {
             stopService()
             handler.postDelayed({
                 startService(restartService)
-            }, 3000)
+            }, 4000)
         }
 
         windowManager.addView(view, layoutParams)
@@ -360,13 +352,12 @@ class BackgroundService : Service() {
     }
 
     private fun stopService() {
-        log("Stopping the foreground service")
         try {
             stopForeground(true)
             stopSelf()
             stopService(Intent(this, BackgroundService::class.java))
         } catch (e: Exception) {
-            log("Service stopped without being started: ${e.message}")
+            Toast.makeText(this, "Focus mode had already been Stopped", Toast.LENGTH_SHORT).show()
         }
         isServiceStarted = false
         timer.cancel()

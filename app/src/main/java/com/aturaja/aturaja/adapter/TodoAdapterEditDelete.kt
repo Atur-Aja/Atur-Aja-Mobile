@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.aturaja.aturaja.R
 import com.aturaja.aturaja.model.TodoItem
+import org.w3c.dom.Text
 
 class TodoAdapterEditDelete(private val todoList : ArrayList<TodoItem>) : RecyclerView.Adapter<TodoAdapterEditDelete.ViewHolder>(){
     private lateinit var onCLickDeleteTodo: OnClickDeleteTodoEditDelete
@@ -43,12 +44,17 @@ class TodoAdapterEditDelete(private val todoList : ArrayList<TodoItem>) : Recycl
         val currentItem = todoList[position]
         val bool = currentItem.status
 
+
+        holder.checkBox.setOnCheckedChangeListener(null)
         holder.todoName.text = currentItem.name
         holder.delButton.setOnClickListener {
             onCLickDeleteTodo.onClickItem(todoList[holder.adapterPosition])
         }
         if (bool != null) {
             holder.checkBox.isChecked = bool == 1
+        }
+        if(currentItem.updateBy != null) {
+            holder.editedtBy.text = currentItem.updateBy.toString()
         }
 
         holder.checkBox.setOnCheckedChangeListener { _, boolean ->
@@ -65,5 +71,6 @@ class TodoAdapterEditDelete(private val todoList : ArrayList<TodoItem>) : Recycl
         var todoName : TextView = itemView.findViewById(R.id.tvTodoName)
         var delButton: ImageButton = itemView.findViewById(R.id.deleteTodoButton)
         var checkBox: CheckBox = itemView.findViewById(R.id.cbStatus)
+        var editedtBy: TextView = itemView.findViewById(R.id.editedBy)
     }
 }
